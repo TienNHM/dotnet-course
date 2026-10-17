@@ -1,0 +1,48 @@
+/* Màu nhấn: tím của .NET (#512bd4) */
+:root {
+  --vp-c-brand-1: #512bd4;
+  --vp-c-brand-2: #6440dc;
+  --vp-c-brand-3: #512bd4;
+  --vp-c-brand-soft: rgba(81, 43, 212, 0.1);
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #512bd4 20%, #2b7bd4);
+  --vp-home-hero-image-background-image: none;
+}
+
+.dark {
+  --vp-c-brand-1: #a38bf5;
+  --vp-c-brand-2: #8b6ef0;
+  --vp-c-brand-3: #6440dc;
+  --vp-c-brand-soft: rgba(163, 139, 245, 0.14);
+  --vp-home-hero-name-background: linear-gradient(120deg, #a38bf5 20%, #6aa9e9);
+}
+
+/* Ảnh sơ đồ có hai bản: chỉ hiện bản hợp với giao diện đang dùng */
+.only-dark { display: none; }
+.dark .only-light { display: none; }
+.dark .only-dark { display: inline; }
+.vp-doc img.only-light, .vp-doc img.only-dark { border-radius: 8px; }
+
+/* Bảng rộng: cuộn ngang thay vì tràn trang */
+.vp-doc table { display: block; overflow-x: auto; }
+
+/* Khối "Gợi ý và lời giải", câu hỏi tự kiểm tra */
+.vp-doc details {
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin: 16px 0;
+  background: var(--vp-c-bg-soft);
+}
+.vp-doc details > summary { cursor: pointer; font-weight: 600; color: var(--vp-c-brand-1); }
+.vp-doc details[open] > summary { margin-bottom: 8px; }
+
+/* Danh sách rà soát "- [ ] ...": bỏ dấu chấm đầu dòng */
+.vp-doc li:has(> input[type='checkbox']) { list-style: none; margin-left: -1.25em; }
+
+/* Hero: khung code nằm gọn bên phải */
+.VPHero .image-container { display: flex; align-items: center; justify-content: center; }
+@media (min-width: 960px) {
+  .VPHero .image { margin-left: 32px; }
+}
