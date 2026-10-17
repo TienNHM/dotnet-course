@@ -64,10 +64,10 @@ const lessonCount = stages.reduce((n, s) => n + s.modules.reduce((k, m) => k + m
     <section class="section cta">
       <h2>Bắt đầu từ con số không</h2>
       <p class="lead">
-        Chưa từng viết C#? Module 1 bắt đầu từ biến và kiểu dữ liệu. Đã làm backend rồi? Đọc lộ trình,
+        Chưa từng viết C#? Module 0 hướng dẫn cài .NET, chạy chương trình đầu tiên và dùng debugger. Đã làm backend rồi? Đọc lộ trình,
         chọn giai đoạn hợp trình độ và làm bài đánh giá cuối mỗi module để biết mình còn hổng ở đâu.
       </p>
-      <a class="button" :href="withBase(stages[0].modules[0].link)">Vào Module 1</a>
+      <a class="button" :href="withBase(stages[0].modules[0].link)">Vào Module 0</a>
     </section>
   </div>
 </template>

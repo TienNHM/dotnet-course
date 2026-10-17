@@ -8,6 +8,7 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 
 ## Bắt đầu
 
+- [Module 0 — Chuẩn bị môi trường](lessons/stage-01-foundation/module-00-setup/README.md): cài .NET 10 SDK và trình soạn code, chạy chương trình đầu tiên, debugger, unit test, Web API đầu tiên. Người chưa từng viết C# bắt đầu từ đây.
 - [Lộ trình tổng quan](lessons/roadmap-dotnet-backend-zero-to-senior.md): vì sao các module được xếp theo thứ tự này, sơ đồ phụ thuộc kiến thức và kiến trúc đích.
 - [Bảng thuật ngữ](lessons/glossary.md): tra nhanh các thuật ngữ dùng xuyên suốt khóa học.
 
@@ -17,6 +18,7 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 
 | Module | Số bài |
 | --- | --- |
+| [Module 0 - Chuẩn bị môi trường](lessons/stage-01-foundation/module-00-setup/README.md) | 5 |
 | [Module 1 - Programming Logic](lessons/stage-01-foundation/module-01-programming-logic/README.md) | 11 |
 | [Module 2 - Computer Science Basics](lessons/stage-01-foundation/module-02-computer-science-basics/README.md) | 13 |
 | [Module 3 - Git + Developer Workflow](lessons/stage-01-foundation/module-03-git-developer-workflow/README.md) | 14 |

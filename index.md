@@ -11,8 +11,8 @@ hero:
       text: Xem lộ trình
       link: /lessons/roadmap-dotnet-backend-zero-to-senior
     - theme: alt
-      text: Bắt đầu Module 1
-      link: /lessons/stage-01-foundation/module-01-programming-logic/README
+      text: Chuẩn bị môi trường
+      link: /lessons/stage-01-foundation/module-00-setup/README
 
 features:
   - icon: 🧭

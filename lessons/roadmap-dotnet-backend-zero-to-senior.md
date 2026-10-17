@@ -8,7 +8,7 @@
 
 ```mermaid
 flowchart LR
-    S1["Giai đoạn 1<br/>Foundation<br/>Module 1-3"] --> S2["Giai đoạn 2<br/>C# Professional<br/>Module 4-7"]
+    S1["Giai đoạn 1<br/>Foundation<br/>Module 0-3"] --> S2["Giai đoạn 2<br/>C# Professional<br/>Module 4-7"]
     S2 --> P1(["Project 1<br/>Inventory System"])
     P1 --> S3["Giai đoạn 3<br/>ASP.NET Core<br/>Module 8-11"]
     S3 --> P2(["Project 2<br/>CRM Backend API"])
@@ -118,6 +118,7 @@ Mốc thời gian là tham chiếu, không phải chỉ tiêu. Người đã đi
 
 **Ra khỏi giai đoạn này bạn sẽ**: hình thành mô hình tính toán cơ bản, đọc hiểu mô hình client–server, và làm việc được trong quy trình phiên bản hoá hiện đại.
 
+- [Module 0 — Chuẩn bị môi trường](stage-01-foundation/module-00-setup/README.md): cài .NET 10, chương trình đầu tiên, debugger, unit test, Web API đầu tiên. Bỏ qua nếu bạn đã quen cả bốn.
 - [Module 1 — Programming Logic](stage-01-foundation/module-01-programming-logic/README.md)
 - [Module 2 — Computer Science Basics](stage-01-foundation/module-02-computer-science-basics/README.md)
 - [Module 3 — Git + Developer Workflow](stage-01-foundation/module-03-git-developer-workflow/README.md)
@@ -192,7 +193,7 @@ Ràng buộc vẫn là backend-first và trục CRM — checklist để tham chi
 
 ---
 
-**Bắt đầu từ đâu**: mở [Module 1 — Programming Logic](stage-01-foundation/module-01-programming-logic/README.md), hoặc chọn thẳng giai đoạn phù hợp trong sidebar nếu bạn đã có nền.
+**Bắt đầu từ đâu**: chưa cài .NET hoặc chưa từng viết C# thì mở [Module 0 — Chuẩn bị môi trường](stage-01-foundation/module-00-setup/README.md). Đã có môi trường thì vào thẳng [Module 1 — Programming Logic](stage-01-foundation/module-01-programming-logic/README.md), hoặc chọn thẳng giai đoạn phù hợp trong sidebar nếu bạn đã có nền.
 
 ## Bài liên quan
 
