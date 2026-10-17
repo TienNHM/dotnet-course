@@ -1,6 +1,6 @@
 import { cpSync, readFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { type DefaultTheme, defineConfig } from 'vitepress'
+import { type DefaultTheme, defineConfigWithTheme } from 'vitepress'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import { courseTree, glossary, roadmap } from './course'
 
@@ -14,7 +14,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
     { text: 'Bắt đầu', items: start.map((p) => ({ text: p.title, link: p.link })) },
     ...courseTree().map((stage, i) => ({
       // "Giai đoạn 1 — Foundation: tư duy lập trình, ..." → "Giai đoạn 1 — Foundation"
-      text: stage.title.split(':')[0],
+      text: stage.title.split(':')[0] + (stage.advanced ? ' (nâng cao)' : ''),
       collapsed: i > 0,
       items: [
         { text: 'Tổng quan giai đoạn', link: stage.link },
@@ -31,7 +31,7 @@ function sidebar(): DefaultTheme.SidebarItem[] {
 }
 
 export default withMermaid(
-  defineConfig<DefaultTheme.Config & { repoUrl: string }>({
+  defineConfigWithTheme<DefaultTheme.Config & { repoUrl: string }>({
     lang: 'vi-VN',
     title: '.NET Backend: Zero → Senior',
     description:

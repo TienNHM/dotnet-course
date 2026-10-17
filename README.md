@@ -1,6 +1,6 @@
 # .NET Backend: Zero → Senior
 
-Lộ trình học .NET backend bằng tiếng Việt, gồm 5 giai đoạn, 19 module và 4 dự án: nền tảng lập trình và Git, C# chuyên nghiệp (OOP, LINQ, generics, async/await, DI), ASP.NET Core (middleware, Web API, xác thực và phân quyền, SignalR), tầng dữ liệu và production (SQL, EF Core, caching, background jobs, Docker và deployment), rồi tới kỹ thuật cấp senior (Clean Architecture, DDD, hệ phân tán, microservices, performance engineering).
+Lộ trình học .NET backend bằng tiếng Việt, gồm 4 giai đoạn chính, 1 giai đoạn nâng cao (không bắt buộc), 19 module và 4 dự án: nền tảng lập trình và Git, C# chuyên nghiệp (OOP, LINQ, generics, async/await, DI), ASP.NET Core (middleware, Web API, xác thực và phân quyền, SignalR), tầng dữ liệu và production (SQL, EF Core, caching, background jobs, Docker và deployment), rồi phần nâng cao về kỹ thuật cấp senior (Clean Architecture, DDD, hệ phân tán, microservices, performance engineering).
 
 Xuyên suốt khóa học là một hệ CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó.
 
@@ -54,6 +54,8 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 | 🎯 [Project 3 — Production CRM Platform](lessons/stage-04-database-production/project-03-production-crm-platform.md) | Dự án |
 
 ### [Giai đoạn 5 — Senior Engineering: Clean Architecture, hệ phân tán và microservices](lessons/stage-05-senior-engineering/README.md)
+
+Phần nâng cao, không bắt buộc. Học sau khi đã làm xong Project 3.
 
 | Module | Số bài |
 | --- | --- |
