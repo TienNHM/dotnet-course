@@ -1,0 +1,50 @@
+# Database cho các bài học và lab.
+#
+#   docker compose up -d                       # PostgreSQL (mặc định của khóa học)
+#   docker compose --profile sqlserver up -d   # thêm SQL Server, cho các bài bản *.sqlserver.md
+#
+# Chuỗi kết nối tương ứng:
+#   PostgreSQL: Host=localhost;Port=5432;Database=crm;Username=postgres;Password=postgres
+#   SQL Server: Server=localhost,1433;Database=crm;User Id=sa;Password=Crm@123456;TrustServerCertificate=True
+#
+# Đang chạy khóa 30 Days SQL Challenge? Container của khóa đó cũng dùng cổng 5432:
+# dừng nó trước (docker stop sql-challenge-db) hoặc đổi cổng bên trái dưới đây.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: dotnet-course-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: crm
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d crm"]
+      interval: 5s
+      retries: 10
+
+  # SQL Server không có bản chạy gốc trên chip ARM: máy Mac chip M chạy qua giả lập, chậm
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: dotnet-course-sqlserver
+    profiles: [sqlserver]
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Crm@123456"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Crm@123456' -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+
+volumes:
+  postgres-data:
+  sqlserver-data:
