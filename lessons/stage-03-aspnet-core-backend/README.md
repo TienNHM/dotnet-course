@@ -1,6 +1,6 @@
 # Giai đoạn 3 — ASP.NET Core Backend: Web API, xác thực phân quyền và SignalR
 
-> **Tóm tắt:** Giai đoạn xây dựng backend thật với ASP.NET Core, gồm 4 module: Module 8 - ASP.NET Core Fundamentals (hosting, middleware pipeline, cấu hình), Module 9 - Web API Professional (thiết kế contract, validation, OpenAPI, xử lý lỗi), Module 10 - Authentication + Authorization (JWT, identity, phân quyền theo policy), Module 11 - SignalR (giao tiếp real-time). Capstone của giai đoạn là Project 02 - CRM Backend API, neo mọi kiến thức vào nghiệp vụ doanh nghiệp.
+> **Tóm tắt:** Giai đoạn xây dựng backend thật với ASP.NET Core, gồm 4 module: Module 8 - ASP.NET Core Fundamentals (hosting, middleware pipeline, cấu hình, EF Core tối thiểu), Module 9 - Web API Professional (thiết kế contract, validation, OpenAPI, xử lý lỗi), Module 10 - Authentication + Authorization (JWT, identity, phân quyền theo policy), Module 11 - SignalR (giao tiếp real-time). Capstone của giai đoạn là Project 02 - CRM Backend API, neo mọi kiến thức vào nghiệp vụ doanh nghiệp.
 
 ## Các module
 
