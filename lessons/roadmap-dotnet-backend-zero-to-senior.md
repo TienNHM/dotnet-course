@@ -1,6 +1,6 @@
 # Lộ trình .NET Backend: From Zero → Senior (Backend-first)
 
-> **Tóm tắt:** Lộ trình **backend-first** trên .NET: 19 module chia thành 5 giai đoạn, cộng 4 dự án. Điểm khác biệt so với một danh sách chủ đề là **trục dự án xuyên suốt** — cùng một bài toán CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 cho tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó, thay vì học rời rạc từng công cụ.
+> **Tóm tắt:** Lộ trình **backend-first** trên .NET: 19 module chia thành 5 giai đoạn, cộng 4 dự án. Giai đoạn 1 tới 4 là phần chính, kết thúc bằng Project 3; giai đoạn 5 là phần **nâng cao, không bắt buộc**. Điểm khác biệt so với một danh sách chủ đề là **trục dự án xuyên suốt** — cùng một bài toán CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 cho tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó, thay vì học rời rạc từng công cụ.
 >
 > Không bao gồm Blazor, .NET MAUI hay UI client nặng — đó là lựa chọn có chủ đích, không phải thiếu sót.
 
@@ -14,7 +14,7 @@ flowchart LR
     S3 --> P2(["Project 2<br/>CRM Backend API"])
     P2 --> S4["Giai đoạn 4<br/>Database + Production<br/>Module 12-15"]
     S4 --> P3(["Project 3<br/>Production CRM"])
-    P3 --> S5["Giai đoạn 5<br/>Senior Engineering<br/>Module 16-19"]
+    P3 -.->|nâng cao, tùy chọn| S5["Giai đoạn 5<br/>Senior Engineering<br/>Module 16-19"]
     S5 --> F(["Final Project<br/>Enterprise CRM / ERP"])
 ```
 
@@ -110,7 +110,7 @@ Mũi tên đứt nét từ API sang SignalR là chủ ý: kênh thời gian th�
 | Tuần 3-6 | C# Professional | Viết code chạy đúng trước. Clean code và tái cấu trúc tính sau. |
 | Tuần 7-10 | ASP.NET Core | Dựng API thật cho CRM mini. Học tới đâu áp dụng tới đó. |
 | Tuần 11-14 | Database + Production | Dữ liệu được lưu, truy vấn, cache và chạy trong container ra sao. |
-| Tuần 15+ | Senior Engineering | Đọc kiến trúc ở mức đánh đổi, không học vẹt pattern. |
+| Tuần 15+ | Senior Engineering (nâng cao, tùy chọn) | Đọc kiến trúc ở mức đánh đổi, không học vẹt pattern. |
 
 Mốc thời gian là tham chiếu, không phải chỉ tiêu. Người đã đi làm backend ngôn ngữ khác thường đi hết giai đoạn 1-2 trong vài ngày; người mới hoàn toàn có thể cần gấp đôi bảng trên.
 
@@ -153,7 +153,9 @@ Mốc thời gian là tham chiếu, không phải chỉ tiêu. Người đã đi
 - [Module 15 — Docker + Deployment](stage-04-database-production/module-15-docker-deployment/README.md)
 - [Project 3 — Production CRM Platform](stage-04-database-production/project-03-production-crm-platform.md)
 
-## Giai đoạn 5 - Senior Engineering
+## Giai đoạn 5 - Senior Engineering (nâng cao, không bắt buộc)
+
+Phần chính của khóa học kết thúc ở Project 3. Giai đoạn 5 dành cho ai đã làm xong Project 3 và muốn đi tiếp: các chủ đề ở đây (Clean Architecture, hệ phân tán, microservices, đo hiệu năng) chỉ thật sự có ý nghĩa khi bạn đã tự tay dựng và vận hành một hệ thống đủ lớn để gặp vấn đề mà chúng giải quyết. Học sớm hơn dễ thành học vẹt pattern.
 
 **Ra khỏi giai đoạn này bạn sẽ**: đọc và bảo vệ được một kiến trúc phân tán, đo được hiệu năng bằng số, và hoàn thiện capstone cấp doanh nghiệp.
 

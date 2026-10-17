@@ -5,7 +5,7 @@ title: .NET Backend Zero → Senior
 hero:
   name: .NET Backend Zero → Senior
   text: Học backend .NET có hệ thống, từ biến đầu tiên tới hệ phân tán
-  tagline: Lộ trình tiếng Việt gồm 5 giai đoạn, 19 module và 4 dự án. Xuyên suốt là một hệ CRM thật lớn dần theo từng giai đoạn, nên kiến thức nào cũng xuất hiện đúng lúc bài toán cần tới nó.
+  tagline: Lộ trình tiếng Việt gồm 4 giai đoạn chính và 1 giai đoạn nâng cao, 19 module, 4 dự án. Xuyên suốt là một hệ CRM thật lớn dần theo từng giai đoạn, nên kiến thức nào cũng xuất hiện đúng lúc bài toán cần tới nó.
   actions:
     - theme: brand
       text: Xem lộ trình
@@ -16,8 +16,8 @@ hero:
 
 features:
   - icon: 🧭
-    title: 5 giai đoạn, 19 module
-    details: Nền tảng và Git, C# chuyên nghiệp, ASP.NET Core, dữ liệu và production, rồi kỹ thuật cấp senior. Module nào cũng ghi rõ cần học gì trước.
+    title: 4 giai đoạn chính, 1 giai đoạn nâng cao
+    details: Nền tảng và Git, C# chuyên nghiệp, ASP.NET Core, dữ liệu và production. Kỹ thuật cấp senior là phần nâng cao, học sau khi đã làm xong Project 3.
   - icon: 🏗️
     title: Một bài toán CRM xuyên suốt
     details: Cùng một hệ quản lý khách hàng, từ List trong bộ nhớ tới Clean Architecture, outbox, message bus và microservices.

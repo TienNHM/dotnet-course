@@ -16,6 +16,8 @@ const mod = (title: string) => {
 const cards = stages.map((s) => ({ ...s, ...head(s.title) }))
 const projects = stages.flatMap((s, i) => s.projects.map((p) => ({ ...p, stage: i + 1 })))
 const lessonCount = stages.reduce((n, s) => n + s.modules.reduce((k, m) => k + m.lessons.length, 0), 0)
+// Module 0 là phần chuẩn bị môi trường, không tính vào 19 module của lộ trình
+const moduleCount = stages.reduce((n, s) => n + s.modules.filter((m) => mod(m.title).no !== '00').length, 0)
 </script>
 
 <template>
@@ -23,15 +25,16 @@ const lessonCount = stages.reduce((n, s) => n + s.modules.reduce((k, m) => k + m
     <section class="section">
       <h2>Lộ trình 5 giai đoạn</h2>
       <p class="lead">
-        {{ stages.reduce((n, s) => n + s.modules.length, 0) }} module, {{ lessonCount }} bài học và {{ projects.length }} dự án.
-        Học theo thứ tự: mỗi module ghi rõ cần biết gì trước. Xem
+        {{ moduleCount }} module, {{ lessonCount }} bài học và {{ projects.length }} dự án, mở đầu bằng Module 0 để chuẩn bị môi trường.
+        Giai đoạn 1 tới 4 là phần chính, giai đoạn 5 là phần nâng cao không bắt buộc. Xem
         <a :href="withBase('/lessons/roadmap-dotnet-backend-zero-to-senior')">lộ trình tổng quan</a>
         để biết vì sao các module được xếp như vậy.
       </p>
       <div class="stages">
-        <div v-for="s in cards" :key="s.link" class="stage">
+        <div v-for="s in cards" :key="s.link" class="stage" :class="{ advanced: s.advanced }">
           <a class="stage-head" :href="withBase(s.link)">
             <span class="badge">{{ s.label }}</span>
+            <span v-if="s.advanced" class="tag">Nâng cao · tùy chọn</span>
             <h3>{{ s.name }}</h3>
           </a>
           <ul>
@@ -121,6 +124,19 @@ a:hover { text-decoration: underline; }
   color: var(--vp-c-brand-1);
   margin-bottom: 6px;
 }
+.tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+}
+/* Giai đoạn nâng cao: viền nét đứt để tách khỏi phần chính */
+.stage.advanced { border-style: dashed; background: transparent; }
 .stage ul { list-style: none; padding: 0; margin: 0; }
 .stage li a {
   display: flex;

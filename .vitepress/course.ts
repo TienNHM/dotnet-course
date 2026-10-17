@@ -19,7 +19,11 @@ export interface Module extends Page {
 export interface Stage extends Page {
   modules: Module[]
   projects: Page[]
+  // Phần nâng cao, không bắt buộc: phần chính của khóa kết thúc ở Project 3
+  advanced: boolean
 }
+
+const advancedStages = ['stage-05-senior-engineering']
 
 function page(rel: string): Page {
   const src = readFileSync(join(lessonsDir, rel), 'utf8')
@@ -56,6 +60,7 @@ export function courseTree(): Stage[] {
               .map((f) => page(`${stage}/${mod}/${f}`)),
           })),
         projects: entries.filter((f) => f.endsWith('.md') && f !== 'README.md').map((f) => page(`${stage}/${f}`)),
+        advanced: advancedStages.includes(stage),
       }
     })
 }
