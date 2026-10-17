@@ -1,168 +1,148 @@
 # Project 1 - Inventory System (Console + API)
 
-> **Tóm tắt:**
->
-> **Abstract (integrated exercise).** Tổng hợp **Stage 2** qua miền **Inventory / IMS**: mô hình thực thể, luồng nghiệp vụ nhập–xuất kho, logging và ranh giới ứng dụng console/API — bài luyện **end-to-end** trước khi chuyển sang hosting ASP.NET Core đầy đủ.
+> **Tóm tắt:** Dự án tổng kết Giai đoạn 2. Bạn xây một hệ thống quản lý kho chạy trên console: sản phẩm, danh mục, kho hàng, nhập kho, xuất kho, chuyển kho và lịch sử giao dịch lưu ra file JSON. Code chia thành bốn tầng (Domain, Application, Infrastructure, ConsoleApp) nối với nhau bằng Dependency Injection, mọi thao tác I/O đều async và nhận `CancellationToken`. Điều quan trọng nhất: quy tắc nghiệp vụ (không xuất quá tồn, SKU không trùng) nằm trong service và được kiểm chứng bằng unit test, không nằm ở menu.
 
-## Phương pháp học tập
+## Mục tiêu học tập
 
-Bài học này được dẫn dắt theo chu trình học tập chủ động:
+Sau dự án này bạn có thể:
 
-1. **Khởi động tư duy**: bắt đầu bằng câu hỏi gợi mở để kích hoạt kiến thức nền.
-2. **Kiến tạo kiến thức**: học khái niệm cốt lõi đi kèm ví dụ có ngữ cảnh.
-3. **Luyện tập có hướng dẫn**: áp dụng qua mini case và ví dụ thực tế ngắn.
-4. **Tự đánh giá và phản tư**: dùng checklist + bài thực hành để chốt năng lực.
+- Thiết kế entity, enum, exception cho một miền nghiệp vụ thật (quản lý kho).
+- Tách solution thành nhiều project theo tầng và giải thích vì sao Domain không tham chiếu project nào.
+- Viết repository async theo interface, đổi từ lưu trong bộ nhớ sang lưu file JSON mà không sửa service.
+- Đăng ký service với đúng lifetime, kể cả class có constructor nhận `string`, và resolve service Scoped qua scope.
+- Đặt quy tắc nghiệp vụ trong service, viết unit test xUnit chứng minh các quy tắc đó.
+- Truyền `CancellationToken` từ `Program.cs` xuống tận repository và tắt app gọn khi nhấn Ctrl+C.
 
-> Mục tiêu là bạn hiểu sâu, dùng được ngay, và tự đánh giá được mức độ nắm bài.
+**Cần biết trước:** [bài 0.4 - Solution, thư viện và unit test](../stage-01-foundation/module-00-setup/0.4-solution-and-unit-test.md), [bài 4.4 - Interface](module-04-csharp-core/4.4-interface.md), [bài 4.7 - Records](module-04-csharp-core/4.7-records-and-value-objects.md), [bài 5.2 - Generics](module-05-advanced-csharp/5.2-generics.md), [bài 5.3 - LINQ](module-05-advanced-csharp/5.3-linq.md), [bài 6.4 - CancellationToken](module-06-async-programming/6.4-cancellationtoken.md), [bài 7.4 - Service Lifetimes](module-07-dependency-injection/7.4-service-lifetimes.md), [bài 7.5 - Registering Services](module-07-dependency-injection/7.5-registering-services.md).
 
-## Câu hỏi khởi động
+---
 
-- Nếu không có kiến thức trong bài này, hệ thống CRM/ERP sẽ gặp rủi ro gì?
-- Trong dự án thực tế, bạn nghĩ phần kiến thức này nằm ở tầng nào (API, nghiệp vụ, dữ liệu, vận hành)?
-- Dấu hiệu nào cho thấy bạn đã hiểu bản chất bài học (không chỉ nhớ định nghĩa)?
 ## 1. Tổng quan dự án
 
-### Inventory Management System là gì?
+**Inventory Management System (IMS)** là hệ thống quản lý hàng tồn kho, nghiệp vụ có mặt trong hầu hết phần mềm bán hàng và ERP. Hệ thống trả lời các câu hỏi:
 
-**Inventory Management System (IMS)** là hệ thống quản lý hàng tồn kho — một trong những nghiệp vụ cốt lõi trong mọi ứng dụng thương mại, ERP, hay SaaS B2B. Hệ thống này giải quyết bài toán:
+- Kho đang có những **sản phẩm** (Product) nào, thuộc **danh mục** (Category) nào?
+- Mỗi sản phẩm còn bao nhiêu ở từng **kho** (Warehouse)?
+- Ai đã **nhập kho** (stock in), **xuất kho** (stock out), **chuyển kho** (transfer) lúc nào, số lượng bao nhiêu?
+- Sản phẩm nào **sắp hết** để đặt hàng thêm?
 
-- Theo dõi **sản phẩm** (Product) và **danh mục** (Category) trong kho
-- Quản lý **nhập kho** (stock in) và **xuất kho** (stock out)
-- Ghi lại **lịch sử giao dịch** (Transaction Log) để audit
-- Báo cáo **tồn kho hiện tại** và cảnh báo **hàng sắp hết**
+### Vì sao dự án này khép lại Giai đoạn 2?
 
-### Tại sao chọn bài này để kết thúc Stage 2?
-
-Bài này được thiết kế để bạn **tổng hợp đồng thời** tất cả kiến thức đã học:
-
-| Kiến thức | Áp dụng vào đâu |
+| Kiến thức | Dùng ở đâu trong dự án |
 |---|---|
-| **OOP (Module 4)** | Domain models, inheritance từ `BaseEntity`, interfaces cho repository |
-| **Advanced C# (Module 5)** | LINQ để query tồn kho, generics cho `IRepository<T>`, records cho DTO |
-| **Async/Await (Module 6)** | Tất cả I/O (đọc/ghi file JSON) chạy async, CancellationToken |
-| **Dependency Injection (Module 7)** | Wiring service, repository qua `IServiceCollection` |
+| OOP ([Module 4](module-04-csharp-core/README.md)) | Entity kế thừa `BaseEntity`, interface cho repository, record cho DTO |
+| Advanced C# ([Module 5](module-05-advanced-csharp/README.md)) | `IRepository<T>` generic, LINQ để lọc tồn kho và tính báo cáo, nullable reference types |
+| Async ([Module 6](module-06-async-programming/README.md)) | Đọc ghi file JSON async, `CancellationToken` từ Ctrl+C xuống repository |
+| DI ([Module 7](module-07-dependency-injection/README.md)) | Đăng ký service và repository, chọn lifetime, đổi in-memory sang JSON chỉ bằng một dòng đăng ký |
 
-Không chỉ là bài tập lý thuyết — đây là một **mini production app** có thể chạy được và demo được.
+Kết quả là một ứng dụng chạy được, demo được và có test, không phải bài tập rời rạc.
 
 ---
 
-## 2. Mục tiêu học tập
+## 2. Lộ trình và thời gian
 
-Sau khi hoàn thành dự án này, bạn có thể:
+Dự kiến **2 tới 3 tuần**, mỗi tuần khoảng 6 tới 8 giờ. Mỗi mốc kết thúc bằng một commit (hoặc pull request) có `dotnet build` và `dotnet test` xanh.
 
-- [ ] Thiết kế domain model cho một bounded context thực tế (Inventory)
-- [ ] Tổ chức codebase theo layered architecture (Domain → Application → Infrastructure → Console)
-- [ ] Implement Clean Interfaces và tách biệt contract khỏi implementation
-- [ ] Viết async repository sử dụng `async/await` và `CancellationToken` đúng cách
-- [ ] Đăng ký và resolve dependency bằng `Microsoft.Extensions.DependencyInjection`
-- [ ] Áp dụng business rules validation trong service layer, không để logic lọt xuống repository
-- [ ] Viết test scenario và tự verify trước khi nộp bài
+| Mốc | Việc cần xong | Cách kiểm tra |
+|---|---|---|
+| Tuần 1, nửa đầu | Bước 1: tạo solution, 5 project, tham chiếu đúng chiều. Viết entity, enum, exception, interface repository (mục 5, 6) | `dotnet build` xanh. Domain không có `ProjectReference` nào |
+| Tuần 1, nửa sau | Bước 2: repository in-memory. Bước 3: `InventoryService` cho product và nhập/xuất kho | Test TC-02, TC-03, TC-06, TC-07, TC-08 xanh |
+| Tuần 2 | Bước 3 (tiếp): chuyển kho, báo cáo, xóa product. Bước 4, 5: menu console, Ctrl+C | Test TC-09, TC-10, TC-11 xanh. Demo TC-01 tới TC-05 qua menu |
+| Tuần 3 (hoặc khi xong sớm) | Bước 2 option B: repository JSON. README. Một bài mở rộng ở mục 11 | Tắt app, chạy lại vẫn thấy dữ liệu. Tự chấm theo mục 12 |
 
 ---
 
-## 3. Yêu cầu chức năng (Functional Requirements)
+## 3. Yêu cầu chức năng
 
-### 3.1 Product Management
-
-| Chức năng | Mô tả |
-|---|---|
-| Thêm sản phẩm | Nhập tên, SKU, đơn vị, giá nhập, danh mục |
-| Sửa sản phẩm | Cập nhật tên, giá, danh mục |
-| Xóa sản phẩm | Soft delete (set `IsDeleted = true`, không xóa vật lý) |
-| Xem danh sách | Lọc theo Category, tìm kiếm theo tên/SKU |
-| Quản lý Category | CRUD category, mỗi product thuộc 1 category |
-
-### 3.2 Stock Management
+### 3.1 Product và Category
 
 | Chức năng | Mô tả |
 |---|---|
-| Nhập kho | Tăng số lượng tồn kho cho 1 product tại 1 warehouse |
-| Xuất kho | Giảm số lượng, check không xuất quá tồn kho |
-| Xem tồn kho | Tồn kho theo từng product, theo warehouse |
-| Chuyển kho | Transfer stock từ warehouse A sang warehouse B |
+| Thêm sản phẩm | Nhập tên, SKU, đơn vị, giá nhập, danh mục, mức tồn tối thiểu |
+| Sửa sản phẩm | Cập nhật tên, SKU, giá, danh mục, mức tồn tối thiểu |
+| Xóa sản phẩm | Soft delete: đặt `IsDeleted = true`, không xóa khỏi dữ liệu |
+| Xem danh sách | Lọc theo danh mục, tìm theo tên hoặc SKU |
+| Quản lý danh mục | Thêm, xem, xóa danh mục. Mỗi sản phẩm thuộc đúng 1 danh mục |
 
-### 3.3 Transaction Log
+### 3.2 Warehouse và tồn kho
 
 | Chức năng | Mô tả |
 |---|---|
-| Ghi log tự động | Mỗi nhập/xuất/chuyển kho → tạo `StockTransaction` record |
-| Xem lịch sử | Lọc theo product, warehouse, ngày, loại giao dịch |
-| Không cho sửa/xóa log | Log là immutable — chỉ append, không update/delete |
+| Quản lý kho | Thêm kho, xem danh sách kho |
+| Nhập kho | Tăng số lượng của 1 sản phẩm tại 1 kho |
+| Xuất kho | Giảm số lượng, không cho xuất quá số đang tồn |
+| Xem tồn kho | Tồn của từng sản phẩm tại từng kho, kèm giá trị (số lượng × giá nhập) |
+| Chuyển kho | Chuyển số lượng từ kho A sang kho B |
 
-### 3.4 Basic Report
+### 3.3 Lịch sử giao dịch
 
-| Báo cáo | Mô tả |
+| Chức năng | Mô tả |
 |---|---|
-| Tổng tồn kho | Tổng số lượng theo từng product (tất cả warehouse) |
-| Hàng sắp hết | Danh sách product có tồn kho ≤ `MinStockLevel` |
-| Top nhập/xuất | 10 product được nhập/xuất nhiều nhất trong kỳ |
-| Warehouse summary | Tổng giá trị hàng tồn theo từng warehouse |
+| Ghi tự động | Mỗi lần nhập, xuất, chuyển kho tạo bản ghi `StockTransaction` |
+| Xem lịch sử | Lọc theo sản phẩm và khoảng ngày |
+| Không sửa, không xóa | Lịch sử chỉ được thêm vào (append-only) để còn đối chiếu khi có sai lệch |
+
+### 3.4 Báo cáo
+
+| Báo cáo | Bắt buộc? | Mô tả |
+|---|---|---|
+| Tồn kho hiện tại | Có | Tồn theo sản phẩm và kho (`GetCurrentStockAsync`) |
+| Hàng sắp hết | Có | Sản phẩm có tổng tồn ở mọi kho ≤ `MinStockLevel` (`GetLowStockAlertsAsync`) |
+| Top nhập/xuất | Không, xem Level 1 mục 11 | 10 sản phẩm nhập hoặc xuất nhiều nhất trong kỳ |
+| Giá trị theo kho | Không, xem Level 1 mục 11 | Tổng giá trị hàng tồn của từng kho |
 
 ---
 
 ## 4. Kiến trúc đề xuất
 
-### Folder Structure
+### Cấu trúc thư mục
 
-```
+```text
 InventorySystem/
-├── InventorySystem.sln
+├── InventorySystem.slnx              ← từ .NET 10, dotnet new sln tạo file .slnx
+├── .gitignore
+├── README.md
 ├── src/
-│   ├── InventorySystem.Domain/          # Entities, Enums, Interfaces
-│   │   ├── Entities/
-│   │   │   ├── BaseEntity.cs
-│   │   │   ├── Product.cs
-│   │   │   ├── Category.cs
-│   │   │   ├── Warehouse.cs
-│   │   │   ├── StockItem.cs
-│   │   │   └── StockTransaction.cs
-│   │   ├── Enums/
-│   │   │   └── TransactionType.cs
-│   │   └── Interfaces/
-│   │       ├── IRepository.cs
-│   │       ├── IProductRepository.cs
-│   │       ├── IStockRepository.cs
-│   │       └── IInventoryService.cs
+│   ├── InventorySystem.Domain/          # Không tham chiếu project nào
+│   │   ├── Entities/                    # BaseEntity, Product, Category, Warehouse, StockItem, StockTransaction
+│   │   ├── Enums/TransactionType.cs
+│   │   ├── Exceptions/InventoryException.cs
+│   │   └── Interfaces/                  # IRepository<T>, IProductRepository, IStockRepository
 │   │
-│   ├── InventorySystem.Application/     # Services, DTOs, Use Cases
-│   │   ├── DTOs/
-│   │   │   ├── ProductDto.cs
-│   │   │   ├── StockItemDto.cs
-│   │   │   └── TransactionDto.cs
-│   │   ├── Services/
-│   │   │   └── InventoryService.cs
-│   │   └── DependencyInjection.cs       # Extension method đăng ký Application services
+│   ├── InventorySystem.Application/     # Tham chiếu Domain
+│   │   ├── Abstractions/IInventoryService.cs
+│   │   ├── DTOs/                        # Request và DTO dạng record
+│   │   ├── Services/InventoryService.cs
+│   │   └── DependencyInjection.cs       # AddApplicationServices()
 │   │
-│   ├── InventorySystem.Infrastructure/  # JSON file storage hoặc in-memory
-│   │   ├── Persistence/
-│   │   │   ├── JsonProductRepository.cs
-│   │   │   ├── JsonStockRepository.cs
-│   │   │   └── InMemoryProductRepository.cs  # (tuỳ chọn, dùng khi test)
-│   │   ├── Data/                        # JSON files lưu dữ liệu
-│   │   └── DependencyInjection.cs
+│   ├── InventorySystem.Infrastructure/  # Tham chiếu Domain
+│   │   ├── Persistence/                 # Repository in-memory và JSON
+│   │   └── DependencyInjection.cs       # AddInfrastructureServices(dataDirectory)
 │   │
-│   └── InventorySystem.Console/         # Entry point, menu system
+│   └── InventorySystem.ConsoleApp/      # Tham chiếu Application và Infrastructure
 │       ├── Program.cs
-│       ├── Menus/
-│       │   ├── MainMenu.cs
-│       │   ├── ProductMenu.cs
-│       │   └── StockMenu.cs
+│       ├── Menus/MainMenu.cs
 │       └── ConsoleHelper.cs
+└── tests/
+    └── InventorySystem.Tests/           # xUnit, tham chiếu Application và Infrastructure
 ```
 
-### Dependency Flow
+`IInventoryService` nằm ở **Application**, không phải Domain. Lý do: các method của nó nhận và trả DTO (`ProductDto`, `StockInRequest`...) định nghĩa ở Application. Nếu đặt interface trong Domain thì Domain phải tham chiếu Application để thấy các DTO đó, trong khi Application đã tham chiếu Domain. Hai project tham chiếu nhau là phụ thuộc vòng, `dotnet` không cho build.
 
+Project console tên `InventorySystem.ConsoleApp`, không đặt `InventorySystem.Console`. Nếu đặt tên kia, namespace `InventorySystem.Console` sẽ che class `System.Console` và mọi dòng `Console.WriteLine` trong thư mục `Menus/` báo lỗi CS0234 (xem mục 10).
+
+### Chiều phụ thuộc
+
+```text
+ConsoleApp ──► Application ──► Domain ◄── Infrastructure
+     └──────────────────────────────────────┘
+       (chỉ để gọi AddInfrastructureServices khi đăng ký DI)
 ```
-Console → Application (IInventoryService)
-                ↓
-          Domain (Interfaces)
-                ↑
-     Infrastructure (Implementations)
-```
 
-> **Nguyên tắc:** Domain không phụ thuộc ai. Application phụ thuộc Domain. Infrastructure implement Domain interfaces. Console phụ thuộc Application interface.
-
-Cùng sơ đồ đó, thêm tham chiếu Console → Infrastructure dùng để đăng ký DI ở Step 1 và project Api của phần bonus:
+- **Domain** không phụ thuộc ai: entity, quy tắc dữ liệu, interface repository.
+- **Application** dùng interface của Domain, không biết dữ liệu nằm trong bộ nhớ hay file.
+- **Infrastructure** implement interface của Domain.
+- **ConsoleApp** chỉ gọi `IInventoryService`. Nó tham chiếu Infrastructure duy nhất để đăng ký DI trong `Program.cs`. Nơi ráp mọi thứ lại như vậy gọi là *composition root*.
 
 ![Sơ đồ chiều phụ thuộc của Inventory System: Console gọi Application, Application phụ thuộc Domain, Infrastructure implement interface của Domain và đọc ghi file JSON trong Data; Console tham chiếu Infrastructure chỉ để đăng ký DI; project Api Minimal API ở phần bonus cũng gọi Application; Domain không tham chiếu project nào](./img/inventory-dependency-flow.png#gh-light-mode-only)
 ![Sơ đồ chiều phụ thuộc của Inventory System: Console gọi Application, Application phụ thuộc Domain, Infrastructure implement interface của Domain và đọc ghi file JSON trong Data; Console tham chiếu Infrastructure chỉ để đăng ký DI; project Api Minimal API ở phần bonus cũng gọi Application; Domain không tham chiếu project nào](./img/inventory-dependency-flow-dark.png#gh-dark-mode-only)
@@ -173,10 +153,10 @@ Cùng sơ đồ đó, thêm tham chiếu Console → Infrastructure dùng để 
 
 ## 5. Domain Models
 
-### BaseEntity
+Mỗi class nằm trong một file riêng, đường dẫn ghi ở dòng comment đầu khối code.
 
 ```csharp
-// Domain/Entities/BaseEntity.cs
+// src/InventorySystem.Domain/Entities/BaseEntity.cs
 namespace InventorySystem.Domain.Entities;
 
 public abstract class BaseEntity
@@ -184,60 +164,51 @@ public abstract class BaseEntity
     public Guid Id { get; init; } = Guid.NewGuid();
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; set; }
-    public bool IsDeleted { get; set; } = false;
+    public bool IsDeleted { get; set; }
 
     public void MarkAsUpdated() => UpdatedAt = DateTime.UtcNow;
 }
 ```
 
-### Category
-
 ```csharp
-// Domain/Entities/Category.cs
+// src/InventorySystem.Domain/Entities/Category.cs
 namespace InventorySystem.Domain.Entities;
 
 public class Category : BaseEntity
 {
     public required string Name { get; set; }
     public string? Description { get; set; }
-
-    // Navigation (in-memory reference)
-    public ICollection<Product> Products { get; set; } = new List<Product>();
 }
 ```
 
-### Product
-
 ```csharp
-// Domain/Entities/Product.cs
+// src/InventorySystem.Domain/Entities/Product.cs
 namespace InventorySystem.Domain.Entities;
 
 public class Product : BaseEntity
 {
     public required string Name { get; set; }
 
-    /// <summary>Stock Keeping Unit — mã định danh duy nhất của sản phẩm</summary>
-    public required string SKU { get; set; }
+    /// <summary>Stock Keeping Unit: mã định danh duy nhất của sản phẩm</summary>
+    public required string Sku { get; set; }
 
     public string? Description { get; set; }
 
     /// <summary>Đơn vị tính: cái, hộp, kg, lít...</summary>
     public required string Unit { get; set; }
 
-    /// <summary>Giá nhập trung bình</summary>
+    /// <summary>Giá nhập</summary>
     public decimal PurchasePrice { get; set; }
 
-    /// <summary>Mức tồn kho tối thiểu — dưới mức này → cảnh báo</summary>
-    public int MinStockLevel { get; set; } = 0;
+    /// <summary>Tổng tồn nhỏ hơn hoặc bằng mức này thì cảnh báo</summary>
+    public int MinStockLevel { get; set; }
 
     public Guid CategoryId { get; set; }
 }
 ```
 
-### Warehouse
-
 ```csharp
-// Domain/Entities/Warehouse.cs
+// src/InventorySystem.Domain/Entities/Warehouse.cs
 namespace InventorySystem.Domain.Entities;
 
 public class Warehouse : BaseEntity
@@ -248,33 +219,28 @@ public class Warehouse : BaseEntity
 }
 ```
 
-### StockItem
-
 ```csharp
-// Domain/Entities/StockItem.cs
+// src/InventorySystem.Domain/Entities/StockItem.cs
 namespace InventorySystem.Domain.Entities;
 
 /// <summary>
-/// Đại diện số lượng tồn kho của một Product tại một Warehouse cụ thể.
-/// Mỗi cặp (ProductId, WarehouseId) là duy nhất.
+/// Số lượng tồn của một Product tại một Warehouse.
+/// Mỗi cặp (ProductId, WarehouseId) chỉ có một StockItem.
 /// </summary>
 public class StockItem : BaseEntity
 {
     public Guid ProductId { get; set; }
     public Guid WarehouseId { get; set; }
 
-    /// <summary>Số lượng hiện tại — không bao giờ âm</summary>
+    /// <summary>Số lượng hiện tại, không bao giờ âm</summary>
     public int Quantity { get; set; }
-
-    /// <summary>Giá trị = Quantity * PurchasePrice tại thời điểm cập nhật</summary>
-    public decimal TotalValue { get; set; }
 }
 ```
 
-### StockTransaction
-
 ```csharp
-// Domain/Entities/StockTransaction.cs
+// src/InventorySystem.Domain/Entities/StockTransaction.cs
+using InventorySystem.Domain.Enums;
+
 namespace InventorySystem.Domain.Entities;
 
 public class StockTransaction : BaseEntity
@@ -283,10 +249,10 @@ public class StockTransaction : BaseEntity
     public Guid WarehouseId { get; set; }
     public TransactionType Type { get; set; }
 
-    /// <summary>Số lượng giao dịch — luôn dương, Type quyết định chiều</summary>
+    /// <summary>Số lượng giao dịch, luôn dương; Type quyết định chiều tăng hay giảm</summary>
     public int Quantity { get; set; }
 
-    /// <summary>Tồn kho trước giao dịch (snapshot để audit)</summary>
+    /// <summary>Tồn kho trước giao dịch (để đối chiếu khi có sai lệch)</summary>
     public int QuantityBefore { get; set; }
 
     /// <summary>Tồn kho sau giao dịch</summary>
@@ -295,69 +261,103 @@ public class StockTransaction : BaseEntity
     public string? Note { get; set; }
     public required string CreatedBy { get; set; }
 }
+```
 
-// Domain/Enums/TransactionType.cs
+```csharp
+// src/InventorySystem.Domain/Enums/TransactionType.cs
 namespace InventorySystem.Domain.Enums;
 
 public enum TransactionType
 {
     StockIn = 1,      // Nhập kho
     StockOut = 2,     // Xuất kho
-    Transfer = 3,     // Chuyển kho (tạo 2 transaction: Out + In)
-    Adjustment = 4    // Điều chỉnh kiểm kê
+    TransferOut = 3,  // Chuyển đi, ghi ở kho nguồn
+    TransferIn = 4,   // Chuyển đến, ghi ở kho đích
+    Adjustment = 5    // Điều chỉnh sau kiểm kê
 }
 ```
+
+```csharp
+// src/InventorySystem.Domain/Exceptions/InventoryException.cs
+namespace InventorySystem.Domain.Exceptions;
+
+/// <summary>Lỗi nghiệp vụ. ErrorCode giúp UI (và sau này API) phân loại lỗi.</summary>
+public class InventoryException : Exception
+{
+    public string ErrorCode { get; }
+
+    public InventoryException(string errorCode, string message) : base(message)
+    {
+        ErrorCode = errorCode;
+    }
+}
+
+/// <summary>Dữ liệu đầu vào không hợp lệ: tên rỗng, SKU sai định dạng, số lượng không dương...</summary>
+public class InventoryValidationException : InventoryException
+{
+    public InventoryValidationException(string message) : base("VALIDATION", message)
+    {
+    }
+}
+```
+
+Ba quyết định thiết kế cần để ý:
+
+- `StockItem` **không lưu** `TotalValue`. Giá trị bằng số lượng nhân giá nhập, tính lúc cần. Lưu sẵn thì mỗi lần sửa giá phải nhớ cập nhật mọi `StockItem`, quên một chỗ là số liệu sai.
+- Chuyển kho ghi **hai** giao dịch, `TransferOut` ở kho nguồn và `TransferIn` ở kho đích. Một loại `Transfer` chung không cho biết bản ghi nào trừ, bản ghi nào cộng.
+- Exception validation tên là `InventoryValidationException` và kế thừa `InventoryException`. Đặt tên `ValidationException` dễ nhầm với `System.ComponentModel.DataAnnotations.ValidationException` có sẵn trong .NET. Kế thừa giúp menu chỉ cần một `catch (InventoryException)` cho mọi lỗi nghiệp vụ.
 
 ---
 
 ## 6. Interfaces
 
-### Generic Repository
+### Repository (Domain)
 
 ```csharp
-// Domain/Interfaces/IRepository.cs
+// src/InventorySystem.Domain/Interfaces/IRepository.cs
+using InventorySystem.Domain.Entities;
+
 namespace InventorySystem.Domain.Interfaces;
 
 public interface IRepository<T> where T : BaseEntity
 {
     Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default);
     Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default);
-    Task<T> AddAsync(T entity, CancellationToken ct = default);
-    Task<T> UpdateAsync(T entity, CancellationToken ct = default);
+    Task AddAsync(T entity, CancellationToken ct = default);
+    Task UpdateAsync(T entity, CancellationToken ct = default);
     Task DeleteAsync(Guid id, CancellationToken ct = default);  // soft delete
 }
 ```
 
-### IProductRepository
-
 ```csharp
-// Domain/Interfaces/IProductRepository.cs
+// src/InventorySystem.Domain/Interfaces/IProductRepository.cs
+using InventorySystem.Domain.Entities;
+
 namespace InventorySystem.Domain.Interfaces;
 
 public interface IProductRepository : IRepository<Product>
 {
-    Task<Product?> GetBySkuAsync(string sku, CancellationToken ct = default);
     Task<IReadOnlyList<Product>> GetByCategoryAsync(Guid categoryId, CancellationToken ct = default);
     Task<IReadOnlyList<Product>> SearchAsync(string keyword, CancellationToken ct = default);
-    Task<bool> IsSkuExistsAsync(string sku, Guid? excludeId = null, CancellationToken ct = default);
+    Task<bool> SkuExistsAsync(string sku, Guid? excludeId = null, CancellationToken ct = default);
 }
 ```
 
-### IStockRepository
-
 ```csharp
-// Domain/Interfaces/IStockRepository.cs
+// src/InventorySystem.Domain/Interfaces/IStockRepository.cs
+using InventorySystem.Domain.Entities;
+
 namespace InventorySystem.Domain.Interfaces;
 
 public interface IStockRepository
 {
     Task<StockItem?> GetStockAsync(Guid productId, Guid warehouseId, CancellationToken ct = default);
+    Task<IReadOnlyList<StockItem>> GetAllStockAsync(CancellationToken ct = default);
     Task<IReadOnlyList<StockItem>> GetStockByProductAsync(Guid productId, CancellationToken ct = default);
-    Task<IReadOnlyList<StockItem>> GetStockByWarehouseAsync(Guid warehouseId, CancellationToken ct = default);
-    Task<StockItem> UpsertStockAsync(StockItem stockItem, CancellationToken ct = default);
+    Task UpsertStockAsync(StockItem stockItem, CancellationToken ct = default);
 
-    // Transaction log — append only
-    Task<StockTransaction> AddTransactionAsync(StockTransaction transaction, CancellationToken ct = default);
+    // Lịch sử giao dịch: chỉ thêm, không có method sửa hay xóa
+    Task AddTransactionAsync(StockTransaction transaction, CancellationToken ct = default);
     Task<IReadOnlyList<StockTransaction>> GetTransactionsAsync(
         Guid? productId = null,
         Guid? warehouseId = null,
@@ -367,14 +367,62 @@ public interface IStockRepository
 }
 ```
 
-### IInventoryService
+Category và Warehouse không cần method riêng, nên dùng thẳng `IRepository<Category>` và `IRepository<Warehouse>`.
+
+### DTO và request (Application)
+
+DTO (Data Transfer Object) là object chỉ chở dữ liệu ra vào service. Dùng `record` vì gọn và không cần sửa sau khi tạo ([bài 4.7](module-04-csharp-core/4.7-records-and-value-objects.md)).
 
 ```csharp
-// Domain/Interfaces/IInventoryService.cs
-namespace InventorySystem.Domain.Interfaces;
+// src/InventorySystem.Application/DTOs/Requests.cs
+namespace InventorySystem.Application.DTOs;
+
+public record CreateCategoryRequest(string Name, string? Description = null);
+public record CreateWarehouseRequest(string Name, string? Location = null);
+
+public record CreateProductRequest(
+    string Name, string Sku, string Unit, decimal PurchasePrice, Guid CategoryId, int MinStockLevel = 0);
+
+public record UpdateProductRequest(
+    string Name, string Sku, decimal PurchasePrice, Guid CategoryId, int MinStockLevel);
+
+public record StockInRequest(Guid ProductId, Guid WarehouseId, int Quantity, string? Note = null);
+public record StockOutRequest(Guid ProductId, Guid WarehouseId, int Quantity, string? Note = null);
+public record TransferRequest(Guid ProductId, Guid FromWarehouseId, Guid ToWarehouseId, int Quantity);
+```
+
+```csharp
+// src/InventorySystem.Application/DTOs/Dtos.cs
+using InventorySystem.Domain.Enums;
+
+namespace InventorySystem.Application.DTOs;
+
+public record CategoryDto(Guid Id, string Name);
+public record WarehouseDto(Guid Id, string Name, string? Location);
+public record ProductDto(Guid Id, string Name, string Sku, string Unit, decimal PurchasePrice, Guid CategoryId, int MinStockLevel);
+public record StockItemDto(Guid ProductId, string ProductName, Guid WarehouseId, string WarehouseName, int Quantity, decimal TotalValue);
+public record LowStockAlertDto(Guid ProductId, string ProductName, int TotalQuantity, int MinStockLevel);
+public record TransactionDto(Guid Id, Guid ProductId, Guid WarehouseId, TransactionType Type, int Quantity,
+    int QuantityBefore, int QuantityAfter, DateTime CreatedAt, string CreatedBy, string? Note);
+```
+
+### IInventoryService (Application)
+
+```csharp
+// src/InventorySystem.Application/Abstractions/IInventoryService.cs
+using InventorySystem.Application.DTOs;
+
+namespace InventorySystem.Application.Abstractions;
 
 public interface IInventoryService
 {
+    // Category và Warehouse
+    Task<CategoryDto> CreateCategoryAsync(CreateCategoryRequest request, CancellationToken ct = default);
+    Task<IReadOnlyList<CategoryDto>> GetCategoriesAsync(CancellationToken ct = default);
+    Task DeleteCategoryAsync(Guid id, CancellationToken ct = default);
+    Task<WarehouseDto> CreateWarehouseAsync(CreateWarehouseRequest request, CancellationToken ct = default);
+    Task<IReadOnlyList<WarehouseDto>> GetWarehousesAsync(CancellationToken ct = default);
+
     // Product
     Task<ProductDto> CreateProductAsync(CreateProductRequest request, CancellationToken ct = default);
     Task<ProductDto> UpdateProductAsync(Guid id, UpdateProductRequest request, CancellationToken ct = default);
@@ -394,174 +442,462 @@ public interface IInventoryService
 }
 ```
 
-> **Lưu ý:** `CreateProductRequest`, `StockInRequest`, `ProductDto`... là các record DTO bạn tự định nghĩa trong `Application/DTOs/`. Dùng C# `record` để immutable.
-
 ---
 
-## 7. Implementation Guide
+## 7. Hướng dẫn từng bước
 
-### Step 1 — Setup project và DI container
+### Bước 1 — Tạo solution và đăng ký DI
 
-Tạo solution và projects:
+Các lệnh dưới đây chạy được cả trên PowerShell lẫn bash. Mỗi project được liệt kê rõ đường dẫn, vì PowerShell không tự mở rộng mẫu `src/**/*.csproj` như bash.
 
 ```bash
+mkdir InventorySystem
+cd InventorySystem
 dotnet new sln -n InventorySystem
+dotnet new gitignore
 dotnet new classlib -n InventorySystem.Domain -o src/InventorySystem.Domain
 dotnet new classlib -n InventorySystem.Application -o src/InventorySystem.Application
 dotnet new classlib -n InventorySystem.Infrastructure -o src/InventorySystem.Infrastructure
-dotnet new console -n InventorySystem.Console -o src/InventorySystem.Console
+dotnet new console -n InventorySystem.ConsoleApp -o src/InventorySystem.ConsoleApp
+dotnet new xunit -n InventorySystem.Tests -o tests/InventorySystem.Tests
 
-dotnet sln add src/**/*.csproj
+dotnet sln add src/InventorySystem.Domain src/InventorySystem.Application src/InventorySystem.Infrastructure src/InventorySystem.ConsoleApp tests/InventorySystem.Tests
 
-# Project 1 - Inventory System (Console + API)
+# Tham chiếu giữa các project, đúng chiều ở mục 4
 dotnet add src/InventorySystem.Application reference src/InventorySystem.Domain
 dotnet add src/InventorySystem.Infrastructure reference src/InventorySystem.Domain
-dotnet add src/InventorySystem.Console reference src/InventorySystem.Application
-dotnet add src/InventorySystem.Console reference src/InventorySystem.Infrastructure
+dotnet add src/InventorySystem.ConsoleApp reference src/InventorySystem.Application src/InventorySystem.Infrastructure
+dotnet add tests/InventorySystem.Tests reference src/InventorySystem.Application src/InventorySystem.Infrastructure
 
-# Thêm NuGet packages
-dotnet add src/InventorySystem.Infrastructure package Microsoft.Extensions.DependencyInjection
-dotnet add src/InventorySystem.Infrastructure package System.Text.Json
-dotnet add src/InventorySystem.Console package Microsoft.Extensions.DependencyInjection
-dotnet add src/InventorySystem.Console package Microsoft.Extensions.Hosting
+# Gói NuGet
+dotnet add src/InventorySystem.Application package Microsoft.Extensions.DependencyInjection.Abstractions
+dotnet add src/InventorySystem.Infrastructure package Microsoft.Extensions.DependencyInjection.Abstractions
+dotnet add src/InventorySystem.ConsoleApp package Microsoft.Extensions.Hosting
 ```
 
-Wiring DI trong `Program.cs`:
+Xóa các file mẫu `Class1.cs` và `UnitTest1.cs` mà template tạo ra. `System.Text.Json` đã có sẵn trong .NET 10, không cần cài thêm. Hai project thư viện chỉ cần gói `...DependencyInjection.Abstractions` (chứa `IServiceCollection`) để viết extension method đăng ký service. Project console cần `Microsoft.Extensions.Hosting`, gói này kéo theo container DI và cấu hình.
+
+Mỗi tầng tự đăng ký service của mình qua một extension method ([bài 5.5](module-05-advanced-csharp/5.5-extension-methods.md)):
 
 ```csharp
-// Console/Program.cs
+// src/InventorySystem.Application/DependencyInjection.cs
+using InventorySystem.Application.Abstractions;
+using InventorySystem.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace InventorySystem.Application;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    {
+        // Scoped: mỗi scope (một phiên console, sau này một HTTP request) có một InventoryService
+        services.AddScoped<IInventoryService, InventoryService>();
+        return services;
+    }
+}
+```
+
+```csharp
+// src/InventorySystem.Infrastructure/DependencyInjection.cs
+using InventorySystem.Domain.Entities;
+using InventorySystem.Domain.Interfaces;
+using InventorySystem.Infrastructure.Persistence;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace InventorySystem.Infrastructure;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string dataDirectory)
+    {
+        // Singleton có chủ đích: mỗi repository giữ dữ liệu trong bộ nhớ và là nơi duy nhất ghi file JSON.
+        // Constructor nhận string nên container không tự tạo được, phải đăng ký bằng factory (lambda).
+        services.AddSingleton<IProductRepository>(_ => new JsonProductRepository(dataDirectory));
+        services.AddSingleton<IStockRepository>(_ => new JsonStockRepository(dataDirectory));
+        services.AddSingleton<IRepository<Category>>(_ => new JsonRepository<Category>(dataDirectory, "categories.json"));
+        services.AddSingleton<IRepository<Warehouse>>(_ => new JsonRepository<Warehouse>(dataDirectory, "warehouses.json"));
+        return services;
+    }
+
+    // Dùng khi mới làm Bước 2 option A, chưa có repository JSON
+    public static IServiceCollection AddInMemoryInfrastructure(this IServiceCollection services)
+    {
+        services.AddSingleton<IProductRepository, InMemoryProductRepository>();
+        services.AddSingleton<IStockRepository, InMemoryStockRepository>();
+        services.AddSingleton<IRepository<Category>, InMemoryRepository<Category>>();
+        services.AddSingleton<IRepository<Warehouse>, InMemoryRepository<Warehouse>>();
+        return services;
+    }
+}
+```
+
+Vì sao repository là Singleton còn service là Scoped? Repository giữ dữ liệu: nếu là Scoped hay Transient, mỗi lần tạo mới lại có một kho rỗng (in-memory) hoặc nhiều object cùng ghi đè một file (JSON). Service không giữ dữ liệu, nên Scoped là đủ và giống cách nó sẽ chạy trong ASP.NET Core. Service Scoped được phép phụ thuộc repository Singleton; chiều ngược lại mới là lỗi captive dependency ([bài 7.4](module-07-dependency-injection/7.4-service-lifetimes.md)).
+
+`Program.cs` là composition root:
+
+```csharp
+// src/InventorySystem.ConsoleApp/Program.cs
+using InventorySystem.Application;
+using InventorySystem.ConsoleApp.Menus;
+using InventorySystem.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
-    {
-        services.AddApplicationServices();      // extension method trong Application layer
-        services.AddInfrastructureServices();   // extension method trong Infrastructure layer
-    })
-    .Build();
+Console.OutputEncoding = System.Text.Encoding.UTF8;   // in được tiếng Việt trên Windows
 
-var inventoryService = host.Services.GetRequiredService<IInventoryService>();
-var app = new ConsoleApplication(inventoryService);
-await app.RunAsync();
+var builder = Host.CreateApplicationBuilder(args);
+
+// Kiểm tra cấu hình DI ngay khi Build(), ở mọi môi trường (xem bài 7.11)
+builder.ConfigureContainer(new DefaultServiceProviderFactory(new ServiceProviderOptions
+{
+    ValidateScopes = true,
+    ValidateOnBuild = true
+}));
+
+var dataDirectory = Path.Combine(AppContext.BaseDirectory, "data");
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(dataDirectory);   // hoặc AddInMemoryInfrastructure()
+builder.Services.AddScoped<MainMenu>();
+
+using var host = builder.Build();
+
+// Ctrl+C: hủy token thay vì tắt ngang chương trình (Bước 5)
+using var cts = new CancellationTokenSource();
+Console.CancelKeyPress += (_, e) =>
+{
+    e.Cancel = true;
+    cts.Cancel();
+    Console.WriteLine("\nĐang tắt...");
+};
+
+// Cả phiên làm việc là một scope, giống một request trong Web API
+using (var scope = host.Services.CreateScope())
+{
+    var menu = scope.ServiceProvider.GetRequiredService<MainMenu>();
+    await menu.RunAsync(cts.Token);
+}
+
+Console.WriteLine("Tạm biệt!");
 ```
 
-**Nhiệm vụ của bạn:** Viết `AddApplicationServices()` và `AddInfrastructureServices()` extension methods trong từng layer tương ứng.
+`IInventoryService` là Scoped nên phải lấy qua `scope.ServiceProvider`. Lấy thẳng từ `host.Services` (root provider) với `ValidateScopes = true` sẽ báo lỗi ngay:
+
+```text
+Unhandled exception. System.InvalidOperationException: Cannot resolve scoped service 'InventorySystem.Application.Abstractions.IInventoryService' from root provider.
+```
+
+`AppContext.BaseDirectory` là thư mục chứa file `.dll` đang chạy. Với `dotnet run`, dữ liệu nằm ở `src/InventorySystem.ConsoleApp/bin/Debug/net10.0/data/`, thư mục `bin/` đã nằm trong `.gitignore` nên dữ liệu thử không bị commit.
 
 ---
 
-### Step 2 — Implement Repositories
+### Bước 2 — Repository
 
-Bạn có 2 lựa chọn. **Khuyến nghị:** bắt đầu với in-memory, sau đó nâng lên JSON file.
+Bắt đầu với in-memory để có cái chạy sớm và để viết test. Sau đó mới làm JSON.
 
-**Option A: In-Memory (Dictionary)**
+**Option A: In-memory (Dictionary)**
 
 ```csharp
-// Infrastructure/Persistence/InMemoryProductRepository.cs
-public class InMemoryProductRepository : IProductRepository
-{
-    private readonly Dictionary<Guid, Product> _store = new();
+// src/InventorySystem.Infrastructure/Persistence/InMemoryRepository.cs
+using InventorySystem.Domain.Entities;
+using InventorySystem.Domain.Interfaces;
 
-    public Task<Product?> GetByIdAsync(Guid id, CancellationToken ct = default)
+namespace InventorySystem.Infrastructure.Persistence;
+
+public class InMemoryRepository<T> : IRepository<T> where T : BaseEntity
+{
+    protected readonly Dictionary<Guid, T> Store = new();
+
+    public Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default)
     {
-        _store.TryGetValue(id, out var product);
-        // Chỉ trả về nếu chưa bị soft-delete
-        return Task.FromResult(product is { IsDeleted: false } ? product : null);
+        Store.TryGetValue(id, out var entity);
+        // Chỉ trả về nếu chưa bị soft delete
+        return Task.FromResult(entity is { IsDeleted: false } ? entity : null);
     }
 
-    // TODO: Implement các method còn lại
-    // Gợi ý: GetAllAsync → _store.Values.Where(p => !p.IsDeleted).ToList()
-    // IsSkuExistsAsync → dùng Any() với điều kiện loại trừ excludeId
+    public Task<IReadOnlyList<T>> GetAllAsync(CancellationToken ct = default) =>
+        Task.FromResult<IReadOnlyList<T>>(Store.Values.Where(e => !e.IsDeleted).ToList());
+
+    public Task AddAsync(T entity, CancellationToken ct = default)
+    {
+        Store.Add(entity.Id, entity);
+        return Task.CompletedTask;
+    }
+
+    // TODO: UpdateAsync (gán lại Store[entity.Id]), DeleteAsync (IsDeleted = true, MarkAsUpdated)
 }
+
+public class InMemoryProductRepository : InMemoryRepository<Product>, IProductRepository
+{
+    public Task<bool> SkuExistsAsync(string sku, Guid? excludeId = null, CancellationToken ct = default) =>
+        Task.FromResult(Store.Values.Any(p => !p.IsDeleted && p.Sku == sku && p.Id != excludeId));
+
+    // TODO: GetByCategoryAsync, SearchAsync (Contains với StringComparison.OrdinalIgnoreCase trên Name và Sku)
+}
+
+// TODO: InMemoryStockRepository : IStockRepository, dùng List<StockItem> và List<StockTransaction>
 ```
 
-**Option B: JSON File Storage**
+Các method trả về `Task.FromResult(...)` vì dữ liệu đã nằm sẵn trong bộ nhớ, không có I/O nào để chờ. Interface vẫn là async để sau này đổi sang JSON hay database không phải sửa service.
 
-Với JSON repository, bạn cần pattern: load từ file vào memory khi khởi động, ghi lại khi có thay đổi.
+**Option B: Lưu file JSON**
+
+Cách đơn giản nhất: đọc cả file vào `List<T>` khi tạo repository, mỗi lần thêm, sửa, xóa thì ghi lại cả file. Phần đọc ghi file tách thành class riêng để các repository dùng chung:
 
 ```csharp
-// Infrastructure/Persistence/JsonProductRepository.cs
-public class JsonProductRepository : IProductRepository
+// src/InventorySystem.Infrastructure/Persistence/JsonFile.cs
+using System.Text.Json;
+
+namespace InventorySystem.Infrastructure.Persistence;
+
+public class JsonFile<T>
 {
+    private static readonly JsonSerializerOptions Options = new() { WriteIndented = true };
     private readonly string _filePath;
-    private List<Product> _cache = new();
-    private bool _isDirty = false;
 
-    public JsonProductRepository(string dataDirectory)
+    public JsonFile(string dataDirectory, string fileName)
     {
-        _filePath = Path.Combine(dataDirectory, "products.json");
-        // TODO: Load từ file nếu tồn tại (synchronous trong constructor)
+        Directory.CreateDirectory(dataDirectory);
+        _filePath = Path.Combine(dataDirectory, fileName);
     }
 
-    private async Task SaveAsync(CancellationToken ct)
-    {
-        // TODO: Serialize _cache → JSON và ghi file async
-        // Dùng System.Text.Json với JsonSerializerOptions { WriteIndented = true }
-    }
+    // Đọc đồng bộ vì chỉ chạy một lần, trong constructor (constructor không thể async)
+    public List<T> Load() =>
+        File.Exists(_filePath)
+            ? JsonSerializer.Deserialize<List<T>>(File.ReadAllText(_filePath), Options) ?? []
+            : [];
 
-    // TODO: Implement các method, luôn gọi SaveAsync sau khi Add/Update/Delete
+    public async Task SaveAsync(List<T> items, CancellationToken ct)
+    {
+        // Ghi ra file tạm rồi đổi tên: nếu app dừng giữa chừng, file cũ vẫn nguyên vẹn
+        var tempPath = _filePath + ".tmp";
+        await using (var stream = File.Create(tempPath))
+        {
+            await JsonSerializer.SerializeAsync(stream, items, Options, ct);
+        }
+        File.Move(tempPath, _filePath, overwrite: true);
+    }
 }
 ```
 
+```csharp
+// src/InventorySystem.Infrastructure/Persistence/JsonRepository.cs (phần đầu)
+public class JsonRepository<T> : IRepository<T> where T : BaseEntity
+{
+    private readonly JsonFile<T> _file;
+    protected readonly List<T> Items;
+
+    public JsonRepository(string dataDirectory, string fileName)
+    {
+        _file = new JsonFile<T>(dataDirectory, fileName);
+        Items = _file.Load();
+    }
+
+    protected Task SaveAsync(CancellationToken ct) => _file.SaveAsync(Items, ct);
+
+    public Task AddAsync(T entity, CancellationToken ct = default)
+    {
+        Items.Add(entity);
+        return SaveAsync(ct);
+    }
+
+    // TODO: các method còn lại, luôn gọi SaveAsync sau khi Add/Update/Delete
+}
+
+public class JsonProductRepository : JsonRepository<Product>, IProductRepository
+{
+    public JsonProductRepository(string dataDirectory) : base(dataDirectory, "products.json")
+    {
+    }
+
+    // TODO: GetByCategoryAsync, SearchAsync, SkuExistsAsync giống bản in-memory, nhưng trên Items
+}
+
+// TODO: JsonStockRepository giữ hai JsonFile: stock.json và transactions.json
+```
+
+Constructor của `JsonProductRepository` nhận `string dataDirectory`. Container DI không biết lấy `string` ở đâu, nên nếu đăng ký kiểu `AddSingleton<IProductRepository, JsonProductRepository>()` thì `ValidateOnBuild` báo lỗi lúc khởi động:
+
+```text
+Unable to resolve service for type 'System.String' while attempting to activate 'InventorySystem.Infrastructure.Persistence.JsonProductRepository'.
+```
+
+Vì vậy `AddInfrastructureServices` ở Bước 1 dùng factory `_ => new JsonProductRepository(dataDirectory)`. Cách khác là gom cấu hình vào class `StorageOptions` và nhận `IOptions<StorageOptions>` ([bài 7.7](module-07-dependency-injection/7.7-options-pattern.md)).
+
 ---
 
-### Step 3 — Implement InventoryService với Business Rules
+### Bước 3 — InventoryService và quy tắc nghiệp vụ
 
-`InventoryService` là trái tim của application. Inject cả `IProductRepository` và `IStockRepository`:
+`InventoryService` là trái tim của ứng dụng. Nó nhận các repository qua constructor:
 
 ```csharp
-// Application/Services/InventoryService.cs
+// src/InventorySystem.Application/Services/InventoryService.cs
+using InventorySystem.Application.Abstractions;
+using InventorySystem.Application.DTOs;
+using InventorySystem.Domain.Entities;
+using InventorySystem.Domain.Enums;
+using InventorySystem.Domain.Exceptions;
+using InventorySystem.Domain.Interfaces;
+
+namespace InventorySystem.Application.Services;
+
 public class InventoryService : IInventoryService
 {
+    private static readonly string CurrentUser = Environment.UserName;
+
     private readonly IProductRepository _productRepo;
     private readonly IStockRepository _stockRepo;
+    private readonly IRepository<Category> _categoryRepo;
+    private readonly IRepository<Warehouse> _warehouseRepo;
 
-    public InventoryService(IProductRepository productRepo, IStockRepository stockRepo)
+    public InventoryService(
+        IProductRepository productRepo,
+        IStockRepository stockRepo,
+        IRepository<Category> categoryRepo,
+        IRepository<Warehouse> warehouseRepo)
     {
         _productRepo = productRepo;
         _stockRepo = stockRepo;
+        _categoryRepo = categoryRepo;
+        _warehouseRepo = warehouseRepo;
     }
 
     public async Task<StockItemDto> StockOutAsync(StockOutRequest request, CancellationToken ct = default)
     {
-        // TODO: Implement theo thứ tự sau:
-        // 1. Validate product tồn tại (GetByIdAsync), throw nếu không
-        // 2. Lấy StockItem hiện tại (GetStockAsync)
-        // 3. BUSINESS RULE: Quantity hiện tại >= request.Quantity, throw InventoryException nếu không đủ
-        // 4. Tính QuantityAfter = current - request.Quantity
-        // 5. Upsert StockItem với Quantity mới
-        // 6. Tạo StockTransaction (Type = StockOut, ghi QuantityBefore/After)
-        // 7. Return DTO
+        // TODO, theo thứ tự:
+        // 1. Số lượng phải > 0, nếu không ném InventoryValidationException
+        // 2. Product và Warehouse phải tồn tại, nếu không ném InventoryException("NOT_FOUND", ...)
+        // 3. Lấy StockItem hiện tại (GetStockAsync); null nghĩa là tồn bằng 0
+        // 4. Tồn < số lượng xuất: ném InventoryException("INSUFFICIENT_STOCK", ...)
+        // 5. Trừ tồn, UpsertStockAsync
+        // 6. Ghi StockTransaction (Type = StockOut, QuantityBefore, QuantityAfter, CreatedBy = CurrentUser)
+        // 7. Trả về StockItemDto
         throw new NotImplementedException();
     }
 
-    // Bạn tự implement các method khác theo pattern tương tự
+    // Các method khác theo cùng khuôn: kiểm tra, đọc, áp quy tắc, ghi, ghi log, trả DTO
 }
 ```
 
-**Gợi ý tạo custom exception:**
+<details>
+<summary><strong>Lời giải tham khảo — StockOutAsync và các hàm phụ</strong></summary>
 
 ```csharp
-// Domain/Exceptions/InventoryException.cs
-public class InventoryException : Exception
+public async Task<StockItemDto> StockOutAsync(StockOutRequest request, CancellationToken ct = default)
 {
-    public string ErrorCode { get; }
+    RequirePositive(request.Quantity);
+    var product = await GetProductOrThrowAsync(request.ProductId, ct);
+    var warehouse = await GetWarehouseOrThrowAsync(request.WarehouseId, ct);
 
-    public InventoryException(string errorCode, string message) : base(message)
+    var stock = await _stockRepo.GetStockAsync(product.Id, warehouse.Id, ct);
+    var before = stock?.Quantity ?? 0;
+
+    if (stock is null || before < request.Quantity)
+        throw new InventoryException("INSUFFICIENT_STOCK",
+            $"Sản phẩm {product.Name} chỉ còn {before} {product.Unit} ở {warehouse.Name}.");
+
+    stock.Quantity = before - request.Quantity;
+    stock.MarkAsUpdated();
+    await _stockRepo.UpsertStockAsync(stock, ct);
+    await LogAsync(product.Id, warehouse.Id, TransactionType.StockOut, request.Quantity, before, stock.Quantity, request.Note, ct);
+
+    return ToDto(stock, product, warehouse);
+}
+
+private static void RequirePositive(int quantity)
+{
+    if (quantity <= 0)
+        throw new InventoryValidationException("Số lượng phải lớn hơn 0.");
+}
+
+private async Task<Product> GetProductOrThrowAsync(Guid id, CancellationToken ct) =>
+    await _productRepo.GetByIdAsync(id, ct)
+    ?? throw new InventoryException("NOT_FOUND", "Không tìm thấy sản phẩm.");
+
+private async Task<Warehouse> GetWarehouseOrThrowAsync(Guid id, CancellationToken ct) =>
+    await _warehouseRepo.GetByIdAsync(id, ct)
+    ?? throw new InventoryException("NOT_FOUND", "Không tìm thấy kho.");
+
+private Task LogAsync(Guid productId, Guid warehouseId, TransactionType type, int quantity,
+    int before, int after, string? note, CancellationToken ct) =>
+    _stockRepo.AddTransactionAsync(new StockTransaction
     {
-        ErrorCode = errorCode;
+        ProductId = productId, WarehouseId = warehouseId, Type = type, Quantity = quantity,
+        QuantityBefore = before, QuantityAfter = after, Note = note, CreatedBy = CurrentUser
+    }, ct);
+
+private static StockItemDto ToDto(StockItem s, Product p, Warehouse w) =>
+    new(p.Id, p.Name, w.Id, w.Name, s.Quantity, s.Quantity * p.PurchasePrice);
+```
+
+`StockInAsync` gần giống: nếu `GetStockAsync` trả `null` thì tạo `new StockItem { ProductId = ..., WarehouseId = ... }` rồi cộng số lượng.
+
+</details>
+
+<details>
+<summary><strong>Lời giải tham khảo — TransferStockAsync</strong></summary>
+
+Ý chính: kiểm tra mọi điều kiện **trước khi** ghi gì. Nếu ghi kho nguồn xong mà ghi kho đích lỗi, hoàn tác bằng tay vì repository JSON và in-memory không có transaction như database.
+
+```csharp
+public async Task TransferStockAsync(TransferRequest request, CancellationToken ct = default)
+{
+    RequirePositive(request.Quantity);
+    if (request.FromWarehouseId == request.ToWarehouseId)
+        throw new InventoryValidationException("Kho nguồn và kho đích phải khác nhau.");
+    var product = await GetProductOrThrowAsync(request.ProductId, ct);
+    var from = await GetWarehouseOrThrowAsync(request.FromWarehouseId, ct);
+    var to = await GetWarehouseOrThrowAsync(request.ToWarehouseId, ct);
+
+    var source = await _stockRepo.GetStockAsync(product.Id, from.Id, ct);
+    var sourceBefore = source?.Quantity ?? 0;
+    if (source is null || sourceBefore < request.Quantity)
+        throw new InventoryException("INSUFFICIENT_STOCK",
+            $"{from.Name} chỉ còn {sourceBefore} {product.Unit} {product.Name}.");
+    var dest = await _stockRepo.GetStockAsync(product.Id, to.Id, ct)
+               ?? new StockItem { ProductId = product.Id, WarehouseId = to.Id };
+    var destBefore = dest.Quantity;
+
+    source.Quantity -= request.Quantity;
+    dest.Quantity += request.Quantity;
+    try
+    {
+        await _stockRepo.UpsertStockAsync(source, ct);
+        await _stockRepo.UpsertStockAsync(dest, ct);
     }
+    catch
+    {
+        source.Quantity = sourceBefore;
+        dest.Quantity = destBefore;
+        await _stockRepo.UpsertStockAsync(source, CancellationToken.None);
+        await _stockRepo.UpsertStockAsync(dest, CancellationToken.None);
+        throw;
+    }
+
+    var note = $"Chuyển {from.Name} -> {to.Name}";
+    await LogAsync(product.Id, from.Id, TransactionType.TransferOut, request.Quantity, sourceBefore, source.Quantity, note, ct);
+    await LogAsync(product.Id, to.Id, TransactionType.TransferIn, request.Quantity, destBefore, dest.Quantity, note, ct);
 }
 ```
+
+Lúc hoàn tác dùng `CancellationToken.None`: nếu lỗi xảy ra do người dùng vừa hủy token, việc hoàn tác vẫn phải chạy xong.
+
+</details>
 
 ---
 
-### Step 4 — Console UI với Menu
+### Bước 4 — Menu console
 
-Thiết kế menu đơn giản, sạch, dùng vòng lặp:
+Menu chỉ làm ba việc: đọc input, gọi service, in kết quả. Không có quy tắc nghiệp vụ nào ở đây.
 
 ```csharp
-// Console/Menus/MainMenu.cs
+// src/InventorySystem.ConsoleApp/Menus/MainMenu.cs
+using InventorySystem.Application.Abstractions;
+using InventorySystem.Application.DTOs;
+using InventorySystem.Domain.Exceptions;
+
+namespace InventorySystem.ConsoleApp.Menus;
+
 public class MainMenu
 {
     private readonly IInventoryService _service;
@@ -572,336 +908,471 @@ public class MainMenu
     {
         while (!ct.IsCancellationRequested)
         {
-            Console.Clear();
+            Console.WriteLine();
             Console.WriteLine("=== INVENTORY MANAGEMENT SYSTEM ===");
-            Console.WriteLine("1. Quản lý sản phẩm");
-            Console.WriteLine("2. Quản lý kho hàng");
-            Console.WriteLine("3. Nhập kho");
-            Console.WriteLine("4. Xuất kho");
-            Console.WriteLine("5. Xem tồn kho");
-            Console.WriteLine("6. Lịch sử giao dịch");
-            Console.WriteLine("7. Báo cáo");
+            Console.WriteLine("1. Thêm danh mục");
+            Console.WriteLine("2. Thêm kho");
+            Console.WriteLine("3. Thêm sản phẩm");
+            Console.WriteLine("4. Nhập kho");
+            Console.WriteLine("5. Xuất kho");
+            Console.WriteLine("6. Xem tồn kho");
             Console.WriteLine("0. Thoát");
-            Console.Write("\nChọn: ");
+            Console.Write("Chọn: ");
 
             var choice = Console.ReadLine();
-            await HandleChoiceAsync(choice, ct);
+            // null: hết input (Ctrl+Z trên Windows, Ctrl+D trên Linux/macOS)
+            if (choice is null || choice == "0" || ct.IsCancellationRequested)
+                break;
+
+            try
+            {
+                var handled = await HandleChoiceAsync(choice, ct);
+                if (!handled)
+                    Console.WriteLine("Lựa chọn không hợp lệ.");
+            }
+            catch (InventoryException ex)
+            {
+                // Lỗi nghiệp vụ: báo cho người dùng rồi quay lại menu, không làm sập app
+                Console.WriteLine($"[{ex.ErrorCode}] {ex.Message}");
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
         }
     }
 
-    private Task HandleChoiceAsync(string? choice, CancellationToken ct)
+    // Trả về false nếu lựa chọn không có trong menu
+    private async Task<bool> HandleChoiceAsync(string choice, CancellationToken ct)
     {
-        return choice switch
+        switch (choice)
         {
-            "1" => new ProductMenu(_service).RunAsync(ct),
-            "3" => HandleStockInAsync(ct),
-            // TODO: implement các case còn lại
-            "0" => Task.CompletedTask,  // sẽ exit vì CancellationToken
-            _ => Task.Run(() => Console.WriteLine("Lựa chọn không hợp lệ."))
-        };
+            case "5": await StockOutAsync(ct); return true;
+            // TODO: case "1" tới "6"
+            default: return false;
+        }
     }
 
-    // TODO: implement HandleStockInAsync, HandleStockOutAsync...
+    private async Task StockOutAsync(CancellationToken ct)
+    {
+        var product = ConsoleHelper.Choose("Chọn sản phẩm", await _service.GetProductsAsync(ct: ct), p => $"{p.Name} ({p.Sku})");
+        var warehouse = ConsoleHelper.Choose("Chọn kho", await _service.GetWarehousesAsync(ct), w => w.Name);
+        var quantity = ConsoleHelper.ReadInt("Số lượng xuất: ");
+        var stock = await _service.StockOutAsync(new StockOutRequest(product.Id, warehouse.Id, quantity), ct);
+        Console.WriteLine($"Đã xuất. {stock.ProductName} tại {stock.WarehouseName} còn: {stock.Quantity}");
+    }
 }
 ```
 
-**Tip:** Tạo `ConsoleHelper.cs` với các method tiện ích: `ReadGuid()`, `ReadDecimal()`, `ReadPositiveInt()`, `PrintTable<T>()` để tái sử dụng.
+Chọn `0` thì `break` khỏi vòng lặp, `RunAsync` kết thúc, `Program.cs` in "Tạm biệt!". Lựa chọn sai chỉ in một dòng, không cần `Task.Run` hay `Task` nào. Code không gọi `Console.Clear()` để thông báo lỗi không bị xóa mất trước khi bạn kịp đọc.
 
----
-
-### Step 5 — Async + CancellationToken đúng cách
-
-Truyền `CancellationToken` từ top xuống bottom:
+`ConsoleHelper` gom các hàm nhập liệu dùng lại nhiều lần. Người dùng chọn sản phẩm theo số thứ tự thay vì gõ `Guid`:
 
 ```csharp
-// Program.cs — tạo token cho toàn bộ app
-using var cts = new CancellationTokenSource();
+// src/InventorySystem.ConsoleApp/ConsoleHelper.cs
+using InventorySystem.Domain.Exceptions;
 
-// Ctrl+C → cancel token
-Console.CancelKeyPress += (_, e) =>
+namespace InventorySystem.ConsoleApp;
+
+public static class ConsoleHelper
 {
-    e.Cancel = true;  // không tắt ngay, để cleanup
-    cts.Cancel();
-    Console.WriteLine("\nĐang tắt...");
-};
+    public static string ReadText(string prompt)
+    {
+        Console.Write(prompt);
+        // Hết input giữa chừng thì coi như người dùng muốn dừng
+        return Console.ReadLine() ?? throw new OperationCanceledException();
+    }
 
-await app.RunAsync(cts.Token);
+    public static int ReadInt(string prompt)
+    {
+        while (true)
+        {
+            if (int.TryParse(ReadText(prompt), out var value)) return value;
+            Console.WriteLine("Hãy nhập một số nguyên.");
+        }
+    }
+
+    public static T Choose<T>(string title, IReadOnlyList<T> items, Func<T, string> label)
+    {
+        if (items.Count == 0)
+            throw new InventoryException("EMPTY", $"{title}: danh sách đang trống.");
+        Console.WriteLine($"{title}:");
+        for (var i = 0; i < items.Count; i++)
+            Console.WriteLine($"  {i + 1}. {label(items[i])}");
+        while (true)
+        {
+            var index = ReadInt("Số thứ tự: ");
+            if (index >= 1 && index <= items.Count) return items[index - 1];
+            Console.WriteLine("Không có lựa chọn này.");
+        }
+    }
+
+    // TODO: ReadDecimal cho giá nhập
+}
 ```
 
-**Quy tắc:** Mọi method `async` đều nhận `CancellationToken ct = default` và truyền xuống các call tiếp theo. Không dùng `Task.Run` cho I/O bound work.
+Một lượt chạy thật của bản hoàn chỉnh (đã lược bớt các dòng menu lặp lại):
+
+```text
+Chọn: 5
+Chọn sản phẩm:
+  1. Laptop Dell (LAPTOP-001)
+Số thứ tự: 1
+Chọn kho:
+  1. Kho A
+Số thứ tự: 1
+Số lượng xuất: 40
+[INSUFFICIENT_STOCK] Sản phẩm Laptop Dell chỉ còn 30 cái ở Kho A.
+Chọn: 9
+Lựa chọn không hợp lệ.
+Chọn: 0
+Tạm biệt!
+```
 
 ---
 
-## 8. Business Rules
+### Bước 5 — Ctrl+C và CancellationToken
 
-Đây là các quy tắc nghiệp vụ **bắt buộc** phải enforce trong `InventoryService`, không phải ở UI:
+Đoạn `Console.CancelKeyPress` trong `Program.cs` ở Bước 1 biến Ctrl+C thành `cts.Cancel()`. `e.Cancel = true` báo cho .NET đừng tắt process ngay, để app tự dừng sau khi xong việc đang dở. Token `cts.Token` đi vào `MainMenu.RunAsync`, rồi vào từng method của service, rồi xuống repository, tới `JsonSerializer.SerializeAsync`.
 
-### Stock Rules
+Quy tắc: mọi method async nhận `CancellationToken ct = default` và truyền nó cho mọi lời gọi async bên trong ([bài 6.4](module-06-async-programming/6.4-cancellationtoken.md)). Không bọc I/O trong `Task.Run`: đọc ghi file đã có API async thật.
 
-- **Tồn kho không âm:** `StockOut` phải check `currentQuantity >= requestedQuantity`. Nếu thiếu → throw `InventoryException("INSUFFICIENT_STOCK", $"Sản phẩm {product.Name} chỉ còn {current} {product.Unit}")`
-- **Transfer phải atomic:** `Transfer` tạo 2 transactions (Out từ source, In vào destination). Nếu lỗi ở giữa → rollback cả 2 (với in-memory: wrap trong try/catch và revert)
-
-### Product Rules
-
-- **Tên sản phẩm:** Không rỗng, không quá 200 ký tự, trim whitespace trước khi lưu
-- **SKU duy nhất:** Trước khi tạo product mới → `IsSkuExistsAsync(sku)` → throw nếu trùng. Khi update → `IsSkuExistsAsync(sku, excludeId: currentId)`
-- **SKU format:** Chỉ chứa chữ hoa, số, dấu gạch ngang. Regex: `^[A-Z0-9\-]{3,20}$`
-- **Giá nhập:** Phải ≥ 0 (cho phép hàng sample giá 0, nhưng không âm)
-- **Không xóa product có tồn kho:** Trước khi soft-delete → check `GetStockByProductAsync(id)` → throw nếu tổng tồn kho > 0
-
-### Category Rules
-
-- **Không xóa category đang dùng:** Check có product nào thuộc category này không trước khi xóa
+Một giới hạn cần biết: `Console.ReadLine()` không nhận `CancellationToken`. Nhấn Ctrl+C khi app đang chờ nhập thì token bị hủy ngay, nhưng vòng lặp chỉ thấy điều đó khi `ReadLine` trả về. Vì vậy `RunAsync` kiểm tra `ct.IsCancellationRequested` ngay sau `ReadLine` và thoát, không xử lý lựa chọn vừa nhập. Dữ liệu không mất vì mỗi thay đổi đã được ghi file ngay lúc nó xảy ra.
 
 ---
 
-## 9. Test Cases
+### Bước 6 — Unit test
 
-Dưới đây là các test scenario quan trọng bạn **phải tự verify** trước khi nộp bài:
-
-### Happy Path
-
-| # | Scenario | Expected |
-|---|---|---|
-| TC-01 | Tạo category "Điện tử", tạo product "Laptop Dell" SKU "LAPTOP-001" | Product được lưu, SKU đúng |
-| TC-02 | Nhập kho 50 "Laptop Dell" vào "Kho A" | StockItem: quantity=50, Transaction được log |
-| TC-03 | Xuất kho 20 "Laptop Dell" từ "Kho A" | StockItem: quantity=30, Transaction được log |
-| TC-04 | Xem lịch sử giao dịch cho "Laptop Dell" | Hiển thị 2 transactions: StockIn 50, StockOut 20 |
-| TC-05 | Báo cáo tồn kho | "Laptop Dell": 30 cái |
-
-### Edge Cases
-
-| # | Scenario | Expected |
-|---|---|---|
-| TC-06 | Xuất kho 40 khi chỉ còn 30 | Throw `InventoryException` với message rõ ràng |
-| TC-07 | Tạo 2 product với cùng SKU "LAPTOP-001" | Lần 2 throw exception, product không được tạo |
-| TC-08 | Tên product rỗng hoặc whitespace | Throw `ValidationException` |
-| TC-09 | MinStockLevel = 35, tồn kho = 30 | Product xuất hiện trong `GetLowStockAlertsAsync` |
-| TC-10 | Soft delete product có tồn kho > 0 | Throw exception, product không bị xóa |
-| TC-11 | Transfer 10 từ "Kho A" (còn 30) sang "Kho B" | Kho A: 20, Kho B: 10, log 2 transactions |
-| TC-12 | Cancel bằng Ctrl+C trong khi nhập dữ liệu | App tắt gracefully, không mất dữ liệu đã lưu |
-
----
-
-## 10. Bonus Challenges
-
-Dành cho học viên hoàn thành sớm:
-
-### Level 1 — Search & Filter (1–2 giờ)
-- Implement full-text search: tìm product theo tên **hoặc** SKU **hoặc** description
-- Thêm filter theo price range trong console menu
-- Dùng LINQ `Contains`, `Any` với case-insensitive comparison
-
-### Level 2 — Export CSV (2–3 giờ)
-- Xuất báo cáo tồn kho ra file CSV
-- Format: `ProductName,SKU,Warehouse,Quantity,Unit,TotalValue,LastUpdated`
-- Dùng `StringBuilder` hoặc `CsvHelper` NuGet package
-- Đặt file output trong thư mục `exports/` với tên `stock-report-{date}.csv`
-
-### Level 3 — Minimal API Endpoint (3–4 giờ)
-Thêm 1 project `InventorySystem.Api` với Minimal API expose 3 endpoint cơ bản:
+Test gọi thẳng `InventoryService` với repository in-memory, không cần menu hay file. Đây là lợi ích trực tiếp của việc tách tầng: quy tắc nghiệp vụ kiểm chứng được trong vài trăm mili giây.
 
 ```csharp
-// Chỉ cần 3 endpoints để demo
-app.MapGet("/api/products", async (IInventoryService svc, CancellationToken ct) => 
-    await svc.GetProductsAsync(ct: ct));
+// tests/InventorySystem.Tests/InventoryServiceTests.cs
+using InventorySystem.Application.DTOs;
+using InventorySystem.Application.Services;
+using InventorySystem.Domain.Entities;
+using InventorySystem.Domain.Enums;
+using InventorySystem.Domain.Exceptions;
+using InventorySystem.Infrastructure.Persistence;
 
-app.MapGet("/api/stock", async (IInventoryService svc, CancellationToken ct) =>
-    await svc.GetCurrentStockAsync(ct: ct));
+namespace InventorySystem.Tests;
 
-app.MapGet("/api/stock/alerts", async (IInventoryService svc, CancellationToken ct) =>
-    await svc.GetLowStockAlertsAsync(ct));
+public class InventoryServiceTests
+{
+    // xUnit tạo object mới của class này cho mỗi test, nên dữ liệu không dính sang test khác
+    private readonly InventoryService _service = new(
+        new InMemoryProductRepository(),
+        new InMemoryStockRepository(),
+        new InMemoryRepository<Category>(),
+        new InMemoryRepository<Warehouse>());
+
+    private async Task<(ProductDto Laptop, WarehouseDto KhoA)> SeedAsync(int stockIn = 50)
+    {
+        var category = await _service.CreateCategoryAsync(new CreateCategoryRequest("Điện tử"));
+        var laptop = await _service.CreateProductAsync(
+            new CreateProductRequest("Laptop Dell", "LAPTOP-001", "cái", 15_000_000m, category.Id));
+        var khoA = await _service.CreateWarehouseAsync(new CreateWarehouseRequest("Kho A"));
+        if (stockIn > 0)
+            await _service.StockInAsync(new StockInRequest(laptop.Id, khoA.Id, stockIn));
+        return (laptop, khoA);
+    }
+
+    [Fact] // TC-03
+    public async Task StockOut_EnoughStock_QuantityDecreases()
+    {
+        var (laptop, khoA) = await SeedAsync(stockIn: 50);
+
+        var result = await _service.StockOutAsync(new StockOutRequest(laptop.Id, khoA.Id, 20));
+
+        Assert.Equal(30, result.Quantity);
+    }
+
+    [Fact] // TC-06
+    public async Task StockOut_MoreThanAvailable_ThrowsAndKeepsStock()
+    {
+        var (laptop, khoA) = await SeedAsync(stockIn: 30);
+
+        var ex = await Assert.ThrowsAsync<InventoryException>(() =>
+            _service.StockOutAsync(new StockOutRequest(laptop.Id, khoA.Id, 40)));
+
+        Assert.Equal("INSUFFICIENT_STOCK", ex.ErrorCode);
+        Assert.Equal(30, (await _service.GetCurrentStockAsync(khoA.Id)).Single().Quantity);
+    }
+
+    [Theory] // TC-08
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task CreateProduct_BlankName_ThrowsValidation(string name)
+    {
+        var category = await _service.CreateCategoryAsync(new CreateCategoryRequest("Điện tử"));
+
+        await Assert.ThrowsAsync<InventoryValidationException>(() => _service.CreateProductAsync(
+            new CreateProductRequest(name, "SKU-001", "cái", 1m, category.Id)));
+    }
+
+    [Fact] // TC-11
+    public async Task Transfer_MovesStockAndLogsTwoTransactions()
+    {
+        var (laptop, khoA) = await SeedAsync(stockIn: 30);
+        var khoB = await _service.CreateWarehouseAsync(new CreateWarehouseRequest("Kho B"));
+
+        await _service.TransferStockAsync(new TransferRequest(laptop.Id, khoA.Id, khoB.Id, 10));
+
+        Assert.Equal(20, (await _service.GetCurrentStockAsync(khoA.Id)).Single().Quantity);
+        Assert.Equal(10, (await _service.GetCurrentStockAsync(khoB.Id)).Single().Quantity);
+        var history = await _service.GetTransactionHistoryAsync(laptop.Id);
+        Assert.Equal(
+            [TransactionType.StockIn, TransactionType.TransferOut, TransactionType.TransferIn],
+            history.Select(t => t.Type));
+    }
+
+    // TODO: TC-02, TC-07, TC-09, TC-10 theo cùng khuôn
+}
 ```
 
-Reuse hoàn toàn `Application` và `Infrastructure` layers từ Console project. Đây là cách tốt nhất để cảm nhận sức mạnh của layered architecture.
+`Assert.ThrowsAsync<T>` chỉ đạt khi exception có **đúng** kiểu `T`. Vì vậy TC-08 dùng `InventoryValidationException`, còn TC-06 dùng `InventoryException`.
 
-### Level 4 — Concurrency Safety (2–3 giờ)
-- Thêm `SemaphoreSlim` trong repository để tránh race condition khi đọc/ghi file đồng thời
-- Viết test đơn giản: 2 concurrent `StockOut` request cho cùng 1 product → chỉ 1 thành công
+Chạy ở thư mục chứa file `.slnx`. Kết quả với bộ test đầy đủ của lời giải tham khảo (7 `[Fact]` và 1 `[Theory]` hai bộ dữ liệu, tính là 9 test):
 
----
-
-## 11. Checklist nộp bài
-
-Tự đánh giá trước khi submit:
-
-### Kiến trúc & Code Quality
-- [ ] Solution có đủ 4 projects: Domain, Application, Infrastructure, Console
-- [ ] Domain không reference bất kỳ project nào khác
-- [ ] Tất cả dependency được inject qua constructor, không có `new` concrete class trong service
-- [ ] Không có logic nghiệp vụ trong Console/Menu layer
-
-### Functionality
-- [ ] Chạy được end-to-end: thêm product → nhập kho → xuất kho → xem tồn kho
-- [ ] Tất cả 12 test case đã pass (TC-01 đến TC-12)
-- [ ] Business rules được enforce: không xuất quá tồn kho, SKU duy nhất, tên không rỗng
-
-### Code Practices
-- [ ] Tất cả I/O method là async với `CancellationToken`
-- [ ] Custom exception (`InventoryException`) được dùng cho lỗi nghiệp vụ, không dùng `Exception` thuần
-- [ ] Soft delete được implement đúng (không xóa vật lý)
-- [ ] Transaction log là immutable (không có update/delete transaction)
-
-### Extra Credit
-- [ ] Dữ liệu được persist (JSON file hoặc tương đương) — không mất khi restart app
-- [ ] Ít nhất 1 Bonus Challenge hoàn thành
-- [ ] README.md mô tả cách chạy project
+```text
+Passed!  - Failed:     0, Passed:     9, Skipped:     0, Total:     9, Duration: 287 ms - InventorySystem.Tests.dll (net10.0)
+```
 
 ---
 
-## 11b. Kiểm tra & Thực hành (100 điểm)
+## 8. Quy tắc nghiệp vụ
 
-### Bối cảnh giáo trình (mục tiêu xuyên suốt)
+Mọi quy tắc dưới đây nằm trong `InventoryService`, không nằm ở menu. Có như vậy thì menu console, Web API ở Level 3 và unit test đều được bảo vệ như nhau.
 
-> **Trục CRM — một mục tiêu rõ:** bạn hướng tới **CRM production** trong [From Zero → Senior .NET (Backend-first)](../roadmap-dotnet-backend-zero-to-senior.md). Giáo trình **ưu tiên backend**, bám chuỗi **API → dữ liệu → vận hành → kiến trúc phân tán**, thay vì trải rộng theo hướng full-stack. Mỗi module củng cố **một lớp kỹ năng** trên **cùng một CRM học tập** bạn phát triển xuyên suốt khóa.
+### Tồn kho
 
-| Chuỗi năng lực | Đóng góp vào CRM học tập |
-|----------------|--------------------------|
-| **Giai đoạn 1 — Foundation** | Đọc hiểu yêu cầu, mô hình client–server, Git — nền **collaboration** khi CRM lớn dần. |
-| **Giai đoạn 2 — C# + P1** | Domain, OOP, LINQ, async, DI — **rule nghiệp vụ & tầng ứng dụng** (Inventory là bản mẫu trước CRM). |
-| **Giai đoạn 3 — ASP.NET + P2** | Host, routing, validation, JWT, SignalR — **CRM Backend API** thực tế. |
-| **Giai đoạn 4 — Data + P3** | SQL, EF, cache, job, container — CRM **ổn định & có thể triển khai**. |
-| **Giai đoạn 5 — Senior + Final** | Clean Architecture, event/outbox, gateway, observability, perf — CRM/ERP **chịu tải & có chủ**. |
+- **Tồn không âm:** xuất kho kiểm tra `tồn hiện tại >= số lượng xuất`. Thiếu thì ném `InventoryException("INSUFFICIENT_STOCK", "Sản phẩm Laptop Dell chỉ còn 30 cái ở Kho A.")`.
+- **Số lượng phải dương** khi nhập, xuất, chuyển. Sai thì ném `InventoryValidationException`.
+- **Chuyển kho trọn vẹn:** kho nguồn và kho đích phải khác nhau. Kiểm tra đủ điều kiện trước khi ghi. Ghi lỗi giữa chừng thì hoàn tác cả hai phía. Ghi hai giao dịch `TransferOut` và `TransferIn`.
 
-#### Vai trò *giai đoạn này* trong chuỗi
+### Sản phẩm
 
-C# professional + **Project 1 (Inventory)**: OOP, LINQ, async, DI — **domain & rule nghiệp vụ** giống tầng lõi CRM/ERP.
+- **Tên:** cắt khoảng trắng đầu cuối (`Trim`), không rỗng, tối đa 200 ký tự.
+- **SKU duy nhất:** khi tạo gọi `SkuExistsAsync(sku)`; khi sửa gọi `SkuExistsAsync(sku, excludeId: id)` để không tự trùng với chính nó. Trùng thì ném `InventoryException("DUPLICATE_SKU", ...)`.
+- **Định dạng SKU:** chỉ chữ hoa, số, dấu gạch ngang, dài 3 tới 20 ký tự. Regex `^[A-Z0-9-]{3,20}$`.
+- **Giá nhập** ≥ 0 (cho phép hàng mẫu giá 0).
+- **Không xóa sản phẩm còn hàng:** tổng tồn ở mọi kho > 0 thì ném `InventoryException("HAS_STOCK", ...)`.
 
-#### Vị trí bài học (trước / sau)
+### Danh mục
 
-| Mốc | Điểm nối trong giáo trình |
-|-----|---------------------------|
-| **Trước** | [Module 7 — Dependency Injection](module-07-dependency-injection/README.md) |
-| **Tiếp theo** | [Module 8 — ASP.NET Core Fundamentals](../stage-03-aspnet-core-backend/module-08-aspnet-core-fundamentals/README.md) |
-
-### Quy trình làm bài (hệ thống)
-
-| Bước | Việc cần làm | Output nên có |
-|------|----------------|-----------------|
-| 1 | Làm **Quiz** *trước*, tự ghi đáp án + 1 dòng lý do | Không xem đáp án; giữ bản nháp |
-| 2 | Đối chiếu **Đáp án**; sửa hiểu sai, ghi *takeaway* vào README hoặc nhật ký học | 3–5 bullet “tôi đã hiểu…” |
-| 3 | Làm **Lab** theo rubric; trong README nêu **phần CRM** nào được chạm (Lead, Customer, Deal, Billing…) | Repo / zip + ảnh `dotnet run` hoặc log |
-| 4 | **Tự chấm** theo bảng điểm; chuẩn bị 1 phút “vấn đáp” nếu mentor hỏi ngẫu nhiên | Điểm + chỗ còn yếu |
+- **Không xóa danh mục đang dùng:** còn sản phẩm (chưa xóa) thuộc danh mục thì ném `InventoryException("CATEGORY_IN_USE", ...)`.
 
 ---
 
-### Phần A — Quiz trắc nghiệm (20 điểm)
+## 9. Test case
 
-> **Gợi ý làm bài:** mỗi câu **4 điểm**. Liên tưởng **Inventory → CRM**: dữ liệu tồn kho, audit trail, async I/O, DI — các điểm Project 1 và **P2/P3** đều tái sử dụng.
+TC-01 tới TC-11 kiểm bằng unit test (Bước 6), TC-01 tới TC-05 còn phải demo được qua menu. TC-12 kiểm bằng tay.
 
-Mỗi câu **4 điểm**.
+### Luồng chính
 
-1. Soft delete (`IsDeleted`) so với hard delete trong hệ kho?  
-   A. Luôn nhanh hơn B. Giữ lịch sử/audit, tránh vỡ FK/reference C. Không cần index D. Xóa vật lý disk  
-   > **Đáp án:** B.
+| # | Kịch bản | Kết quả mong đợi |
+|---|---|---|
+| TC-01 | Tạo danh mục "Điện tử", tạo sản phẩm "Laptop Dell" SKU "LAPTOP-001" | Sản phẩm được lưu, SKU đúng |
+| TC-02 | Nhập 50 "Laptop Dell" vào "Kho A" | Tồn = 50, có 1 giao dịch `StockIn` |
+| TC-03 | Xuất 20 "Laptop Dell" từ "Kho A" | Tồn = 30, có giao dịch `StockOut` |
+| TC-04 | Xem lịch sử của "Laptop Dell" | 2 giao dịch theo thứ tự: StockIn 50, StockOut 20 |
+| TC-05 | Xem tồn kho | "Laptop Dell", Kho A, 30 |
 
-2. Vì sao tách `IInventoryRepository` khỏi implementation JSON/SQL?  
-   A. Tăng số file B. Domain/Application không phụ thuộc chi tiết lưu trữ, dễ test C. Bắt buộc của Git D. Giảm RAM  
-   > **Đáp án:** B.
+### Trường hợp biên
 
-3. Mọi method I/O trong project nên?  
-   A. `void` B. `async` + truyền `CancellationToken` C. `Thread.Sleep` D. `lock` toàn cục  
-   > **Đáp án:** B.
-
-4. DI (`Microsoft.Extensions.DependencyInjection`) giúp Project 1?  
-   A. Thay repo JSON bằng EF sau này ít đụng `Program` spaghetti B. Tắt nullable C. Build Docker D. Sinh JWT  
-   > **Đáp án:** A (tinh thần: composition root).
-
-5. Transaction log **immutable** nghĩa là?  
-   A. Cho phép UPDATE bất kỳ B. Chỉ append; không sửa/xóa bản ghi log đã ghi C. Chỉ lưu trong RAM D. Không cần timestamp  
-   > **Đáp án:** B.
-
-### Phần B — Lab thực tế (80 điểm)
-
-> **Lab & rubric:** trong README, map từng nhóm điểm rubric sang **phần CRM** (Lead, Customer, Deal, Billing, Notification…) và **artifact** (test, log, screenshot, migration).
-
-Map với mục **11. Checklist nộp bài**: **Architecture 20**, **Functionality 25**, **Code Practices 20**, **Extra 15** — tự tick và cộng; trừ điểm nếu thiếu test case quan trọng ở mục 9.
-
-#### Ngưỡng tổng điểm (Quiz 20 + Lab 80)
-
-| Mức | Điểm | Ý nghĩa |
-|-----|------|---------|
-| **Đạt** | ≥ 70 | Đủ nền để học module kế mà không “lủng” kiến thức cốt lõi. |
-| **Khá** | ≥ 85 | Có minh chứng code + nêu được liên hệ CRM rõ ràng trong README. |
-| **Giỏi** | ≥ 95 | Có mở rộng / edge case / ADR ngắn / test bổ trợ (tùy rubric từng bài). |
-
-### Phần C — Reflect & nối chuỗi (không chấm điểm)
-
-Viết **5–8 câu** (README hoặc `docs/learning-log.md`):
-
-1. Kiến thức *module / project này* sẽ được **tái sử dụng trực tiếp** ở module hoặc project CRM nào tiếp theo? (ghi tên module / P2 / P3 / Final).
-2. Nếu bỏ qua phần lab, **rủi ro** lớn nhất cho CRM ở giai đoạn sau là gì?
-3. Một **quyết định kỹ thuật** (nhỏ) bạn sẵn sàng ghi thành **ADR một đoạn** sau khi làm lab.
+| # | Kịch bản | Kết quả mong đợi |
+|---|---|---|
+| TC-06 | Xuất 40 khi chỉ còn 30 | `InventoryException` mã `INSUFFICIENT_STOCK`, tồn vẫn 30 |
+| TC-07 | Tạo sản phẩm thứ hai cùng SKU "LAPTOP-001" | `InventoryException` mã `DUPLICATE_SKU`, vẫn chỉ có 1 sản phẩm |
+| TC-08 | Tên sản phẩm rỗng hoặc toàn khoảng trắng | `InventoryValidationException` (mã `VALIDATION`) |
+| TC-09 | `MinStockLevel` = 35, tồn = 30 | Sản phẩm có trong `GetLowStockAlertsAsync` |
+| TC-10 | Xóa sản phẩm còn tồn > 0 | `InventoryException` mã `HAS_STOCK`, sản phẩm vẫn còn |
+| TC-11 | Chuyển 10 từ Kho A (còn 30) sang Kho B | Kho A = 20, Kho B = 10, thêm 2 giao dịch `TransferOut`, `TransferIn` |
+| TC-12 | Nhấn Ctrl+C ở menu, rồi chạy lại app | Lần đầu in "Đang tắt..." và thoát không có stack trace. Lần sau vẫn thấy dữ liệu đã lưu |
 
 ---
 
-## 12. Gợi ý mở rộng sang Project 2 — CRM API
+## 10. Lỗi thường gặp
 
-Domain Inventory này là **stepping stone** trực tiếp sang Project 2 (CRM API với ASP.NET Core). Đây là cách chúng kết nối:
+**Lỗi CS0234 `'WriteLine' does not exist in the namespace 'InventorySystem.Console'`.** Project console đặt tên `InventorySystem.Console`, nên trong file có `namespace InventorySystem.Console.Menus;` thì chữ `Console` được hiểu là namespace của bạn chứ không phải class `System.Console`. Đổi tên project thành `InventorySystem.ConsoleApp` như mục 4.
 
-### Domain Reuse
+**`Cannot resolve scoped service ... from root provider`.** Bạn gọi `host.Services.GetRequiredService<IInventoryService>()` trong khi service là Scoped. Tạo scope bằng `host.Services.CreateScope()` rồi lấy từ `scope.ServiceProvider` (Bước 1).
 
-| Inventory | CRM (mở rộng) |
+**`Unable to resolve service for type 'System.String'`.** Repository có constructor nhận `string` nhưng bạn đăng ký bằng `AddSingleton<IInterface, Class>()`. Dùng factory lambda (Bước 2).
+
+**Dữ liệu biến mất sau mỗi thao tác.** Repository được đăng ký Scoped hoặc Transient, mỗi lần resolve có một kho rỗng mới. Repository giữ dữ liệu phải là Singleton.
+
+**Domain tham chiếu Application để dùng DTO.** Dấu hiệu thiết kế sai chiều. Interface nào cần DTO của Application thì đặt ở Application.
+
+**Quy tắc nằm ở menu.** Ví dụ menu tự kiểm tra "số lượng > tồn" trước khi gọi service. Khi thêm Web API, quy tắc đó không còn bảo vệ được gì. Kiểm tra trong service, menu chỉ bắt `InventoryException` và in thông báo.
+
+---
+
+## 11. Bài mở rộng
+
+Dành cho bạn xong sớm. Thời gian ghi kèm là ước lượng.
+
+### Level 1 — Tìm kiếm và báo cáo (2–3 giờ)
+
+- Tìm sản phẩm theo tên, SKU **hoặc** mô tả, không phân biệt hoa thường; lọc theo khoảng giá.
+- Thêm vào `IInventoryService` hai báo cáo tùy chọn ở mục 3.4: top 10 sản phẩm nhập/xuất nhiều nhất trong khoảng ngày (LINQ `GroupBy`, `Sum`, `OrderByDescending`, `Take`), và tổng giá trị tồn theo từng kho. Viết test cho mỗi báo cáo.
+
+### Level 2 — Xuất CSV (2–3 giờ)
+
+- Xuất báo cáo tồn kho ra file CSV với cột `ProductName,Sku,Warehouse,Quantity,Unit,TotalValue`.
+- Dùng `StringBuilder` (hoặc thư viện `CsvHelper`, giấy phép MS-PL/Apache 2.0). Nhớ bọc giá trị có dấu phẩy trong nháy kép.
+- File đặt trong thư mục `exports/`, tên `stock-report-yyyyMMdd.csv`.
+
+### Level 3 — Minimal API (3–4 giờ)
+
+Thêm project `InventorySystem.Api` (`dotnet new web`), tham chiếu Application và Infrastructure, mở 3 endpoint chỉ đọc. Bạn đã làm Web API đầu tiên ở [bài 0.5](../stage-01-foundation/module-00-setup/0.5-first-web-api.md); Module 8 sẽ dạy kỹ.
+
+```csharp
+// src/InventorySystem.Api/Program.cs
+using InventorySystem.Application;
+using InventorySystem.Application.Abstractions;
+using InventorySystem.Infrastructure;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(Path.Combine(AppContext.BaseDirectory, "data"));
+
+var app = builder.Build();
+
+app.MapGet("/api/products", (IInventoryService svc, CancellationToken ct) =>
+    svc.GetProductsAsync(ct: ct));
+
+app.MapGet("/api/stock", (IInventoryService svc, CancellationToken ct) =>
+    svc.GetCurrentStockAsync(ct: ct));
+
+app.MapGet("/api/stock/alerts", (IInventoryService svc, CancellationToken ct) =>
+    svc.GetLowStockAlertsAsync(ct));
+
+app.Run();
+```
+
+Application và Infrastructure dùng lại nguyên vẹn, không sửa dòng nào. ASP.NET Core tự tạo một scope cho mỗi request và tự truyền `CancellationToken` của request. Gọi `GET /api/stock` với dữ liệu sau TC-05 trả về:
+
+```json
+[{"productId":"7e1027c9-b03d-47ca-9a95-6ec7783aa563","productName":"Laptop Dell","warehouseId":"e5eb4178-fb56-41c2-82f8-41464ff41f4e","warehouseName":"Kho A","quantity":30,"totalValue":450000000}]
+```
+
+Lưu ý: API phục vụ nhiều request cùng lúc, trong khi repository dùng `List<T>` không an toàn khi nhiều luồng cùng ghi. Chỉ mở endpoint đọc là an toàn ở mức bài tập; muốn thêm endpoint ghi, làm Level 4 trước.
+
+### Level 4 — An toàn khi chạy đồng thời (2–3 giờ)
+
+Hai yêu cầu xuất kho cùng lúc cho cùng sản phẩm, tồn 50, mỗi yêu cầu xuất 30. Cả hai cùng đọc thấy 50, cùng thấy "đủ hàng", cùng trừ: kết quả sai. Lỗi nằm ở chuỗi **đọc, kiểm tra, ghi** trong service.
+
+- Khóa (`SemaphoreSlim`) đặt trong từng method của repository **không** sửa được lỗi này: mỗi lời gọi repository được bảo vệ riêng, nhưng giữa `GetStockAsync` và `UpsertStockAsync` yêu cầu kia vẫn chen vào được.
+- Cần khóa trong `InventoryService`, bao quanh cả bước đọc lẫn bước ghi: `await _lock.WaitAsync(ct); try { ... } finally { _lock.Release(); }`. Service là Scoped, nên đối tượng khóa phải dùng chung giữa các scope: để `static`, hoặc đưa vào một service Singleton. Làm tốt hơn thì khóa theo `productId` để hai sản phẩm khác nhau không phải chờ nhau.
+- Viết test: chạy hai `StockOutAsync` bằng `Task.WhenAll` (với repository JSON để có `await` thật ở giữa), khẳng định đúng một lần thành công và tồn còn 20.
+
+---
+
+## 12. Nộp bài và chấm điểm
+
+### Definition of Done
+
+Bài được nhận chấm khi **tất cả** điều sau đúng. Mentor kiểm bằng cách clone repo và chạy lệnh.
+
+- [ ] `dotnet build` ở thư mục gốc: `0 Error(s)`.
+- [ ] `dotnet test` ở thư mục gốc: mọi test xanh, có test cho ít nhất TC-02, TC-03, TC-06, TC-07, TC-08, TC-10, TC-11.
+- [ ] `InventorySystem.Domain.csproj` không có `ProjectReference` nào.
+- [ ] Repo có `.gitignore` (`dotnet new gitignore`); `bin/`, `obj/`, file dữ liệu JSON không bị commit. Dự án không cần mật khẩu hay khóa nào; nếu bạn có thêm thì không đưa vào Git.
+- [ ] `README.md` có: yêu cầu cài đặt (.NET 10 SDK), lệnh chạy app (`dotnet run --project src/InventorySystem.ConsoleApp`), lệnh chạy test (`dotnet test`), dữ liệu lưu ở đâu.
+- [ ] Demo được TC-01 tới TC-05 qua menu, và TC-12.
+
+### Rubric (100 điểm)
+
+| Tiêu chí | Chưa đạt | Đạt | Khá | Giỏi |
+|---|---|---|---|---|
+| **Kiến trúc** (20) | 0–9: thiếu project, Domain tham chiếu project khác, hoặc service tạo repository bằng `new` | 10–13: đủ 4 project, tham chiếu đúng chiều | 14–17: thêm: mọi dependency qua constructor, Program.cs chỉ đăng ký và chạy | 18–20: thêm: đổi in-memory sang JSON chỉ sửa một dòng đăng ký, giải thích được vì sao |
+| **Chức năng và quy tắc** (30) | 0–14: chưa chạy được luồng nhập → xuất → xem tồn | 15–20: chạy được TC-01 tới TC-05 | 21–26: thêm: TC-06 tới TC-11 đúng, quy tắc nằm trong service | 27–30: thêm: chuyển kho có hoàn tác, xóa danh mục đúng quy tắc, thông báo lỗi rõ ràng |
+| **Async, DI, xử lý lỗi** (20) | 0–9: có `.Result`/`.Wait()`, hoặc lifetime sai làm mất dữ liệu | 10–13: I/O async, `CancellationToken` có ở mọi method async | 14–17: thêm: token truyền xuống tới repository, lifetime đúng, Ctrl+C thoát gọn (TC-12) | 18–20: thêm: bật `ValidateScopes`/`ValidateOnBuild`, lỗi nghiệp vụ không làm sập menu |
+| **Test** (20) | 0–9: không có test hoặc test đỏ | 10–13: test cho 4 TC trở lên, tất cả xanh | 14–17: đủ 7 TC trong Definition of Done | 18–20: thêm test cho TC-09 và các trường hợp biên tự nghĩ ra (số lượng 0, sửa SKU trùng sản phẩm khác) |
+| **README và Git** (10) | 0–4: không có README hoặc lệnh trong README không chạy | 5–6: README có lệnh chạy và lệnh test | 7–8: thêm: commit nhỏ theo mốc ở mục 2, thông điệp commit rõ | 9–10: thêm: README nêu quyết định thiết kế (vì sao Singleton, vì sao interface ở Application) |
+
+Mức tổng: **Đạt** từ 50 điểm (sẵn sàng sang Giai đoạn 3), **Khá** từ 70, **Giỏi** từ 85. Bài mở rộng ở mục 11 không cộng điểm riêng, nhưng là bằng chứng tốt cho mức Giỏi ở tiêu chí liên quan.
+
+**Hướng dẫn cho mentor:** chạy hai lệnh `dotnet build`, `dotnet test`; mở `InventorySystem.Domain.csproj`; chạy app và thử TC-06, TC-12; đọc `InventoryService` tìm quy tắc ở mục 8. Hỏi một câu vấn đáp: "Nếu đổi repository sang database, bạn sửa những file nào?" (đáp án mong đợi: thêm repository mới ở Infrastructure và sửa dòng đăng ký, không sửa Application hay ConsoleApp).
+
+---
+
+## Tự kiểm tra
+
+<details>
+<summary>1. Vì sao soft delete (<code>IsDeleted</code>) hợp với sản phẩm trong hệ thống kho hơn xóa hẳn?</summary>
+
+Giao dịch cũ vẫn tham chiếu `ProductId` của sản phẩm. Xóa hẳn thì lịch sử còn `ProductId` trỏ tới thứ không tồn tại, báo cáo quá khứ không hiển thị được tên. Soft delete ẩn sản phẩm khỏi danh sách nhưng giữ dữ liệu cho lịch sử.
+
+</details>
+
+<details>
+<summary>2. Vì sao tách <code>IProductRepository</code> và <code>IStockRepository</code> (interface) khỏi bản in-memory và JSON (implementation)?</summary>
+
+Service chỉ biết interface, nên đổi cách lưu trữ (in-memory, JSON, sau này EF Core) không phải sửa service. Test cũng dùng được bản in-memory thay cho file thật.
+
+</details>
+
+<details>
+<summary>3. Vì sao <code>IInventoryService</code> đặt ở Application mà không ở Domain?</summary>
+
+Method của nó dùng DTO định nghĩa ở Application. Đặt ở Domain thì Domain phải tham chiếu Application, trong khi Application đã tham chiếu Domain: phụ thuộc vòng, không build được.
+
+</details>
+
+<details>
+<summary>4. Repository JSON đăng ký Singleton, <code>InventoryService</code> đăng ký Scoped. Có phải captive dependency không?</summary>
+
+Không. Captive dependency là khi service sống **lâu hơn** giữ service sống **ngắn hơn** (Singleton giữ Scoped). Ở đây Scoped giữ Singleton, hoàn toàn hợp lệ.
+
+</details>
+
+<details>
+<summary>5. "Lịch sử giao dịch chỉ thêm" được đảm bảo ở đâu trong code?</summary>
+
+`IStockRepository` chỉ có `AddTransactionAsync` và `GetTransactionsAsync`, không có method sửa hay xóa giao dịch. Không ai gọi được thứ không tồn tại trong interface.
+
+</details>
+
+<details>
+<summary>6. Thêm <code>SemaphoreSlim</code> vào từng method của repository có ngăn được hai lần xuất kho cùng lúc làm tồn âm không?</summary>
+
+Không. Lỗi nằm ở khoảng giữa lúc service đọc tồn và lúc service ghi tồn mới. Khóa phải bao quanh cả hai bước đó, tức là nằm trong service (Level 4).
+
+</details>
+
+---
+
+## Kết luận
+
+Bạn vừa ghép toàn bộ Giai đoạn 2 vào một ứng dụng: entity và interface từ Module 4, generic và LINQ từ Module 5, async và `CancellationToken` từ Module 6, DI và lifetime từ Module 7. Điều đáng giữ lại nhất là thói quen đặt quy tắc nghiệp vụ ở một chỗ (service) và chứng minh chúng bằng test.
+
+### Cầu nối sang Project 2 — CRM API
+
+[Project 2](../stage-03-aspnet-core-backend/project-02-crm-backend-api.md) dùng lại gần như nguyên khung này:
+
+| Project 1 | Project 2 |
 |---|---|
-| `Product` | → `Product` trong catalog CRM, thêm pricing tiers |
-| `StockTransaction` | → `AuditLog` pattern: mọi thay đổi đều được log với before/after |
-| `BaseEntity` | → Giữ nguyên, thêm `CreatedBy` string để track user |
-| `IRepository<T>` | → Chuyển sang Entity Framework Core repository |
-| `InventoryException` | → Mở rộng thành problem details, map sang HTTP 400/404/409 |
+| `Domain/` | Giữ cách tổ chức, entity đổi sang Customer, Lead, Contact |
+| `Application/Services/` | Giữ khuôn: kiểm tra, đọc, áp quy tắc, ghi, trả DTO |
+| `Infrastructure/` JSON | Thay bằng EF Core với PostgreSQL |
+| `ConsoleApp/` | Thay bằng Web API |
+| `InventoryException` + `ErrorCode` | Đổi thành response lỗi HTTP 400/404/409 qua `IExceptionHandler` |
+| `StockTransaction` (before/after) | Ý tưởng audit log: mọi thay đổi quan trọng đều được ghi lại |
 
-### Architecture Reuse
+## Tham khảo
 
-```
-Project 1 (Console)          Project 2 (CRM API)
-─────────────────────────    ─────────────────────────
-Domain/                  →   Domain/ (giữ nguyên)
-Application/Services/    →   Application/Services/ (mở rộng)
-Infrastructure/JSON/     →   Infrastructure/EFCore/ (thay thế)
-Console/                 →   WebApi/ (thêm mới)
-```
+- [.NET Generic Host](https://learn.microsoft.com/dotnet/core/extensions/generic-host)
+- [Dependency injection in .NET](https://learn.microsoft.com/dotnet/core/extensions/dependency-injection)
+- [Service lifetimes, scope validation](https://learn.microsoft.com/dotnet/core/extensions/dependency-injection#scope-validation)
+- [`dotnet new sln` tạo file SLNX mặc định (.NET 10)](https://learn.microsoft.com/dotnet/core/compatibility/sdk/10.0/dotnet-new-sln-slnx-default)
+- [Serialize và deserialize JSON với System.Text.Json](https://learn.microsoft.com/dotnet/standard/serialization/system-text-json/how-to)
+- [`Console.CancelKeyPress`](https://learn.microsoft.com/dotnet/api/system.console.cancelkeypress)
+- [Unit testing C# với xUnit](https://learn.microsoft.com/dotnet/core/testing/unit-testing-csharp-with-xunit)
 
-### Patterns để giữ lại
+## Điều hướng
 
-- **Constructor injection** trong service → áp dụng thẳng vào ASP.NET Core controllers
-- **Request/DTO pattern** → trở thành request body trong HTTP endpoints
-- **CancellationToken** → được pass tự động bởi ASP.NET Core request lifecycle
-- **Custom exceptions** → map sang `IExceptionHandler` middleware trong Stage 3
-
-> **Lời khuyên:** Khi bắt đầu Project 2, đừng viết lại từ đầu. Thay vào đó, copy Domain + Application layer, chỉ thay Infrastructure (từ JSON → EF Core) và thêm WebApi layer. Đây chính là sức mạnh của Clean Architecture.
-
-## Mở rộng và đào sâu
-
-### Góc nhìn sư phạm
-
-Phần này trả lời ba câu hỏi cốt lõi: **học cái gì, để làm gì, và dùng ở đâu** trong một hệ thống backend thực.
-
-### Khung học thuật cốt lõi
-
-- **Khái niệm**: định nghĩa ngắn, chính xác.
-- **Ngữ cảnh**: vị trí của khái niệm trong kiến trúc hệ thống.
-- **Giới hạn**: khi nào khái niệm này không còn phù hợp.
-
-## Mini case study
-
-### Tình huống
-
-Chọn một tình huống nhỏ nhưng thực tế trong CRM/ERP, xác định rõ đầu vào, ràng buộc, và đầu ra mong muốn.
-
-### Đáp án gợi ý
-
-- Mô tả quy trình xử lý theo từng bước logic.
-- Giải thích vì sao chọn cách làm đó thay vì phương án khác.
-- Nêu ít nhất một edge case và cách xử lý.
-
-## Ví dụ thực tế nhanh
-
-- Một tình huống áp dụng trực tiếp trong dự án.
-- Một lỗi thường gặp khi triển khai ngoài thực tế.
-- Một câu tự kiểm tra để xác nhận bạn hiểu đúng bản chất.
-
-## Checklist trước khi sang bài tiếp theo
-
-- Bạn đã nắm được các khái niệm chính và giải thích lại được bằng ví dụ của riêng mình.
-- Bạn đã chạy hoặc mô phỏng ít nhất một ví dụ trong bài.
-- Bạn đã hoàn thành phần quiz/lab cơ bản (hoặc ít nhất tự làm lại theo trí nhớ).
-- Bạn đã ghi lại 3 ý chính: học được gì, còn vướng gì, sẽ áp dụng ở đâu trong CRM.
+- **Bài trước:** [7.13 — Review and Assessment](module-07-dependency-injection/7.13-review-and-assessment.md)
+- **Tiếp theo:** [Module 8 — ASP.NET Core Fundamentals](../stage-03-aspnet-core-backend/module-08-aspnet-core-fundamentals/README.md)
+- **Về giai đoạn:** [Giai đoạn 2](README.md)

@@ -73,6 +73,7 @@ Sau bài này bạn có thể: (3 tới 6 gạch đầu dòng, động từ đo 
 - **Phải chạy được** trên .NET 10. Output, thông báo lỗi và số đo trong bài là kết quả chạy thật, không viết theo trí nhớ.
 - Ví dụ một file dùng top-level statements: mọi khai báo `class`, `record`, `enum` đặt **sau** code chạy (đặt trước là lỗi CS8803).
 - Ví dụ gắn với bài toán CRM xuyên suốt: `Customer`, `Lead`, `Deal`, `CrmDbContext`.
+- **Định danh trong code (class, hàm, biến, tên test) viết bằng tiếng Anh**, ví dụ `CalculateDiscount`, `RegularCustomer_SmallOrder_NoDiscount`. Comment và chuỗi hiển thị cho người dùng viết tiếng Việt. Tên tiếng Việt không dấu (`TinhGiam`, `KhachHang`) khó đọc và không thống nhất với thư viện .NET.
 - Code minh họa sai thì ghi rõ ngay trên khối code (`// SAI: ...`) và có bản sửa đi kèm.
 
 ## Hai phiên bản database
