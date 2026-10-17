@@ -68,7 +68,7 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 ```text
 lessons/            bài học: giai đoạn → module → bài, ảnh sơ đồ nằm trong img/ cạnh bài
 diagrams/           file HTML nguồn của các sơ đồ (bản sáng và bản tối)
-scripts/            script xuất sơ đồ HTML ra PNG
+scripts/            script xuất sơ đồ HTML ra PNG, script kiểm tra bài học
 .vitepress/         cấu hình và giao diện website
 ```
 
@@ -82,6 +82,7 @@ Chạy thử trên máy (cần Node.js 20 trở lên):
 npm install
 npm run docs:dev      # http://localhost:5173, tự tải lại khi sửa bài
 npm run docs:build    # build ra .vitepress/dist
+npm run check         # kiểm tra link, đánh số mục, nhãn tham chiếu (CI chạy trên mỗi PR)
 ```
 
 Trang chủ là [index.md](index.md), phần giao diện riêng nằm trong [.vitepress/theme/](.vitepress/theme/). Sidebar và trang chủ tự sinh từ cấu trúc thư mục `lessons/` và tiêu đề `# ...` của từng bài ([.vitepress/course.ts](.vitepress/course.ts)).
