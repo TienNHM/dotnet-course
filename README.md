@@ -37,7 +37,7 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 
 | Module | Số bài |
 | --- | --- |
-| [Module 8 - ASP.NET Core Fundamentals](lessons/stage-03-aspnet-core-backend/module-08-aspnet-core-fundamentals/README.md) | 13 |
+| [Module 8 - ASP.NET Core Fundamentals](lessons/stage-03-aspnet-core-backend/module-08-aspnet-core-fundamentals/README.md) | 14 |
 | [Module 9 - Web API Professional](lessons/stage-03-aspnet-core-backend/module-09-web-api-professional/README.md) | 13 |
 | [Module 10 - Authentication + Authorization](lessons/stage-03-aspnet-core-backend/module-10-authentication-authorization/README.md) | 14 |
 | [Module 11 - SignalR](lessons/stage-03-aspnet-core-backend/module-11-signalr/README.md) | 14 |
