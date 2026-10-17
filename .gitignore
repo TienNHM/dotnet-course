@@ -55,3 +55,21 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Node / VitePress
+node_modules/
+.vitepress/cache/
+.vitepress/dist/
+npm-debug.log*
+
+# Python (script xuất sơ đồ)
+__pycache__/
+.venv/
+
+# Editor, hệ điều hành
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
