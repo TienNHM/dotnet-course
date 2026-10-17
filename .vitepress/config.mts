@@ -41,7 +41,7 @@ export default withMermaid(
     cleanUrls: true,
     lastUpdated: true,
     // README.md ở gốc là mục lục cho GitHub; website dùng index.md
-    srcExclude: ['README.md', 'review/**', 'diagrams/**', 'scripts/**', 'node_modules/**'],
+    srcExclude: ['README.md', 'CONTRIBUTING.md', 'review/**', 'diagrams/**', 'scripts/**', 'node_modules/**'],
     // Link "File gốc" của sơ đồ trỏ sang diagrams/*.html, được chép sang lúc build (xem buildEnd)
     ignoreDeadLinks: [/^https?:\/\/localhost/, /\/diagrams\//],
     head: [['link', { rel: 'icon', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟣</text></svg>' }]],

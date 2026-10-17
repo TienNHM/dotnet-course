@@ -11,10 +11,10 @@
 - [1.5 - Mảng và danh sách](1.5-arrays-and-lists.md)
 - [1.6 - Tư duy giải bài toán](1.6-problem-solving-mindset.md)
 - [1.7 - Cấu trúc dữ liệu cơ bản và Big-O](1.7-data-structures-and-big-o.md)
-- [1.8 - Mở rộng và đào sâu](1.8-advanced-notes.md)
-- [1.9 - Mini case study](1.9-mini-case-study.md)
-- [1.10 - Ví dụ thực tế nhanh](1.10-quick-real-world-example.md)
-- [1.11 - Review and Assessment](1.11-review-and-assessment.md)
+- [1.8 - LINQ, record và đệ quy an toàn](1.8-advanced-notes.md)
+- [1.9 - Case study: tính hoa hồng theo bậc](1.9-mini-case-study.md)
+- [1.10 - Sự cố thực tế: vòng lặp lồng làm treo báo cáo](1.10-quick-real-world-example.md)
+- [1.11 - Ôn tập và đánh giá Module 1](1.11-review-and-assessment.md)
 
 ## Bài liên quan
 

@@ -1,10 +1,10 @@
 # Module 2 - Computer Science Basics
 
-> **Tóm tắt:** CS foundation cho backend: mô hình bộ nhớ, HTTP/TCP khái quát, JSON, REST semantics, phân tích độ phức tạp — liên hệ pipeline request trong ASP.NET Core.
+> **Tóm tắt:** Nền tảng web cho backend: một request đi qua DNS, TCP, TLS và HTTP thế nào, API và JSON, database và giao dịch, xác thực và phân quyền, hosting, .NET runtime, CORS. Các bài tập chạy trên API thực hành CrmLab dựng ở bài 2.3 và PostgreSQL chạy bằng Docker.
 
 ## Nội dung module
 
-- [2.1 - Concept learning path](2.1-concept-learning-path.md)
+- [2.1 - Bản đồ module: chuyện gì xảy ra khi bấm Đăng nhập](2.1-concept-learning-path.md)
 - [2.2 - Internet hoạt động như thế nào](2.2-how-the-internet-works.md)
 - [2.3 - Client - Server Model](2.3-client.md)
 - [2.4 - HTTP/HTTPS](2.4-http-https.md)
@@ -13,10 +13,10 @@
 - [2.7 - Authentication và Authorization](2.7-authentication-and-authorization.md)
 - [2.8 - Hosting và Cloud cơ bản](2.8-hosting-and-cloud-basics.md)
 - [2.9 - .NET Runtime và Ecosystem](2.9-dotnet-runtime-and-ecosystem.md)
-- [2.10 - Mở rộng và đào sâu](2.10-advanced-notes.md)
-- [2.11 - Mini case study](2.11-mini-case-study.md)
-- [2.12 - Ví dụ thực tế nhanh](2.12-quick-real-world-example.md)
-- [2.13 - Review and Assessment](2.13-review-and-assessment.md)
+- [2.10 - Đào sâu: cache HTTP, container, HTTP/2 và HTTP/3](2.10-advanced-notes.md)
+- [2.11 - Ca chẩn đoán: đăng nhập được nhưng mọi trang báo 401](2.11-mini-case-study.md)
+- [2.12 - CORS: đọc lỗi, preflight và thứ tự middleware](2.12-quick-real-world-example.md)
+- [2.13 - Ôn tập và đánh giá Module 2](2.13-review-and-assessment.md)
 
 ## Bài liên quan
 
