@@ -19,3 +19,19 @@ jobs:
 
       - name: Link, đánh số mục, nhãn tham chiếu
         run: node scripts/check-lessons.mjs
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Bắt link chết và lỗi cú pháp Vue trước khi merge, thay vì để bước deploy trên master hỏng
+      - name: Build website
+        run: npm run docs:build
