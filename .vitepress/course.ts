@@ -55,11 +55,14 @@ export function courseTree(): Stage[] {
           .map((mod) => ({
             ...page(`${stage}/${mod}/README.md`),
             lessons: readdirSync(join(lessonsDir, stage, mod))
-              .filter((f) => /^\d+\.\d+-.*\.md$/.test(f))
+              // Bản SQL Server (*.sqlserver.md) không lên sidebar: mở từ dòng chuyển phiên bản ở đầu bài
+              .filter((f) => /^\d+\.\d+-.*\.md$/.test(f) && !f.endsWith('.sqlserver.md'))
               .sort(byLessonNo)
               .map((f) => page(`${stage}/${mod}/${f}`)),
           })),
-        projects: entries.filter((f) => f.endsWith('.md') && f !== 'README.md').map((f) => page(`${stage}/${f}`)),
+        projects: entries
+          .filter((f) => f.endsWith('.md') && f !== 'README.md' && !f.endsWith('.sqlserver.md'))
+          .map((f) => page(`${stage}/${f}`)),
         advanced: advancedStages.includes(stage),
       }
     })

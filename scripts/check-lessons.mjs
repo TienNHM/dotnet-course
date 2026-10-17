@@ -2,6 +2,7 @@
 //   - link tương đối trỏ tới file có thật
 //   - bài a.b chỉ có tiêu đề mục "### a.b.n"
 //   - nhãn số trong link tới bài khác khớp với tên file đích ("[bài 4.2](4.2-...md)")
+//   - bản SQL Server (x.sqlserver.md) có bản chính x.md, cả hai có dòng chuyển phiên bản trỏ nhau
 //
 //   node scripts/check-lessons.mjs
 import fs from 'node:fs'
@@ -46,6 +47,18 @@ for (const f of files) {
     }
   })
   if (fence) errors.push(`${f}: code block chưa đóng`)
+}
+
+// Hai phiên bản database: xem CONTRIBUTING.md, mục "Hai phiên bản database"
+const banner = (f) => fs.readFileSync(f, 'utf8').normalize('NFC').match(/^> \*\*Phiên bản database:\*\* (.+)$/m)?.[1]
+for (const f of files.filter((x) => x.endsWith('.sqlserver.md'))) {
+  const main = f.replace(/\.sqlserver\.md$/, '.md')
+  const mainName = path.basename(main), variantName = path.basename(f)
+  if (!fs.existsSync(main)) { errors.push(`${f}: không có bản chính ${mainName}`); continue }
+  if (banner(main) !== `PostgreSQL · [SQL Server](${variantName})`)
+    errors.push(`${main}: thiếu hoặc sai dòng "> **Phiên bản database:** PostgreSQL · [SQL Server](${variantName})"`)
+  if (banner(f) !== `[PostgreSQL](${mainName}) · SQL Server`)
+    errors.push(`${f}: thiếu hoặc sai dòng "> **Phiên bản database:** [PostgreSQL](${mainName}) · SQL Server"`)
 }
 
 if (errors.length) {

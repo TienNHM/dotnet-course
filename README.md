@@ -12,6 +12,17 @@ Mỗi bài học có mục tiêu, nội dung kèm ví dụ chạy được, danh
 - [Lộ trình tổng quan](lessons/roadmap-dotnet-backend-zero-to-senior.md): vì sao các module được xếp theo thứ tự này, sơ đồ phụ thuộc kiến thức và kiến trúc đích.
 - [Bảng thuật ngữ](lessons/glossary.md): tra nhanh các thuật ngữ dùng xuyên suốt khóa học.
 
+## Database
+
+Từ Module 12, các bài dùng **PostgreSQL 16**. Bài nào phụ thuộc nhiều vào database thì có thêm bản **SQL Server** (link chuyển phiên bản nằm ngay dưới tiêu đề bài). Dựng database bằng Docker:
+
+```sh
+docker compose up -d                       # PostgreSQL
+docker compose --profile sqlserver up -d   # thêm SQL Server
+```
+
+Chuỗi kết nối ghi ở đầu file [docker-compose.yml](docker-compose.yml).
+
 ## Mục lục
 
 ### [Giai đoạn 1 — Foundation: tư duy lập trình, nền tảng CS và Git workflow](lessons/stage-01-foundation/README.md)
@@ -101,6 +112,10 @@ python scripts/export-diagram.py \
 ```
 
 Sơ đồ nhỏ, đi kèm một đoạn thì viết thẳng bằng Mermaid trong bài; GitHub tự hiển thị.
+
+## Đóng góp
+
+Quy ước viết bài, phiên bản chuẩn và cách tách hai phiên bản database: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Nguồn
 
