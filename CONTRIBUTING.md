@@ -71,8 +71,25 @@ Sau bài này bạn có thể: (3 tới 6 gạch đầu dòng, động từ đo 
 ## Code trong bài
 
 - **Phải chạy được** trên .NET 10. Output, thông báo lỗi và số đo trong bài là kết quả chạy thật, không viết theo trí nhớ.
-- Ví dụ một file dùng top-level statements: mọi khai báo `class`, `record`, `enum` đặt **sau** code chạy (đặt trước là lỗi CS8803).
+- **Thứ tự code theo thứ tự người học tiếp cận kiến thức**: thấy khái niệm trước rồi mới thấy cách dùng. Khai báo `class`, `record`, `enum` trình bày trước, code dùng nó trình bày sau, tách hai khối có ghi tên file:
+
+  ````markdown
+  ```csharp
+  // Customer.cs
+  public class Customer { ... }
+  ```
+
+  ```csharp
+  // Program.cs
+  var a = new Customer(1, "Nguyen Van A");
+  ```
+  ````
+
+  Trong một file top-level statements, khai báo kiểu phải nằm **sau** code chạy (đặt trước là lỗi CS8803), nên không gộp hai khối thành một file theo thứ tự trên. Bài nào muốn người học dán vào một file `Program.cs` duy nhất thì ghi rõ một câu: "dán khối Program.cs lên đầu, khối khai báo xuống cuối".
+- Trong một khối, dòng code cũng đi theo thứ tự đọc: dữ liệu đầu vào, rồi xử lý, rồi kết quả. Không dùng biến, hàm hay kiểu mà người đọc chưa thấy ở phía trên, trừ trường hợp CS8803 ở trên.
 - Ví dụ gắn với bài toán CRM xuyên suốt: `Customer`, `Lead`, `Deal`, `CrmDbContext`.
+- **Định danh trong code (class, hàm, biến, tên test) viết bằng tiếng Anh**, ví dụ `CalculateDiscount`, `RegularCustomer_SmallOrder_NoDiscount`. Comment và chuỗi hiển thị cho người dùng viết tiếng Việt. Tên tiếng Việt không dấu (`TinhGiam`, `KhachHang`) khó đọc và không thống nhất với thư viện .NET.
+- Tên kiểu, tên hàm trong câu văn đặt trong dấu backtick: viết `` `Task<T>` ``, không viết Task<T> trần. Website dịch markdown qua Vue nên `<T>` trần bị hiểu là thẻ HTML và làm hỏng build.
 - Code minh họa sai thì ghi rõ ngay trên khối code (`// SAI: ...`) và có bản sửa đi kèm.
 
 ## Hai phiên bản database

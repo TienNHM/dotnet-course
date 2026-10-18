@@ -1,6 +1,6 @@
 # Module 5 - Advanced C#
 
-> **Tóm tắt:** C# nâng cao: generics, LINQ, nullable reference types, spans, exception semantics — tối ưu an toàn kiểu và hiện diện bộ nhớ trong service layer.
+> **Tóm tắt:** C# ở mức dùng hằng ngày trong backend: nguyên tắc SOLID và khi nào không nên áp dụng, generics, LINQ trên bộ nhớ và trên database, delegate và event (kèm rò rỉ bộ nhớ do quên gỡ đăng ký), extension method (cả khối `extension` của C# 14), nullable reference types, expression tree và reflection, tuple. Bài 5.9 là bài đọc thêm; bài 5.10 và 5.11 áp dụng cả module vào một case study và một sự cố thực tế; bài 5.12 là quiz và lab tổng kết.
 
 ## Nội dung module
 
@@ -10,12 +10,12 @@
 - [5.4 - Delegates và Events](5.4-delegates-and-events.md)
 - [5.5 - Extension Methods](5.5-extension-methods.md)
 - [5.6 - Nullable Reference Types (C# 8+)](5.6-nullable-reference-types.md)
-- [5.7 - Expression Trees và Reflection (Overview)](5.7-overview.md)
+- [5.7 - Expression Trees và Reflection](5.7-overview.md)
 - [5.8 - Tuples và Deconstruction](5.8-tuples-and-deconstruction.md)
-- [5.9 - Mở rộng và đào sâu](5.9-advanced-notes.md)
-- [5.10 - Mini case study](5.10-mini-case-study.md)
-- [5.11 - Ví dụ thực tế nhanh](5.11-quick-real-world-example.md)
-- [5.12 - Review and Assessment](5.12-review-and-assessment.md)
+- [5.9 - Đọc thêm: IAsyncEnumerable, source generator và Span](5.9-advanced-notes.md)
+- [5.10 - Case study: refactor hàm tính giảm giá](5.10-mini-case-study.md)
+- [5.11 - Sự cố thực tế: rò rỉ bộ nhớ do event](5.11-quick-real-world-example.md)
+- [5.12 - Ôn tập và đánh giá Module 5](5.12-review-and-assessment.md)
 
 ## Bài liên quan
 
