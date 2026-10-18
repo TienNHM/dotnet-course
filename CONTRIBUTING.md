@@ -89,6 +89,7 @@ Sau bài này bạn có thể: (3 tới 6 gạch đầu dòng, động từ đo 
 - Trong một khối, dòng code cũng đi theo thứ tự đọc: dữ liệu đầu vào, rồi xử lý, rồi kết quả. Không dùng biến, hàm hay kiểu mà người đọc chưa thấy ở phía trên, trừ trường hợp CS8803 ở trên.
 - Ví dụ gắn với bài toán CRM xuyên suốt: `Customer`, `Lead`, `Deal`, `CrmDbContext`.
 - **Định danh trong code (class, hàm, biến, tên test) viết bằng tiếng Anh**, ví dụ `CalculateDiscount`, `RegularCustomer_SmallOrder_NoDiscount`. Comment và chuỗi hiển thị cho người dùng viết tiếng Việt. Tên tiếng Việt không dấu (`TinhGiam`, `KhachHang`) khó đọc và không thống nhất với thư viện .NET.
+- Tên kiểu, tên hàm trong câu văn đặt trong dấu backtick: viết `` `Task<T>` ``, không viết Task<T> trần. Website dịch markdown qua Vue nên `<T>` trần bị hiểu là thẻ HTML và làm hỏng build.
 - Code minh họa sai thì ghi rõ ngay trên khối code (`// SAI: ...`) và có bản sửa đi kèm.
 
 ## Hai phiên bản database
