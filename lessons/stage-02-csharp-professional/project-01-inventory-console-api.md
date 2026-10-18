@@ -2,7 +2,7 @@
 
 > **Tóm tắt:** Dự án tổng kết Giai đoạn 2. Bạn xây một hệ thống quản lý kho chạy trên console: sản phẩm, danh mục, kho hàng, nhập kho, xuất kho, chuyển kho và lịch sử giao dịch lưu ra file JSON. Code chia thành bốn tầng (Domain, Application, Infrastructure, ConsoleApp) nối với nhau bằng Dependency Injection, mọi thao tác I/O đều async và nhận `CancellationToken`. Điều quan trọng nhất: quy tắc nghiệp vụ (không xuất quá tồn, SKU không trùng) nằm trong service và được kiểm chứng bằng unit test, không nằm ở menu.
 
-## Mục tiêu học tập
+## Mục tiêu bài học
 
 Sau dự án này bạn có thể:
 
