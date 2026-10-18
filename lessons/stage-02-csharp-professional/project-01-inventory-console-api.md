@@ -1373,6 +1373,6 @@ Bạn vừa ghép toàn bộ Giai đoạn 2 vào một ứng dụng: entity và 
 
 ## Điều hướng
 
-- **Bài trước:** [7.13 — Review and Assessment](module-07-dependency-injection/7.13-review-and-assessment.md)
+- **Bài trước:** [7.13 — Ôn tập và đánh giá Module 7](module-07-dependency-injection/7.13-review-and-assessment.md)
 - **Tiếp theo:** [Module 8 — ASP.NET Core Fundamentals](../stage-03-aspnet-core-backend/module-08-aspnet-core-fundamentals/README.md)
 - **Về giai đoạn:** [Giai đoạn 2](README.md)
