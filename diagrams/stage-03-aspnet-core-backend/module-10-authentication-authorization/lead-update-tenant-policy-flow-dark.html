@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cập nhật lead: lọc tenant rồi kiểm tra policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Phân quyền</p>
+    <h1>Cập nhật lead: lọc tenant rồi kiểm tra policy</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 448" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="lead-update-tenant-policy-flow-dark-title lead-update-tenant-policy-flow-dark-desc">
+  <title id="lead-update-tenant-policy-flow-dark-title">Cập nhật lead: lọc tenant rồi kiểm tra policy</title>
+  <desc id="lead-update-tenant-policy-flow-dark-desc">PUT /api/leads/id đi qua Global query filter chỉ thấy lead của tenant hiện tại. Không tìm thấy lead thì trả 404. Tìm thấy thì kiểm tra policy LeadOwner (chủ sở hữu, hoặc Manager cùng tenant): không đạt thì trả 403 (hoặc 404 với dữ liệu nhạy cảm), đạt thì Update và SaveChangesAsync.</desc>
+  <defs><marker id="lead-update-tenant-policy-flow-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4d8de"/></marker><marker id="lead-update-tenant-policy-flow-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3fd9b5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <path d="M200,100 L248,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <path d="M432,100 L504,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <path d="M696,100 L776,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <rect x="711" y="79" width="50" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="736" y="89" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KHÔNG</text>
+    <path d="M600,152 L600,208" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <rect x="605" y="173" width="28" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="619" y="183" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ</text>
+    <path d="M728,264 L792,264" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <rect x="735" y="243" width="50" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="760" y="253" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KHÔNG</text>
+    <path d="M472,264 L424,264" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/>
+    <rect x="434" y="243" width="28" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="448" y="253" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ</text>
+    <rect x="40" y="64" width="160" height="72" rx="6" fill="#1b1b1d"/><rect x="40" y="64" width="160" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/>
+    <text x="120" y="105" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">PUT /api/leads/id</text>
+    <rect x="248" y="64" width="184" height="72" rx="6" fill="#1b1b1d"/><rect x="248" y="64" width="184" height="72" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="340" y="88.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Global query filter</text><text font-weight="500" x="340" y="106.5" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">chỉ thấy lead của</text><text font-weight="500" x="340" y="120.5" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">tenant hiện tại</text>
+    <polygon points="504,100 600,48 696,100 600,152" fill="#1b1b1d"/><polygon points="504,100 600,48 696,100 600,152" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/>
+    <text x="600" y="105" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tìm thấy lead?</text>
+    <rect x="776" y="68" width="144" height="64" rx="6" fill="#1b1b1d"/><rect x="776" y="68" width="144" height="64" rx="6" fill="rgba(227,227,227,0.05)" stroke="rgba(227,227,227,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="848" y="104.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">404</text>
+    <polygon points="472,264 600,208 728,264 600,320" fill="#1b1b1d"/><polygon points="472,264 600,208 728,264 600,320" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/>
+    <text x="600" y="254" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Policy LeadOwner</text>
+    <text x="600" y="270" fill="#d4d8de" font-size="11" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">chủ sở hữu, hoặc</text>
+    <text x="600" y="284" fill="#d4d8de" font-size="11" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">Manager cùng tenant</text>
+    <rect x="792" y="228" width="128" height="72" rx="6" fill="#1b1b1d"/><rect x="792" y="228" width="128" height="72" rx="6" fill="rgba(227,227,227,0.05)" stroke="rgba(227,227,227,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="856" y="251.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">403, hoặc 404</text><text x="856" y="268.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">với dữ liệu</text><text x="856" y="285.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">nhạy cảm</text>
+    <rect x="216" y="232" width="208" height="64" rx="6" fill="#1b1b1d"/><rect x="216" y="232" width="208" height="64" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="320" y="268.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Update, SaveChangesAsync</text>
+    <line x1="40" y1="360" x2="920" y2="360" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/><text font-weight="500" x="40" y="380" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="392" width="28" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="76" y="401.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Bước cốt lõi</text><rect x="172" y="392" width="28" height="12" rx="2" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="208" y="401.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Điểm kiểm tra</text><rect x="310" y="392" width="28" height="12" rx="2" fill="rgba(227,227,227,0.05)" stroke="rgba(227,227,227,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="346" y="401.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Từ chối (404 / 403)</text><line x1="482" y1="398" x2="510" y2="398" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#lead-update-tenant-policy-flow-dark-arrow)"/><text x="518" y="401.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Rẽ nhánh theo câu trả lời</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="436" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

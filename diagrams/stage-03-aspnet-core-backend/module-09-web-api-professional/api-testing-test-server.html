@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiến trúc test tích hợp cho Web API</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Testing</p>
+    <h1>Kiến trúc test tích hợp cho Web API</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 472" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="api-testing-test-server-title api-testing-test-server-desc">
+  <title id="api-testing-test-server-title">Kiến trúc test tích hợp cho Web API</title>
+  <desc id="api-testing-test-server-desc">Test xUnit gọi WebApplicationFactory (chạy Program.cs thật) bằng HttpClient. Factory chạy migration thật lên PostgreSQL trong Testcontainers và áp ConfigureTestServices để đè FakeEmailService và TestAuthHandler sau Program.cs. Respawn reset cơ sở dữ liệu trước mỗi test.</desc>
+  <defs><marker id="api-testing-test-server-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="api-testing-test-server-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect x="616" y="40" width="304" height="200" rx="8" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="632" y="62" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">ConfigureTestServices</text>
+    <text x="632" y="78" fill="#383e46" font-size="11" font-family="'Geist', sans-serif">đè sau Program.cs</text>
+    <path d="M216,140 L296,140" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#api-testing-test-server-arrow)"/>
+    <rect x="213.5" y="119" width="85" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="256" y="129" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HTTPCLIENT</text>
+    <path d="M504,140 L616,140" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#api-testing-test-server-arrow)"/>
+    <path d="M400,172 L400,280" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#api-testing-test-server-arrow)"/>
+    <rect x="397.5" y="219" width="114" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="454.5" y="229" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MIGRATION THẬT</text>
+    <path d="M688,316 L504,316" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#api-testing-test-server-arrow)"/>
+    <rect x="518" y="295" width="156" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="596" y="305" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RESET TRƯỚC MỖI TEST</text>
+    <rect x="40" y="108" width="176" height="64" rx="6" fill="#ffffff"/><rect x="40" y="108" width="176" height="64" rx="6" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/><text x="128" y="144.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Test xUnit</text>
+    <rect x="296" y="108" width="208" height="64" rx="6" fill="#ffffff"/><rect x="296" y="108" width="208" height="64" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="400" y="135.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">WebApplicationFactory</text><text font-weight="500" x="400" y="153.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Program.cs thật</text>
+    <rect x="640" y="96" width="256" height="56" rx="6" fill="#ffffff"/><rect x="640" y="96" width="256" height="56" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="768" y="128.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">FakeEmailService</text>
+    <rect x="640" y="168" width="256" height="56" rx="6" fill="#ffffff"/><rect x="640" y="168" width="256" height="56" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="768" y="200.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">TestAuthHandler</text>
+    <rect x="296" y="280" width="208" height="72" rx="6" fill="#ffffff"/><rect x="296" y="280" width="208" height="72" rx="6" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="400" y="311.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">PostgreSQL</text><text font-weight="500" x="400" y="329.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Testcontainers</text>
+    <rect x="688" y="284" width="208" height="64" rx="6" fill="#ffffff"/><rect x="688" y="284" width="208" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="792" y="320.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Respawn</text>
+    <line x1="40" y1="384" x2="920" y2="384" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="404" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="416" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Chạy Program.cs thật</text><rect x="218" y="416" width="28" height="12" rx="2" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="254" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Cơ sở dữ liệu thật</text><rect x="385" y="416" width="28" height="12" rx="2" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="421" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Dịch vụ bị thay thế</text><line x1="557" y1="422" x2="585" y2="422" stroke="#383e46" stroke-width="1.6" marker-end="url(#api-testing-test-server-arrow)"/><text x="593" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Hướng gọi</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="460" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

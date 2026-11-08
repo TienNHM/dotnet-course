@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Constructor là cửa duy nhất tạo Order</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Class và object</p>
+    <h1>Constructor là cửa duy nhất tạo Order</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 432" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="constructor-validation-gate-dark-title constructor-validation-gate-dark-desc">
+  <title id="constructor-validation-gate-dark-title">Constructor là cửa duy nhất tạo Order</title>
+  <desc id="constructor-validation-gate-dark-desc">new Order(customerId, total) kiểm tra customerId dương và total không âm; nếu sai thì ném ArgumentOutOfRangeException và không có object nào, nếu đúng thì Order hợp lệ với Status Draft nên mọi hàm nhận Order không cần kiểm tra lại.</desc>
+  <defs><marker id="constructor-validation-gate-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4d8de"/></marker><marker id="constructor-validation-gate-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3fd9b5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <path d="M216,120 L264,120" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#constructor-validation-gate-dark-arrow)"/>
+    <path d="M520,120 L600,120" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#constructor-validation-gate-dark-arrow)"/>
+    <rect x="535" y="99" width="50" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="560" y="109" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KHÔNG</text>
+    <path d="M392,184 L392,248" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#constructor-validation-gate-dark-arrow)"/>
+    <rect x="397" y="209" width="28" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="411" y="219" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ</text>
+    <path d="M492,284 L572,284" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#constructor-validation-gate-dark-arrow)"/>
+    <rect x="40" y="84" width="176" height="72" rx="6" fill="#1b1b1d"/><rect x="40" y="84" width="176" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="128" y="116" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">new Order(</text><text x="128" y="133" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">customerId, total)</text>
+    <polygon points="264,120 392,56 520,120 392,184" fill="#1b1b1d"/><polygon points="264,120 392,56 520,120 392,184" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/>
+    <text x="392" y="116.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">customerId dương</text>
+    <text x="392" y="133.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">và total không âm?</text>
+    <rect x="600" y="84" width="248" height="72" rx="6" fill="#1b1b1d"/><rect x="600" y="84" width="248" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="724" y="107" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ném exception,</text><text x="724" y="124" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">không có object nào</text><text font-weight="500" x="724" y="142" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">ArgumentOutOfRangeException</text>
+    <rect x="292" y="248" width="200" height="72" rx="6" fill="#1b1b1d"/><rect x="292" y="248" width="200" height="72" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="392" y="280" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Order hợp lệ,</text><text x="392" y="297" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Status = Draft</text>
+    <rect x="572" y="248" width="240" height="72" rx="6" fill="#1b1b1d"/><rect x="572" y="248" width="240" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="692" y="280" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Mọi hàm nhận Order</text><text x="692" y="297" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">không cần kiểm tra lại</text>
+    <line x1="40" y1="352" x2="920" y2="352" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/><text font-weight="500" x="40" y="372" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="384" width="28" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="76" y="393.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Đường duy nhất tạo ra Order</text><rect x="254" y="384" width="28" height="12" rx="2" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="290" y="393.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Bước / kết quả</text><line x1="408" y1="390" x2="436" y2="390" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#constructor-validation-gate-dark-arrow)"/><text x="444" y="393.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Rẽ nhánh theo điều kiện</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="420" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git lưu snapshot, không lưu diff</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Snapshot</p>
+    <h1>Git lưu snapshot, không lưu diff</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="git-snapshots-title git-snapshots-desc">
+  <title id="git-snapshots-title">Git lưu snapshot, không lưu diff</title>
+  <desc id="git-snapshots-desc">Ba commit liên tiếp. Commit A lưu file1 v1 và file2 v1. Commit B lưu file2 v2 mới và trỏ lại file1 v1 không đổi. Commit C lưu file1 v2 mới và trỏ lại file2 v2 không đổi.</desc>
+  <defs><marker id="git-snapshots-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="git-snapshots-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M240,60 L380,60" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#git-snapshots-arrow)"/>
+    <path d="M580,60 L720,60" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#git-snapshots-arrow)"/>
+    <path d="M380,112 L240,112" fill="none" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#git-snapshots-arrow)"/>
+    <rect x="278.5" y="91" width="63" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="310" y="101" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRỎ LẠI</text>
+    <path d="M720,156 L580,156" fill="none" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#git-snapshots-arrow)"/>
+    <rect x="618.5" y="135" width="63" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="650" y="145" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRỎ LẠI</text>
+    <rect x="40" y="40" width="200" height="160" rx="6" fill="#ffffff"/><rect x="40" y="40" width="200" height="160" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <path d="M46,40 H234 Q240,40 240,46 V80 H40 V46 Q40,40 46,40 Z" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/>
+    <text x="140" y="65" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Commit A</text>
+    <rect x="56" y="96" width="168" height="32" rx="4" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="140" y="116" fill="#101215" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file1 v1</text>
+    <rect x="56" y="140" width="168" height="32" rx="4" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="140" y="160" fill="#101215" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file2 v1</text>
+    <rect x="380" y="40" width="200" height="160" rx="6" fill="#ffffff"/><rect x="380" y="40" width="200" height="160" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <path d="M386,40 H574 Q580,40 580,46 V80 H380 V46 Q380,40 386,40 Z" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/>
+    <text x="480" y="65" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Commit B</text>
+    <rect x="396" y="96" width="168" height="32" rx="4" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="480" y="116" fill="#383e46" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file1 v1</text>
+    <rect x="396" y="140" width="168" height="32" rx="4" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/>
+    <text x="480" y="160" fill="#101215" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file2 v2</text>
+    <rect x="720" y="40" width="200" height="160" rx="6" fill="#ffffff"/><rect x="720" y="40" width="200" height="160" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <path d="M726,40 H914 Q920,40 920,46 V80 H720 V46 Q720,40 726,40 Z" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/>
+    <text x="820" y="65" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Commit C</text>
+    <rect x="736" y="96" width="168" height="32" rx="4" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/>
+    <text x="820" y="116" fill="#101215" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file1 v2</text>
+    <rect x="736" y="140" width="168" height="32" rx="4" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="820" y="160" fill="#383e46" font-size="13" font-weight="400" font-family="'Geist Mono', monospace" text-anchor="middle">file2 v2</text>
+    <line x1="40" y1="228" x2="920" y2="228" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="248" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="260" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="269.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Bản mới được lưu</text><rect x="212" y="260" width="28" height="12" rx="2" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="248" y="269.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Không đổi: trỏ lại bản cũ</text><line x1="432" y1="266" x2="460" y2="266" stroke="#383e46" stroke-width="1.6" marker-end="url(#git-snapshots-arrow)"/><text x="468" y="269.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Commit sau nối commit trước</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="304" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

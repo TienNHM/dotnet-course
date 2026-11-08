@@ -948,21 +948,10 @@ Lead dùng cùng cách, so sánh `AssignedToId` thay cho `OwnerId`. Contact ki�
 
 Thứ tự bắt buộc: **ghi database trước, push sau** ([bài 11.7](module-11-signalr/11.7-ihubcontext-server-push-outside-hub.md), [bài 11.8](module-11-signalr/11.8-notification-center-pattern.md)). Push là "gửi rồi quên": SalesRep đang offline thì mất. Bản ghi trong database thì còn, và client đọc lại qua `GET /api/notifications`.
 
-```mermaid
-sequenceDiagram
-    participant A as Admin
-    participant L as LeadsController
-    participant S as LeadService
-    participant D as PostgreSQL
-    participant P as INotificationPublisher
-    participant C as Client của SalesRep
-    A->>L: POST /api/leads/{id}/assign
-    L->>S: AssignAsync(leadId, salesRepId)
-    S->>D: cập nhật AssignedToId + thêm Notification (một lần SaveChanges)
-    S->>P: PublishAsync(salesRepId, dto)
-    P-->>C: ReceiveNotification(dto) nếu đang kết nối
-    C->>L: GET /api/notifications khi kết nối lại
-```
+![Admin gọi POST assign trên LeadsController, controller gọi LeadService.AssignAsync. Service cập nhật AssignedToId và thêm Notification vào PostgreSQL trong một lần SaveChanges, rồi gọi INotificationPublisher.PublishAsync. Publisher đẩy ReceiveNotification tới client của SalesRep nếu đang kết nối; khi kết nối lại, client gọi GET /api/notifications.](./img/assign-lead-notification-sequence.png#gh-light-mode-only)
+![Admin gọi POST assign trên LeadsController, controller gọi LeadService.AssignAsync. Service cập nhật AssignedToId và thêm Notification vào PostgreSQL trong một lần SaveChanges, rồi gọi INotificationPublisher.PublishAsync. Publisher đẩy ReceiveNotification tới client của SalesRep nếu đang kết nối; khi kết nối lại, client gọi GET /api/notifications.](./img/assign-lead-notification-sequence-dark.png#gh-dark-mode-only)
+
+<small>File gốc: [nền sáng](../../diagrams/stage-03-aspnet-core-backend/assign-lead-notification-sequence.html) · [nền tối](../../diagrams/stage-03-aspnet-core-backend/assign-lead-notification-sequence-dark.html)</small>
 
 Hub có kiểu và interface của client, theo [bài 11.3](module-11-signalr/11.3-setup-signalr-server.md):
 

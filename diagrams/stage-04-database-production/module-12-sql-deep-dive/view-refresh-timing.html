@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thời điểm view được cập nhật so với lệnh ghi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Indexed view và materialized view</p>
+    <h1>Thời điểm view được cập nhật so với lệnh ghi</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 492" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="view-refresh-timing-title view-refresh-timing-desc">
+  <title id="view-refresh-timing-title">Thời điểm view được cập nhật so với lệnh ghi</title>
+  <desc id="view-refresh-timing-desc">SQL Server cập nhật indexed view trong cùng transaction với INSERT nên ghi chậm hơn nhưng đọc luôn mới; PostgreSQL ghi xong ngay, view chỉ được tính lại khi job REFRESH chạy theo lịch nên đọc view có thể cũ.</desc>
+  <defs><marker id="view-refresh-timing-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="view-refresh-timing-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect x="40" y="24" width="880" height="124" rx="8" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.16)" stroke-width="1.5"/><text x="56" y="46" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">SQL SERVER: INDEXED VIEW</text>
+    <rect x="40" y="164" width="880" height="220" rx="8" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.16)" stroke-width="1.5"/><text x="56" y="186" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">POSTGRESQL: MATERIALIZED VIEW</text>
+    <path d="M300,96.0 L360,96.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/>
+    <path d="M600,96.0 L660,96.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/>
+    <path d="M300,236.0 L360,236.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/>
+    <path d="M300,332.0 L360,332.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/>
+    <path d="M600,332.0 L660,332.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/>
+    <rect x="60" y="60" width="240" height="72" rx="6" fill="#ffffff"/><rect x="60" y="60" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="180" y="100.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">INSERT vào Leads</text>
+    <rect x="360" y="60" width="240" height="72" rx="6" fill="#ffffff"/><rect x="360" y="60" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="480" y="83" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cập nhật view trong</text><text x="480" y="100" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">CÙNG transaction</text><text font-weight="500" x="480" y="118" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">vw_CustomerLeadCount</text>
+    <rect x="660" y="60" width="240" height="72" rx="6" fill="#ffffff"/><rect x="660" y="60" width="240" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="780" y="92" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ghi chậm hơn,</text><text x="780" y="109" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">đọc view luôn mới</text>
+    <rect x="60" y="200" width="240" height="72" rx="6" fill="#ffffff"/><rect x="60" y="200" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="180" y="240.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">INSERT vào leads</text>
+    <rect x="360" y="200" width="240" height="72" rx="6" fill="#ffffff"/><rect x="360" y="200" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="480" y="232" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ghi xong ngay,</text><text x="480" y="249" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">view không đổi</text>
+    <rect x="60" y="296" width="240" height="72" rx="6" fill="#ffffff"/><rect x="60" y="296" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="180" y="328" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Job chạy REFRESH</text><text x="180" y="345" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">theo lịch</text>
+    <rect x="360" y="296" width="240" height="72" rx="6" fill="#ffffff"/><rect x="360" y="296" width="240" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="480" y="327.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tính lại view</text><text font-weight="500" x="480" y="345.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">mv_monthly_revenue</text>
+    <rect x="660" y="296" width="240" height="72" rx="6" fill="#ffffff"/><rect x="660" y="296" width="240" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="780" y="328" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Đọc view: dữ liệu cũ</text><text x="780" y="345" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">tới lần refresh sau</text>
+    <line x1="40" y1="412" x2="920" y2="412" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="432" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="444" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="453.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Hệ quả cho người đọc</text><line x1="224" y1="450" x2="252" y2="450" stroke="#383e46" stroke-width="1.6" marker-end="url(#view-refresh-timing-arrow)"/><text x="260" y="453.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Thứ tự các bước</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="480" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

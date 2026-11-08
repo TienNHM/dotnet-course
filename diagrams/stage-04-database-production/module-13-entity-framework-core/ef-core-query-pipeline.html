@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EF Core biến LINQ thành đối tượng</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Query pipeline</p>
+    <h1>EF Core biến LINQ thành đối tượng</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 392" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ef-core-query-pipeline-title ef-core-query-pipeline-desc">
+  <title id="ef-core-query-pipeline-title">EF Core biến LINQ thành đối tượng</title>
+  <desc id="ef-core-query-pipeline-desc">Truy vấn LINQ thành expression tree, qua query pipeline dịch sang SQL và chạy trên database; DbDataReader trả dòng kết quả, EF Core tạo đối tượng, change tracker lưu bản sao gốc rồi entity trả về code.</desc>
+  <defs><marker id="ef-core-query-pipeline-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="ef-core-query-pipeline-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M224,88 L272,88" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M224,248 L272,248" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M456,88 L504,88" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M456,248 L504,248" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M688,88 L736,88" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M688,248 L736,248" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <path d="M828.0,128 V160 Q828.0,168 820.0,168 H140.0 Q132.0,168 132.0,176 V208" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/>
+    <rect x="40" y="48" width="184" height="80" rx="6" fill="#ffffff"/><rect x="40" y="48" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="132" y="92.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">LINQ query</text>
+    <rect x="272" y="48" width="184" height="80" rx="6" fill="#ffffff"/><rect x="272" y="48" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="364" y="92.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Expression tree</text>
+    <rect x="504" y="48" width="184" height="80" rx="6" fill="#ffffff"/><rect x="504" y="48" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="596" y="83.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Query pipeline</text><text font-weight="500" x="596" y="101.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">dịch sang SQL</text>
+    <rect x="736" y="48" width="184" height="80" rx="6" fill="#ffffff"/><rect x="736" y="48" width="184" height="80" rx="6" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="828" y="92.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Database</text>
+    <rect x="40" y="208" width="184" height="80" rx="6" fill="#ffffff"/><rect x="40" y="208" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="132" y="252.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">DbDataReader</text>
+    <rect x="272" y="208" width="184" height="80" rx="6" fill="#ffffff"/><rect x="272" y="208" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="364" y="243.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Materialize</text><text font-weight="500" x="364" y="261.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">tạo đối tượng</text>
+    <rect x="504" y="208" width="184" height="80" rx="6" fill="#ffffff"/><rect x="504" y="208" width="184" height="80" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="596" y="243.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Change tracker</text><text font-weight="500" x="596" y="261.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">lưu bản sao gốc</text>
+    <rect x="736" y="208" width="184" height="80" rx="6" fill="#ffffff"/><rect x="736" y="208" width="184" height="80" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="828" y="252.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Entity trả về code</text>
+    <line x1="40" y1="312" x2="920" y2="312" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="332" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="344" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="353.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Nơi EF Core giữ bản sao gốc</text><rect x="264" y="344" width="28" height="12" rx="2" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="300" y="353.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Cơ sở dữ liệu</text><line x1="408" y1="350" x2="436" y2="350" stroke="#383e46" stroke-width="1.6" marker-end="url(#ef-core-query-pipeline-arrow)"/><text x="444" y="353.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Hướng chạy</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="380" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

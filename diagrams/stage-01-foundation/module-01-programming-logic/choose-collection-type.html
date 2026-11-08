@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chọn cấu trúc dữ liệu theo thao tác chính</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Quyết định</p>
+    <h1>Chọn cấu trúc dữ liệu theo thao tác chính</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 532" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="choose-collection-type-title choose-collection-type-desc">
+  <title id="choose-collection-type-title">Chọn cấu trúc dữ liệu theo thao tác chính</title>
+  <desc id="choose-collection-type-desc">Từ nhu cầu lưu nhiều phần tử, hỏi thao tác chính là gì: duyệt tuần tự số lượng cố định chọn array; thêm hoặc xoá ở cuối và duyệt chọn List; tra theo khoá chọn Dictionary; kiểm tra đã tồn tại chưa chọn HashSet; vào trước ra trước chọn Queue; vào sau ra trước chọn Stack.</desc>
+  <defs><marker id="choose-collection-type-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="choose-collection-type-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M208,232 L272,232" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <path d="M432,72 L752,72" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="475" y="53" width="234" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="63" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">DUYỆT TUẦN TỰ, SỐ LƯỢNG CỐ ĐỊNH</text>
+    <path d="M432,136 L752,136" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="507" y="117" width="170" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="127" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">THÊM/XOÁ Ở CUỐI, DUYỆT</text>
+    <path d="M432,200 L752,200" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="539" y="181" width="106" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="191" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRA THEO KHOÁ</text>
+    <path d="M432,264 L752,264" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="500" y="245" width="184" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="255" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KIỂM TRA ĐÃ TỒN TẠI CHƯA</text>
+    <path d="M432,328 L752,328" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="521.5" y="309" width="141" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="319" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VÀO TRƯỚC RA TRƯỚC</text>
+    <path d="M432,392 L752,392" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/>
+    <rect x="528.5" y="373" width="127" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="592" y="383" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">VÀO SAU RA TRƯỚC</text>
+    <rect x="40" y="200" width="168" height="64" rx="6" fill="#ffffff"/><rect x="40" y="200" width="168" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="124" y="228" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cần lưu nhiều</text><text x="124" y="245" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">phần tử</text>
+    <rect x="272" y="48" width="160" height="368" rx="6" fill="#ffffff"/><rect x="272" y="48" width="160" height="368" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="352" y="228" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Thao tác chính</text><text x="352" y="245" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">là gì?</text>
+    <rect x="752" y="48" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="48" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="77" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">array</text>
+    <rect x="752" y="112" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="112" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="141" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">List</text>
+    <rect x="752" y="176" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="176" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="205" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">Dictionary</text>
+    <rect x="752" y="240" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="240" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="269" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">HashSet</text>
+    <rect x="752" y="304" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="304" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="333" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">Queue</text>
+    <rect x="752" y="368" width="168" height="48" rx="6" fill="#ffffff"/><rect x="752" y="368" width="168" height="48" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="836" y="397" fill="#101215" font-size="13" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">Stack</text>
+    <line x1="40" y1="448" x2="920" y2="448" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="468" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="480" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="489.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Câu hỏi quyết định</text><rect x="224" y="480" width="28" height="12" rx="2" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="260" y="489.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Cấu trúc nên chọn</text><line x1="408" y1="486" x2="436" y2="486" stroke="#383e46" stroke-width="1.6" marker-end="url(#choose-collection-type-arrow)"/><text x="444" y="489.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Rẽ nhánh theo thao tác chính</text>
+<text id="tiennhm-copyright" x="936" y="520" text-anchor="end" fill="#383e46" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>
