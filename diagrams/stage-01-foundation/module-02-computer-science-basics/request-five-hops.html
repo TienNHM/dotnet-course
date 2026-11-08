@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Năm chặng của một request</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #fafaf7;
+      --color-ink:    #1c1e21;
+      --color-muted:  #525860;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Process · Request</p>
+    <h1>Năm chặng của một request</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="request-five-hops-title request-five-hops-desc">
+  <title id="request-five-hops-title">Năm chặng của một request</title>
+  <desc id="request-five-hops-desc">Request đi từ trình duyệt qua DNS, TCP và TLS, rồi HTTP request tới backend api-a hoặc api-b, qua bước xác thực token và cuối cùng truy vấn database.</desc>
+  <defs><marker id="request-five-hops-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#525860"/></marker><marker id="request-five-hops-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#18816a"/></marker></defs>
+  <rect width="100%" height="100%" fill="#fafaf7"/>
+  <path d="M240,88.0 L380,88.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/>
+    <rect x="284.5" y="68" width="51" height="12" rx="2" fill="#fafaf7"/><text x="310" y="77" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">1 · DNS</text>
+    <path d="M580,88.0 L720,88.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/>
+    <rect x="606.5" y="68" width="87" height="12" rx="2" fill="#fafaf7"/><text x="650" y="77" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">2 · TCP + TLS</text>
+    <path d="M820.0,136 V160.0 Q820.0,168.0 812.0,168.0 H148.0 Q140.0,168.0 140.0,176.0 V200" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/>
+    <rect x="442.5" y="162" width="75" height="12" rx="2" fill="#fafaf7"/><text x="480" y="171" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">3 · REQUEST</text>
+    <path d="M240,248.0 L380,248.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/>
+    <rect x="278.5" y="228" width="63" height="12" rx="2" fill="#fafaf7"/><text x="310" y="237" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">4 · XỬ LÝ</text>
+    <path d="M580,248.0 L720,248.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/>
+    <rect x="609.5" y="228" width="81" height="12" rx="2" fill="#fafaf7"/><text x="650" y="237" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">5 · TRUY VẤN</text>
+    <rect x="40" y="40" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="40" y="40" width="200" height="96" rx="6" fill="rgba(28,30,33,0.02)" stroke="rgba(28,30,33,0.30)" stroke-width="1" stroke-dasharray="4,3"/><text x="140" y="81.5" fill="#525860" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">CHẶNG 0</text><text x="140" y="99.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Trình duyệt</text>
+    <rect x="380" y="40" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="380" y="40" width="200" height="96" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="480" y="73" fill="#525860" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">DNS</text><text x="480" y="91" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Phân giải</text><text x="480" y="108" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">tên miền</text>
+    <rect x="720" y="40" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="720" y="40" width="200" height="96" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="820" y="73" fill="#525860" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">TCP + TLS</text><text x="820" y="91" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Kết nối</text><text x="820" y="108" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">HTTPS</text>
+    <rect x="40" y="200" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="40" y="200" width="200" height="96" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="140" y="232.5" fill="#525860" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">HTTP</text><text x="140" y="250.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Backend</text><text x="140" y="268.5" fill="#525860" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">api-a hoặc api-b</text>
+    <rect x="380" y="200" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="380" y="200" width="200" height="96" rx="6" fill="rgba(24,129,106,0.08)" stroke="#18816a" stroke-width="1"/><text x="480" y="241.5" fill="#18816a" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">XỬ LÝ</text><text x="480" y="259.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Xác thực token</text>
+    <rect x="720" y="200" width="200" height="96" rx="6" fill="#fafaf7"/><rect x="720" y="200" width="200" height="96" rx="6" fill="rgba(28,30,33,0.05)" stroke="#525860" stroke-width="1"/><text x="820" y="241.5" fill="#525860" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">TRUY VẤN</text><text x="820" y="259.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Database</text>
+    <line x1="40" y1="320" x2="920" y2="320" stroke="rgba(28,30,33,0.10)" stroke-width="0.8"/><text x="40" y="340" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="352" width="28" height="12" rx="2" fill="rgba(24,129,106,0.08)" stroke="#18816a" stroke-width="1"/><text x="76" y="361.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Nơi trả về 401</text><rect x="194" y="352" width="28" height="12" rx="2" fill="rgba(28,30,33,0.05)" stroke="#525860" stroke-width="1"/><text x="230" y="361.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Lưu trữ</text><rect x="310" y="352" width="28" height="12" rx="2" fill="rgba(28,30,33,0.02)" stroke="rgba(28,30,33,0.30)" stroke-width="1" stroke-dasharray="4,3"/><text x="346" y="361.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Điểm xuất phát</text><line x1="464" y1="358" x2="492" y2="358" stroke="#525860" stroke-width="1.3" marker-end="url(#request-five-hops-arrow)"/><text x="500" y="361.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Thứ tự của request</text>
+<text id="tiennhm-copyright" x="936" y="392" text-anchor="end" fill="#525860" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>
