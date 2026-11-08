@@ -7,6 +7,9 @@ import { courseTree, glossary, roadmap } from './course'
 const root = resolve(__dirname, '..')
 // Workflow truyền REPO_URL của repo đang build, nên bản fork tự trỏ về chính nó
 const repo = process.env.REPO_URL || 'https://github.com/TienNHM/dotnet-course'
+// Địa chỉ công khai của website: thẻ og:image và og:url bắt buộc phải là URL tuyệt đối
+const siteUrl = (process.env.SITE_URL || 'https://dotnet-course.tiennhm.io.vn').replace(/\/$/, '')
+const ogImage = `${siteUrl}/og-image.png`
 
 function sidebar(): DefaultTheme.SidebarItem[] {
   const start = [roadmap(), glossary()].filter((p) => p !== null)
@@ -44,7 +47,29 @@ export default withMermaid(
     srcExclude: ['README.md', 'CONTRIBUTING.md', 'review/**', 'diagrams/**', 'scripts/**', 'node_modules/**'],
     // Link "File gốc" của sơ đồ trỏ sang diagrams/*.html, được chép sang lúc build (xem buildEnd)
     ignoreDeadLinks: [/^https?:\/\/localhost/, /\/diagrams\//],
-    head: [['link', { rel: 'icon', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟣</text></svg>' }]],
+    head: [['link', { rel: 'icon', href: 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🟣</text></svg>' }],
+      ['meta', { property: 'og:type', content: 'website' }],
+      ['meta', { property: 'og:site_name', content: '.NET Backend: Zero → Senior' }],
+      ['meta', { property: 'og:locale', content: 'vi_VN' }],
+      ['meta', { property: 'og:image', content: ogImage }],
+      ['meta', { property: 'og:image:width', content: '2400' }],
+      ['meta', { property: 'og:image:height', content: '1260' }],
+      ['meta', { property: 'og:image:alt', content: '.NET Backend: Zero → Senior, lộ trình học bằng tiếng Việt với 6 giai đoạn, 19 module và 4 dự án' }],
+      ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+      ['meta', { name: 'twitter:image', content: ogImage }],
+    ],
+
+    // Mỗi bài có thẻ og:title, og:description, og:url riêng để link chia sẻ hiện đúng tiêu đề bài
+    transformHead({ pageData, title, description }) {
+      const path = pageData.relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
+      return [
+        ['meta', { property: 'og:title', content: title }],
+        ['meta', { property: 'og:description', content: description }],
+        ['meta', { property: 'og:url', content: `${siteUrl}/${path}` }],
+        ['meta', { name: 'twitter:title', content: title }],
+        ['meta', { name: 'twitter:description', content: description }],
+      ]
+    },
 
     // Thẻ description của mỗi bài lấy từ dòng tóm tắt
     transformPageData(pageData, { siteConfig }) {
