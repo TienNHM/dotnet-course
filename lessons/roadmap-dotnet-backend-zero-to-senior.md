@@ -6,17 +6,10 @@
 
 ## Toàn cảnh lộ trình
 
-```mermaid
-flowchart LR
-    S1["Giai đoạn 1<br/>Foundation<br/>Module 0-3"] --> S2["Giai đoạn 2<br/>C# Professional<br/>Module 4-7"]
-    S2 --> P1(["Project 1<br/>Inventory System"])
-    P1 --> S3["Giai đoạn 3<br/>ASP.NET Core<br/>Module 8-11"]
-    S3 --> P2(["Project 2<br/>CRM Backend API"])
-    P2 --> S4["Giai đoạn 4<br/>Database + Production<br/>Module 12-15"]
-    S4 --> P3(["Project 3<br/>Production CRM"])
-    P3 -.->|nâng cao, tùy chọn| S5["Giai đoạn 5<br/>Senior Engineering<br/>Module 16-19"]
-    S5 --> F(["Final Project<br/>Enterprise CRM / ERP"])
-```
+![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Final Project Enterprise CRM / ERP](./img/roadmap-overview.png#gh-light-mode-only)
+![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Final Project Enterprise CRM / ERP](./img/roadmap-overview-dark.png#gh-dark-mode-only)
+
+<small>File gốc: [nền sáng](../diagrams/roadmap-overview.html) · [nền tối](../diagrams/roadmap-overview-dark.html)</small>
 
 Bốn hình tròn là nơi bạn **dừng đọc và bắt tay làm**. Chúng không phải bài tập minh hoạ mà là bốn phiên bản của cùng một sản phẩm.
 
@@ -32,26 +25,10 @@ Bốn hình tròn là nơi bạn **dừng đọc và bắt tay làm**. Chúng kh
 
 Lộ trình đi tuyến tính, nhưng kiến thức thì không. Sơ đồ dưới cho thấy phụ thuộc thật sự — hữu ích khi bạn đã biết một phần và muốn nhảy cóc:
 
-```mermaid
-flowchart TD
-    LOGIC["Tư duy lập trình"] --> CS["Ngữ nghĩa C#"]
-    HTTP["HTTP và mô hình client-server"] --> PIPE["Pipeline ASP.NET Core"]
-    CS --> OOP["OOP và thiết kế lớp"]
-    OOP --> ASYNC["async / await"]
-    OOP --> DI["Dependency Injection"]
-    ASYNC --> PIPE
-    DI --> PIPE
-    PIPE --> API["Web API"]
-    API --> AUTH["Xác thực và phân quyền"]
-    API --> RT["Thời gian thực - SignalR"]
-    SQL["SQL quan hệ"] --> EF["EF Core"]
-    EF --> API
-    EF --> PERF["Kỹ thuật hiệu năng"]
-    API --> CLEAN["Clean Architecture"]
-    CLEAN --> DIST["Hệ phân tán"]
-    DIST --> MICRO["Microservices"]
-    PERF --> MICRO
-```
+![Sơ đồ phụ thuộc kiến thức: Tư duy lập trình dẫn tới Ngữ nghĩa C# rồi OOP, từ OOP tách ra async/await và Dependency Injection, cả hai cùng HTTP đổ vào Pipeline ASP.NET Core rồi Web API; nhánh SQL quan hệ đi qua EF Core vào Web API và sang Kỹ thuật hiệu năng; từ Web API mở ra Xác thực và phân quyền, SignalR và Clean Architecture; Clean Architecture dẫn tới Hệ phân tán rồi Microservices, nơi Kỹ thuật hiệu năng cũng đổ vào](./img/roadmap-prerequisites.png#gh-light-mode-only)
+![Sơ đồ phụ thuộc kiến thức: Tư duy lập trình dẫn tới Ngữ nghĩa C# rồi OOP, từ OOP tách ra async/await và Dependency Injection, cả hai cùng HTTP đổ vào Pipeline ASP.NET Core rồi Web API; nhánh SQL quan hệ đi qua EF Core vào Web API và sang Kỹ thuật hiệu năng; từ Web API mở ra Xác thực và phân quyền, SignalR và Clean Architecture; Clean Architecture dẫn tới Hệ phân tán rồi Microservices, nơi Kỹ thuật hiệu năng cũng đổ vào](./img/roadmap-prerequisites-dark.png#gh-dark-mode-only)
+
+<small>File gốc: [nền sáng](../diagrams/roadmap-prerequisites.html) · [nền tối](../diagrams/roadmap-prerequisites-dark.html)</small>
 
 Hai nhánh **C#** và **SQL** chạy song song và chỉ gặp nhau ở EF Core. Nếu bạn đã vững SQL, giai đoạn 4 sẽ nhẹ hơn nhiều so với người học tuần tự.
 
@@ -61,14 +38,10 @@ Ngược lại, đừng nhảy thẳng vào Microservices. Nó nằm cuối sơ 
 
 Giữ nguyên một bài toán duy nhất xuyên suốt: **CRM quản lý khách hàng và cơ hội bán hàng**.
 
-```mermaid
-flowchart TD
-    G1["Giai đoạn 1-2<br/>Khách hàng là vài object trong bộ nhớ<br/>Rule nghiệp vụ viết thẳng trong service"]
-    G2["Giai đoạn 3<br/>Mở API GET/POST customers<br/>JWT bảo vệ endpoint, SignalR báo realtime"]
-    G3["Giai đoạn 4<br/>Dữ liệu xuống SQL qua EF Core<br/>Cache danh sách đọc nhiều, job chạy nền, đóng Docker"]
-    G4["Giai đoạn 5<br/>Tách bounded context Sales và Billing<br/>Domain event, đo hiệu năng endpoint quan trọng"]
-    G1 --> G2 --> G3 --> G4
-```
+![Sơ đồ trục dự án CRM lớn dần qua bốn bước: giai đoạn 1-2 khách hàng là vài object trong bộ nhớ; giai đoạn 3 mở API GET/POST customers, JWT và SignalR; giai đoạn 4 dữ liệu xuống SQL qua EF Core cùng cache, job nền và Docker; giai đoạn 5 tách bounded context Sales và Billing, domain event và đo hiệu năng](./img/roadmap-project-spine.png#gh-light-mode-only)
+![Sơ đồ trục dự án CRM lớn dần qua bốn bước: giai đoạn 1-2 khách hàng là vài object trong bộ nhớ; giai đoạn 3 mở API GET/POST customers, JWT và SignalR; giai đoạn 4 dữ liệu xuống SQL qua EF Core cùng cache, job nền và Docker; giai đoạn 5 tách bounded context Sales và Billing, domain event và đo hiệu năng](./img/roadmap-project-spine-dark.png#gh-dark-mode-only)
+
+<small>File gốc: [nền sáng](../diagrams/roadmap-project-spine.html) · [nền tối](../diagrams/roadmap-project-spine-dark.html)</small>
 
 Cách học này trả lời được câu hỏi mà danh sách chủ đề không trả lời được: **vì sao cần thứ này?** Bạn gặp cache sau khi đã thấy danh sách khách hàng chậm, gặp message bus sau khi đã thấy hai service gọi thẳng nhau gây lỗi dây chuyền.
 
@@ -82,21 +55,10 @@ Cách học này trả lời được câu hỏi mà danh sách chủ đề khô
 
 Đây là thứ bạn sẽ dựng được sau Final Project. Không cần hiểu hết ngay — quay lại xem sau mỗi giai đoạn sẽ thấy thêm một mảnh đã sáng ra:
 
-```mermaid
-flowchart TB
-    CLIENT["Client<br/>web, mobile, hệ thống tích hợp"] -->|HTTPS| GW["API Gateway<br/>YARP"]
-    GW --> API["ASP.NET Core Web API<br/>controller, middleware, filter"]
-    API --> AUTH["Xác thực và phân quyền<br/>JWT, permission theo resource"]
-    API --> APP["Tầng application<br/>use case, validation"]
-    APP --> DOMAIN["Tầng domain<br/>entity, rule, domain event"]
-    APP --> EF["EF Core"]
-    EF --> DB[("SQL Server<br/>PostgreSQL")]
-    APP --> CACHE[("Redis<br/>cache đọc nhiều")]
-    APP --> JOBS["Tác vụ nền<br/>Hangfire, Quartz.NET"]
-    APP --> BUS["Message bus<br/>RabbitMQ, Kafka"]
-    API -.->|realtime| HUB["SignalR hub"]
-    API --> OBS["Logging và metric<br/>Serilog, health check"]
-```
+![Sơ đồ kiến trúc đích: Client gọi API Gateway YARP qua HTTPS rồi vào ASP.NET Core Web API; API gọi xác thực và phân quyền, logging và metric, và tầng application; tầng application dùng tầng domain, EF Core xuống SQL Server hoặc PostgreSQL, Redis, tác vụ nền Hangfire hoặc Quartz.NET, và message bus RabbitMQ hoặc Kafka; đường nét đứt từ API sang SignalR hub là kênh realtime tách khỏi request HTTP](./img/roadmap-target-architecture.png#gh-light-mode-only)
+![Sơ đồ kiến trúc đích: Client gọi API Gateway YARP qua HTTPS rồi vào ASP.NET Core Web API; API gọi xác thực và phân quyền, logging và metric, và tầng application; tầng application dùng tầng domain, EF Core xuống SQL Server hoặc PostgreSQL, Redis, tác vụ nền Hangfire hoặc Quartz.NET, và message bus RabbitMQ hoặc Kafka; đường nét đứt từ API sang SignalR hub là kênh realtime tách khỏi request HTTP](./img/roadmap-target-architecture-dark.png#gh-dark-mode-only)
+
+<small>File gốc: [nền sáng](../diagrams/roadmap-target-architecture.html) · [nền tối](../diagrams/roadmap-target-architecture-dark.html)</small>
 
 Mũi tên đứt nét từ API sang SignalR là chủ ý: kênh thời gian thực **không** nằm trên đường đi của request HTTP thông thường.
 

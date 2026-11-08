@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trục dự án: một bài toán lớn dần</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #e3e3e3;
+      --color-muted:  #b4b9c0;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Process · Trục dự án</p>
+    <h1>Trục dự án: một bài toán lớn dần</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 632" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="roadmap-project-spine-dark-title roadmap-project-spine-dark-desc">
+  <title id="roadmap-project-spine-dark-title">Trục dự án: một bài toán lớn dần</title>
+  <desc id="roadmap-project-spine-dark-desc">Bài toán CRM lớn lên qua bốn bước: giai đoạn 1-2 là vài object trong bộ nhớ; giai đoạn 3 mở API có JWT và SignalR; giai đoạn 4 đưa dữ liệu xuống SQL qua EF Core cùng cache, job nền và Docker; giai đoạn 5 tách bounded context, dùng domain event và đo hiệu năng.</desc>
+  <defs><marker id="roadmap-project-spine-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#b4b9c0"/></marker><marker id="roadmap-project-spine-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#25c19f"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <path d="M156.0,124 L156.0,160" fill="none" stroke="#b4b9c0" stroke-width="1.3" marker-end="url(#roadmap-project-spine-dark-arrow)"/>
+    <path d="M156.0,244 L156.0,280" fill="none" stroke="#b4b9c0" stroke-width="1.3" marker-end="url(#roadmap-project-spine-dark-arrow)"/>
+    <path d="M156.0,364 L156.0,400" fill="none" stroke="#b4b9c0" stroke-width="1.3" marker-end="url(#roadmap-project-spine-dark-arrow)"/>
+    <rect x="40" y="40" width="880" height="84" rx="6" fill="#1b1b1d"/><rect x="40" y="40" width="880" height="84" rx="6" fill="#242526" stroke="#e3e3e3" stroke-width="1"/><path d="M46,40 H272 V124 H46 Q40,124 40,118 V46 Q40,40 46,40 Z" fill="rgba(227,227,227,0.06)" stroke="#e3e3e3" stroke-width="1"/>
+    <text x="60" y="74" fill="#b4b9c0" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">GIAI ĐOẠN 1-2</text><text x="60" y="98" fill="#e3e3e3" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Trong bộ nhớ</text>
+    <circle cx="296" cy="82.0" r="2.5" fill="#25c19f"/><text x="308" y="86.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Khách hàng là vài object trong bộ nhớ</text>
+    <circle cx="616" cy="82.0" r="2.5" fill="#25c19f"/><text x="628" y="86.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Rule nghiệp vụ viết thẳng trong service</text>
+    <rect x="40" y="160" width="880" height="84" rx="6" fill="#1b1b1d"/><rect x="40" y="160" width="880" height="84" rx="6" fill="#242526" stroke="#e3e3e3" stroke-width="1"/><path d="M46,160 H272 V244 H46 Q40,244 40,238 V166 Q40,160 46,160 Z" fill="rgba(227,227,227,0.06)" stroke="#e3e3e3" stroke-width="1"/>
+    <text x="60" y="194" fill="#b4b9c0" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">GIAI ĐOẠN 3</text><text x="60" y="218" fill="#e3e3e3" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Mở thành API</text>
+    <circle cx="296" cy="192.0" r="2.5" fill="#25c19f"/><text x="308" y="196.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Mở API GET/POST customers</text>
+    <circle cx="296" cy="212.0" r="2.5" fill="#25c19f"/><text x="308" y="216.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">JWT bảo vệ endpoint</text>
+    <circle cx="616" cy="192.0" r="2.5" fill="#25c19f"/><text x="628" y="196.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">SignalR báo realtime</text>
+    <rect x="40" y="280" width="880" height="84" rx="6" fill="#1b1b1d"/><rect x="40" y="280" width="880" height="84" rx="6" fill="#242526" stroke="#e3e3e3" stroke-width="1"/><path d="M46,280 H272 V364 H46 Q40,364 40,358 V286 Q40,280 46,280 Z" fill="rgba(227,227,227,0.06)" stroke="#e3e3e3" stroke-width="1"/>
+    <text x="60" y="314" fill="#b4b9c0" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">GIAI ĐOẠN 4</text><text x="60" y="338" fill="#e3e3e3" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Xuống database</text>
+    <circle cx="296" cy="312.0" r="2.5" fill="#25c19f"/><text x="308" y="316.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Dữ liệu xuống SQL qua EF Core</text>
+    <circle cx="296" cy="332.0" r="2.5" fill="#25c19f"/><text x="308" y="336.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Cache danh sách đọc nhiều</text>
+    <circle cx="616" cy="312.0" r="2.5" fill="#25c19f"/><text x="628" y="316.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Job chạy nền</text>
+    <circle cx="616" cy="332.0" r="2.5" fill="#25c19f"/><text x="628" y="336.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Đóng gói Docker</text>
+    <rect x="40" y="400" width="880" height="84" rx="6" fill="#1b1b1d"/><rect x="40" y="400" width="880" height="84" rx="6" fill="#242526" stroke="#e3e3e3" stroke-width="1"/><path d="M46,400 H272 V484 H46 Q40,484 40,478 V406 Q40,400 46,400 Z" fill="rgba(37,193,159,0.10)" stroke="#25c19f" stroke-width="1"/>
+    <text x="60" y="434" fill="#25c19f" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">GIAI ĐOẠN 5</text><text x="60" y="458" fill="#e3e3e3" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Hệ phân tán</text>
+    <circle cx="296" cy="432.0" r="2.5" fill="#25c19f"/><text x="308" y="436.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Tách bounded context Sales và Billing</text>
+    <circle cx="296" cy="452.0" r="2.5" fill="#25c19f"/><text x="308" y="456.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Domain event</text>
+    <circle cx="616" cy="432.0" r="2.5" fill="#25c19f"/><text x="628" y="436.0" fill="#e3e3e3" font-size="12" font-family="'Geist', sans-serif">Đo hiệu năng endpoint quan trọng</text>
+    <text x="40" y="524" fill="#b4b9c0" font-size="13" font-style="italic" font-family="'Geist', sans-serif">Cùng một bài toán xuyên suốt: CRM quản lý khách hàng và cơ hội bán hàng.</text>
+    <line x1="40" y1="548" x2="920" y2="548" stroke="rgba(227,227,227,0.10)" stroke-width="0.8"/><text x="40" y="568" fill="#b4b9c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><line x1="40" y1="586" x2="68" y2="586" stroke="#b4b9c0" stroke-width="1.3" marker-end="url(#roadmap-project-spine-dark-arrow)"/><text x="76" y="589.5" fill="#b4b9c0" font-size="11" font-family="'Geist', sans-serif">Cùng sản phẩm, lớn dần sang giai đoạn sau</text><rect x="354" y="580" width="28" height="12" rx="2" fill="rgba(37,193,159,0.10)" stroke="#25c19f" stroke-width="1"/><text x="390" y="589.5" fill="#b4b9c0" font-size="11" font-family="'Geist', sans-serif">Trạng thái cuối của trục dự án</text>
+<text id="tiennhm-copyright" x="936" y="620" text-anchor="end" fill="#b4b9c0" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

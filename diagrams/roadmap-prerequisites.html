@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiến thức nào phải có trước kiến thức nào</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #fafaf7;
+      --color-ink:    #1c1e21;
+      --color-muted:  #525860;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Dependency graph · Tiên quyết</p>
+    <h1>Kiến thức nào phải có trước kiến thức nào</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 948" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="roadmap-prerequisites-title roadmap-prerequisites-desc">
+  <title id="roadmap-prerequisites-title">Kiến thức nào phải có trước kiến thức nào</title>
+  <desc id="roadmap-prerequisites-desc">Đồ thị phụ thuộc giữa các chủ đề: nhánh C# đi từ tư duy lập trình qua OOP, async và DI vào pipeline ASP.NET Core; nhánh SQL đi qua EF Core; cả hai dẫn tới Web API, từ đó mở ra xác thực, realtime và Clean Architecture, rồi hệ phân tán và Microservices, nơi kỹ thuật hiệu năng cũng đổ vào.</desc>
+  <defs><marker id="roadmap-prerequisites-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#525860"/></marker><marker id="roadmap-prerequisites-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#18816a"/></marker></defs>
+  <rect width="100%" height="100%" fill="#fafaf7"/>
+  <path d="M296.0,96 L296.0,132" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M296.0,188 L296.0,224" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M268.0,280 V290.0 Q268.0,298.0 260.0,298.0 H120.0 Q112.0,298.0 112.0,306.0 V316" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M324.0,280 V290.0 Q324.0,298.0 332.0,298.0 H472.0 Q480.0,298.0 480.0,306.0 V316" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M112.0,372 V382.0 Q112.0,390.0 120.0,390.0 H260.0 Q268.0,390.0 268.0,398.0 V408" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M480.0,372 V382.0 Q480.0,390.0 472.0,390.0 H332.0 Q324.0,390.0 324.0,398.0 V408" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M592,436.0 L368,436.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M296.0,464 L296.0,500" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M848.0,464 L848.0,500" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M776,528.0 L368,528.0" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M268.0,556 V566.0 Q268.0,574.0 260.0,574.0 H120.0 Q112.0,574.0 112.0,582.0 V592" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M324.0,556 V566.0 Q324.0,574.0 332.0,574.0 H472.0 Q480.0,574.0 480.0,582.0 V592" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M296.0,556 L296.0,592" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M296.0,648 L296.0,684" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M296.0,740 L296.0,776" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M848.0,556 L848.0,684" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <path d="M848.0,740 V796.0 Q848.0,804.0 840.0,804.0 H368" fill="none" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/>
+    <rect x="224" y="40" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="40" width="144" height="56" rx="6" fill="rgba(28,30,33,0.05)" stroke="#1c1e21" stroke-width="1"/><text x="296" y="72.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tư duy lập trình</text>
+    <rect x="224" y="132" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="132" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="164.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ngữ nghĩa C#</text>
+    <rect x="224" y="224" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="224" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="248" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">OOP và</text><text x="296" y="265" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">thiết kế lớp</text>
+    <rect x="40" y="316" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="40" y="316" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="112" y="348.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">async / await</text>
+    <rect x="408" y="316" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="408" y="316" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="480" y="340" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Dependency</text><text x="480" y="357" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Injection</text>
+    <rect x="224" y="408" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="408" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="432" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Pipeline</text><text x="296" y="449" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ASP.NET Core</text>
+    <rect x="592" y="408" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="592" y="408" width="144" height="56" rx="6" fill="rgba(28,30,33,0.05)" stroke="#1c1e21" stroke-width="1"/><text x="664" y="432" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">HTTP và mô hình</text><text x="664" y="449" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">client-server</text>
+    <rect x="776" y="408" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="776" y="408" width="144" height="56" rx="6" fill="rgba(28,30,33,0.05)" stroke="#1c1e21" stroke-width="1"/><text x="848" y="440.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">SQL quan hệ</text>
+    <rect x="224" y="500" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="500" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="532.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Web API</text>
+    <rect x="776" y="500" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="776" y="500" width="144" height="56" rx="6" fill="rgba(24,129,106,0.08)" stroke="#18816a" stroke-width="1"/><text x="848" y="532.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">EF Core</text>
+    <rect x="40" y="592" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="40" y="592" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="112" y="616" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Xác thực và</text><text x="112" y="633" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">phân quyền</text>
+    <rect x="224" y="592" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="592" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="616" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Clean</text><text x="296" y="633" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Architecture</text>
+    <rect x="408" y="592" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="408" y="592" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="480" y="616" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Thời gian thực</text><text x="480" y="633" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">SignalR</text>
+    <rect x="224" y="684" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="684" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="296" y="716.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Hệ phân tán</text>
+    <rect x="776" y="684" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="776" y="684" width="144" height="56" rx="6" fill="#ffffff" stroke="#1c1e21" stroke-width="1"/><text x="848" y="708" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Kỹ thuật</text><text x="848" y="725" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">hiệu năng</text>
+    <rect x="224" y="776" width="144" height="56" rx="6" fill="#fafaf7"/><rect x="224" y="776" width="144" height="56" rx="6" fill="rgba(24,129,106,0.08)" stroke="#18816a" stroke-width="1"/><text x="296" y="808.5" fill="#1c1e21" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Microservices</text>
+    <line x1="40" y1="868" x2="920" y2="868" stroke="rgba(28,30,33,0.10)" stroke-width="0.8"/><text x="40" y="888" fill="#525860" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="900" width="28" height="12" rx="2" fill="rgba(28,30,33,0.05)" stroke="#1c1e21" stroke-width="1"/><text x="76" y="909.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Điểm vào, chưa cần kiến thức nào khác</text><rect x="326" y="900" width="28" height="12" rx="2" fill="rgba(24,129,106,0.08)" stroke="#18816a" stroke-width="1"/><text x="362" y="909.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Trọng tâm: EF Core nối hai nhánh, Microservices ở cuối</text><line x1="698" y1="906" x2="726" y2="906" stroke="#525860" stroke-width="1.3" marker-end="url(#roadmap-prerequisites-arrow)"/><text x="734" y="909.5" fill="#525860" font-size="11" font-family="'Geist', sans-serif">Học trước → học sau</text>
+<text id="tiennhm-copyright" x="936" y="936" text-anchor="end" fill="#525860" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>
