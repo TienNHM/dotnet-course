@@ -1,13 +1,13 @@
 # Lộ trình .NET Backend: From Zero → Senior (Backend-first)
 
-> **Tóm tắt:** Lộ trình **backend-first** trên .NET: 19 module chia thành 5 giai đoạn, cộng 4 dự án. Giai đoạn 1 tới 4 là phần chính, kết thúc bằng Project 3; giai đoạn 5 là phần **nâng cao, không bắt buộc**. Điểm khác biệt so với một danh sách chủ đề là **trục dự án xuyên suốt** — cùng một bài toán CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 cho tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó, thay vì học rời rạc từng công cụ.
+> **Tóm tắt:** Lộ trình **backend-first** trên .NET: 19 module chia thành 6 giai đoạn, cộng 4 dự án. Giai đoạn 1 tới 4 là phần chính, kết thúc bằng Project 3; giai đoạn 5 và 6 là phần **nâng cao, không bắt buộc**. Điểm khác biệt so với một danh sách chủ đề là **trục dự án xuyên suốt** — cùng một bài toán CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 cho tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó, thay vì học rời rạc từng công cụ.
 >
 > Không bao gồm Blazor, .NET MAUI hay UI client nặng — đó là lựa chọn có chủ đích, không phải thiếu sót.
 
 ## Toàn cảnh lộ trình
 
-![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Final Project Enterprise CRM / ERP](./img/roadmap-overview.png#gh-light-mode-only)
-![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Final Project Enterprise CRM / ERP](./img/roadmap-overview-dark.png#gh-dark-mode-only)
+![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Giai đoạn 6 Final Project Enterprise CRM / ERP](./img/roadmap-overview.png#gh-light-mode-only)
+![Sơ đồ toàn cảnh lộ trình: hàng trên là Giai đoạn 1 Foundation (Module 0-3), Giai đoạn 2 C# Professional (Module 4-7), Project 1 Inventory System, Giai đoạn 3 ASP.NET Core (Module 8-11), Project 2 CRM Backend API; hàng dưới là Giai đoạn 4 Database + Production (Module 12-15), Project 3 Production CRM, rồi nét đứt sang phần nâng cao tùy chọn gồm Giai đoạn 5 Senior Engineering (Module 16-19) và Giai đoạn 6 Final Project Enterprise CRM / ERP](./img/roadmap-overview-dark.png#gh-dark-mode-only)
 
 <small>File gốc: [nền sáng](../diagrams/roadmap-overview.html) · [nền tối](../diagrams/roadmap-overview-dark.html)</small>
 
@@ -73,6 +73,7 @@ Mũi tên đứt nét từ API sang SignalR là chủ ý: kênh thời gian th�
 | Tuần 7-10 | ASP.NET Core | Dựng API thật cho CRM mini. Học tới đâu áp dụng tới đó. |
 | Tuần 11-14 | Database + Production | Dữ liệu được lưu, truy vấn, cache và chạy trong container ra sao. |
 | Tuần 15+ | Senior Engineering (nâng cao, tùy chọn) | Đọc kiến trúc ở mức đánh đổi, không học vẹt pattern. |
+| Sau đó | Final Project (nâng cao, tùy chọn) | Gom lại mọi thứ vào một hệ CRM/ERP, ưu tiên vài luồng sâu hơn nhiều màn hình nông. |
 
 Mốc thời gian là tham chiếu, không phải chỉ tiêu. Người đã đi làm backend ngôn ngữ khác thường đi hết giai đoạn 1-2 trong vài ngày; người mới hoàn toàn có thể cần gấp đôi bảng trên.
 
@@ -119,13 +120,20 @@ Mốc thời gian là tham chiếu, không phải chỉ tiêu. Người đã đi
 
 Phần chính của khóa học kết thúc ở Project 3. Giai đoạn 5 dành cho ai đã làm xong Project 3 và muốn đi tiếp: các chủ đề ở đây (Clean Architecture, hệ phân tán, microservices, đo hiệu năng) chỉ thật sự có ý nghĩa khi bạn đã tự tay dựng và vận hành một hệ thống đủ lớn để gặp vấn đề mà chúng giải quyết. Học sớm hơn dễ thành học vẹt pattern.
 
-**Ra khỏi giai đoạn này bạn sẽ**: đọc và bảo vệ được một kiến trúc phân tán, đo được hiệu năng bằng số, và hoàn thiện capstone cấp doanh nghiệp.
+**Ra khỏi giai đoạn này bạn sẽ**: đọc và bảo vệ được một kiến trúc phân tán, đo được hiệu năng bằng số, và có đủ nền để làm capstone ở giai đoạn 6.
 
 - [Module 16 — Clean Architecture](stage-05-senior-engineering/module-16-clean-architecture/README.md)
 - [Module 17 — Distributed Systems](stage-05-senior-engineering/module-17-distributed-systems/README.md)
 - [Module 18 — Microservices](stage-05-senior-engineering/module-18-microservices/README.md)
 - [Module 19 — Performance Engineering](stage-05-senior-engineering/module-19-performance-engineering/README.md)
-- [Final Project — Enterprise CRM / ERP](stage-05-senior-engineering/final-project-enterprise-crm-erp.md)
+
+## Giai đoạn 6 - Final Project (nâng cao, không bắt buộc)
+
+Giai đoạn cuối chỉ có một dự án capstone, làm sau giai đoạn 5. Không có module mới: bạn dựng một hệ CRM/ERP cấp doanh nghiệp để chứng minh mình sở hữu kiến trúc.
+
+**Ra khỏi giai đoạn này bạn sẽ**: có một sản phẩm portfolio hoàn chỉnh, kèm tài liệu đánh đổi (ADR) và CI chạy được.
+
+- [Final Project — Enterprise CRM / ERP](stage-06-final-project/final-project-enterprise-crm-erp.md)
 
 ## Vì sao chọn CRM làm trục capstone
 

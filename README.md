@@ -1,6 +1,6 @@
 # .NET Backend: Zero → Senior
 
-Lộ trình học .NET backend bằng tiếng Việt, gồm 4 giai đoạn chính, 1 giai đoạn nâng cao (không bắt buộc), 19 module và 4 dự án: nền tảng lập trình và Git, C# chuyên nghiệp (OOP, LINQ, generics, async/await, DI), ASP.NET Core (middleware, Web API, xác thực và phân quyền, SignalR), tầng dữ liệu và production (SQL, EF Core, caching, background jobs, Docker và deployment), rồi phần nâng cao về kỹ thuật cấp senior (Clean Architecture, DDD, hệ phân tán, microservices, performance engineering).
+Lộ trình học .NET backend bằng tiếng Việt, gồm 4 giai đoạn chính, 2 giai đoạn nâng cao (không bắt buộc), 19 module và 4 dự án: nền tảng lập trình và Git, C# chuyên nghiệp (OOP, LINQ, generics, async/await, DI), ASP.NET Core (middleware, Web API, xác thực và phân quyền, SignalR), tầng dữ liệu và production (SQL, EF Core, caching, background jobs, Docker và deployment), rồi phần nâng cao về kỹ thuật cấp senior (Clean Architecture, DDD, hệ phân tán, microservices, performance engineering).
 
 Xuyên suốt khóa học là một hệ CRM quản lý khách hàng, lớn dần từ `List` trong bộ nhớ ở giai đoạn 1 tới hệ phân tán nhiều bounded context ở giai đoạn 5. Mỗi kiến thức mới xuất hiện đúng lúc bài toán cần tới nó.
 
@@ -74,7 +74,14 @@ Phần nâng cao, không bắt buộc. Học sau khi đã làm xong Project 3.
 | [Module 17 - Distributed Systems](lessons/stage-05-senior-engineering/module-17-distributed-systems/README.md) | 14 |
 | [Module 18 - Microservices](lessons/stage-05-senior-engineering/module-18-microservices/README.md) | 13 |
 | [Module 19 - Performance Engineering](lessons/stage-05-senior-engineering/module-19-performance-engineering/README.md) | 13 |
-| 🎯 [Final Project — Enterprise CRM / ERP Platform](lessons/stage-05-senior-engineering/final-project-enterprise-crm-erp.md) | Dự án |
+
+### [Giai đoạn 6 — Final Project: Enterprise CRM / ERP](lessons/stage-06-final-project/README.md)
+
+Phần nâng cao, không bắt buộc. Học sau khi đã xong giai đoạn 5.
+
+| Dự án | |
+| --- | --- |
+| 🎯 [Final Project — Enterprise CRM / ERP Platform](lessons/stage-06-final-project/final-project-enterprise-crm-erp.md) | Dự án |
 
 ## Cấu trúc repo
 
