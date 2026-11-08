@@ -23,10 +23,10 @@ const moduleCount = stages.reduce((n, s) => n + s.modules.filter((m) => mod(m.ti
 <template>
   <div class="home-content">
     <section class="section">
-      <h2>Lộ trình 5 giai đoạn</h2>
+      <h2>Lộ trình 6 giai đoạn</h2>
       <p class="lead">
         {{ moduleCount }} module, {{ lessonCount }} bài học và {{ projects.length }} dự án, mở đầu bằng Module 0 để chuẩn bị môi trường.
-        Giai đoạn 1 tới 4 là phần chính, giai đoạn 5 là phần nâng cao không bắt buộc. Xem
+        Giai đoạn 1 tới 4 là phần chính, giai đoạn 5 và 6 là phần nâng cao không bắt buộc. Xem
         <a :href="withBase('/lessons/roadmap-dotnet-backend-zero-to-senior')">lộ trình tổng quan</a>
         để biết vì sao các module được xếp như vậy.
       </p>

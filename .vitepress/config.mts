@@ -35,7 +35,7 @@ export default withMermaid(
     lang: 'vi-VN',
     title: '.NET Backend: Zero → Senior',
     description:
-      'Lộ trình học .NET backend bằng tiếng Việt: 5 giai đoạn, 19 module và 4 dự án, từ tư duy lập trình tới Clean Architecture, hệ phân tán và microservices.',
+      'Lộ trình học .NET backend bằng tiếng Việt: 6 giai đoạn, 19 module và 4 dự án, từ tư duy lập trình tới Clean Architecture, hệ phân tán và microservices.',
     // GitHub Pages phục vụ ở /dotnet-course/; chạy local thì để BASE trống
     base: process.env.BASE ?? '/',
     cleanUrls: true,
@@ -106,7 +106,7 @@ export default withMermaid(
       nav: [
         { text: 'Lộ trình', link: '/lessons/roadmap-dotnet-backend-zero-to-senior' },
         { text: 'Thuật ngữ', link: '/lessons/glossary' },
-        { text: 'Dự án cuối khóa', link: '/lessons/stage-05-senior-engineering/final-project-enterprise-crm-erp' },
+        { text: 'Dự án cuối khóa', link: '/lessons/stage-06-final-project/final-project-enterprise-crm-erp' },
       ],
       sidebar: { '/lessons/': sidebar() },
       socialLinks: [{ icon: 'github', link: repo }],

@@ -23,7 +23,7 @@ export interface Stage extends Page {
   advanced: boolean
 }
 
-const advancedStages = ['stage-05-senior-engineering']
+const advancedStages = ['stage-05-senior-engineering', 'stage-06-final-project']
 
 function page(rel: string): Page {
   const src = readFileSync(join(lessonsDir, rel), 'utf8')

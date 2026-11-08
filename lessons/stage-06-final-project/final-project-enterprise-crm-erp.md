@@ -181,7 +181,8 @@ Chọn một use case nhỏ trong CRM/ERP liên quan trực tiếp đến bài h
 | **Giai đoạn 2 — C# + P1** | Domain, OOP, LINQ, async, DI — **rule nghiệp vụ & tầng ứng dụng** (Inventory là bản mẫu trước CRM). |
 | **Giai đoạn 3 — ASP.NET + P2** | Host, routing, validation, JWT, SignalR — **CRM Backend API** thực tế. |
 | **Giai đoạn 4 — Data + P3** | SQL, EF, cache, job, container — CRM **ổn định & có thể triển khai**. |
-| **Giai đoạn 5 — Senior + Final** | Clean Architecture, event/outbox, gateway, observability, perf — CRM/ERP **chịu tải & có chủ**. |
+| **Giai đoạn 5 — Senior** | Clean Architecture, event/outbox, gateway, observability, perf — nền để CRM/ERP **chịu tải**. |
+| **Giai đoạn 6 — Final Project** | Gom lại toàn bộ: CRM/ERP **chịu tải & có chủ**, có tài liệu trade-off. |
 
 #### Vai trò *giai đoạn này* trong chuỗi
 
@@ -191,7 +192,7 @@ Senior engineering + **Final**: kiến trúc, event/outbox, microservice, đo hi
 
 | Mốc | Điểm nối trong giáo trình |
 |-----|---------------------------|
-| **Trước** | [Module 19 — Performance Engineering](module-19-performance-engineering/README.md) |
+| **Trước** | [Module 19 — Performance Engineering](../stage-05-senior-engineering/module-19-performance-engineering/README.md) |
 | **Tiếp theo** | — (hoàn tất chuỗi chính; ôn [lộ trình](../roadmap-dotnet-backend-zero-to-senior.md)) |
 
 ### Quy trình làm bài (hệ thống)
