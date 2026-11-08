@@ -143,6 +143,12 @@ export default withMermaid(
       cpSync(join(root, 'diagrams'), join(site.outDir, 'diagrams'), { recursive: true })
     },
 
-    mermaid: {},
+    // Cỡ chữ của sơ đồ Mermaid tỉ lệ nghịch với bề rộng của nó: bọc chữ trong node và
+    // thu hẹp khoảng cách để sơ đồ vừa khung bài mà không bị co nhỏ.
+    mermaid: {
+      flowchart: { wrappingWidth: 140, nodeSpacing: 24, rankSpacing: 36, padding: 10 },
+      sequence: { wrap: true, width: 130, actorMargin: 24, messageMargin: 28, boxMargin: 6, wrapPadding: 6 },
+      state: { padding: 8 },
+    },
   }),
 )

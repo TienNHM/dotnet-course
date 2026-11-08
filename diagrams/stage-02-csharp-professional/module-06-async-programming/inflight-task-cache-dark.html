@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gộp request trùng bằng cách cache Task đang chạy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Async pattern</p>
+    <h1>Gộp request trùng bằng cách cache Task đang chạy</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="inflight-task-cache-dark-title inflight-task-cache-dark-desc">
+  <title id="inflight-task-cache-dark-title">Gộp request trùng bằng cách cache Task đang chạy</title>
+  <desc id="inflight-task-cache-dark-desc">Request 1 và request 2 tới 50 cùng gọi _inFlight.GetOrAdd(id). Lần đầu tạo một Task&lt;Customer?&gt; đang chạy, 49 request sau await cùng Task đó, và chỉ có đúng một truy vấn tới Database.</desc>
+  <defs><marker id="inflight-task-cache-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4d8de"/></marker><marker id="inflight-task-cache-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3fd9b5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <path d="M192,88 H266 Q274,88 274,96 V108 Q274,116 282,116 H356" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#inflight-task-cache-dark-arrow)"/>
+    <path d="M192,188 H266 Q274,188 274,180 V156 Q274,148 282,148 H356" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#inflight-task-cache-dark-arrow)"/>
+    <path d="M572,116 L736,116" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#inflight-task-cache-dark-arrow)"/>
+    <rect x="622.5" y="95" width="63" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="654" y="105" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LẦN ĐẦU</text>
+    <path d="M572,148 L736,148" fill="none" stroke="#d4d8de" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#inflight-task-cache-dark-arrow)"/>
+    <rect x="597" y="155" width="114" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="654" y="165" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">49 REQUEST SAU</text>
+    <path d="M828,168 L828,232" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#inflight-task-cache-dark-arrow)"/>
+    <rect x="729.5" y="193" width="99" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="779" y="203" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MỘT TRUY VẤN</text>
+    <rect x="40" y="56" width="152" height="64" rx="6" fill="#1b1b1d"/><rect x="40" y="56" width="152" height="64" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="116" y="92.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Request 1</text>
+    <rect x="40" y="156" width="152" height="64" rx="6" fill="#1b1b1d"/><rect x="40" y="156" width="152" height="64" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="116" y="192.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Request 2 tới 50</text>
+    <rect x="356" y="96" width="216" height="72" rx="6" fill="#1b1b1d"/><rect x="356" y="96" width="216" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="464" y="136.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">_inFlight.GetOrAdd(id)</text>
+    <rect x="736" y="96" width="184" height="72" rx="6" fill="#1b1b1d"/><rect x="736" y="96" width="184" height="72" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="828" y="128" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Task&lt;Customer?&gt;</text><text x="828" y="145" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">đang chạy</text>
+    <rect x="764" y="232" width="128" height="64" rx="6" fill="#1b1b1d"/><rect x="764" y="232" width="128" height="64" rx="6" fill="rgba(227,227,227,0.18)" stroke="#d4d8de" stroke-width="1.5"/><text x="828" y="268.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Database</text>
+    <line x1="40" y1="324" x2="920" y2="324" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/><text font-weight="500" x="40" y="344" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="356" width="28" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="76" y="365.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Task dùng chung</text><line x1="194" y1="362" x2="222" y2="362" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#inflight-task-cache-dark-arrow)"/><text x="230" y="365.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Request đầu: tạo Task</text><line x1="383" y1="362" x2="411" y2="362" stroke="#d4d8de" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#inflight-task-cache-dark-arrow)"/><text x="419" y="365.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">49 request sau: await cùng Task</text><rect x="632" y="356" width="28" height="12" rx="2" fill="rgba(227,227,227,0.18)" stroke="#d4d8de" stroke-width="1.5"/><text x="668" y="365.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Database</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="388" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

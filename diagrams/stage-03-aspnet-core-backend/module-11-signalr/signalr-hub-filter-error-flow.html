@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luồng xử lý lỗi của Hub filter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Hub filter</p>
+    <h1>Luồng xử lý lỗi của Hub filter</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 472" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="signalr-hub-filter-error-flow-title signalr-hub-filter-error-flow-desc">
+  <title id="signalr-hub-filter-error-flow-title">Luồng xử lý lỗi của Hub filter</title>
+  <desc id="signalr-hub-filter-error-flow-desc">Client gọi Hub method qua LoggingHubFilter. Nếu Hub method ném HubException thì gửi nguyên văn thông điệp cho client; nếu là exception khác thì filter ghi LogError đầy đủ rồi ném một HubException chung. Cả hai nhánh đều kết thúc ở client nhận lỗi.</desc>
+  <defs><marker id="signalr-hub-filter-error-flow-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="signalr-hub-filter-error-flow-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M224,72 L272,72" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <path d="M456,72 L504,72" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <path d="M596.0,104 L596.0,160" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <rect x="595" y="125" width="99" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="644.5" y="135" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HUBEXCEPTION</text>
+    <path d="M688,72 H820.0 Q828.0,72 828.0,80 V160" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <rect x="697" y="51" width="114" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="754" y="61" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXCEPTION KHÁC</text>
+    <path d="M828.0,224 L828.0,280" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <path d="M596.0,224 L596.0,280" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <path d="M736,312 L688,312" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/>
+    <rect x="40" y="40" width="184" height="64" rx="6" fill="#ffffff"/><rect x="40" y="40" width="184" height="64" rx="6" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/><text x="132" y="76.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Client gọi Hub method</text>
+    <rect x="272" y="40" width="184" height="64" rx="6" fill="#ffffff"/><rect x="272" y="40" width="184" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="364" y="76.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">LoggingHubFilter</text>
+    <rect x="504" y="40" width="184" height="64" rx="6" fill="#ffffff"/><rect x="504" y="40" width="184" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="596" y="76.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Hub method</text>
+    <rect x="504" y="160" width="184" height="64" rx="6" fill="#ffffff"/><rect x="504" y="160" width="184" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="596" y="188" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Gửi nguyên văn</text><text x="596" y="205" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">thông điệp</text>
+    <rect x="736" y="160" width="184" height="64" rx="6" fill="#ffffff"/><rect x="736" y="160" width="184" height="64" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="828" y="188" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Filter: LogError</text><text x="828" y="205" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">đầy đủ</text>
+    <rect x="736" y="280" width="184" height="64" rx="6" fill="#ffffff"/><rect x="736" y="280" width="184" height="64" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="828" y="316.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ném HubException chung</text>
+    <rect x="504" y="280" width="184" height="64" rx="6" fill="#ffffff"/><rect x="504" y="280" width="184" height="64" rx="6" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/><text x="596" y="316.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Client nhận lỗi</text>
+    <line x1="40" y1="384" x2="920" y2="384" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="404" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="416" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Ghi log đầy đủ ở server</text><rect x="235" y="416" width="28" height="12" rx="2" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="271" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Bước xử lý</text><rect x="356" y="416" width="28" height="12" rx="2" fill="rgba(28,30,33,0.08)" stroke="#101215" stroke-width="1.5"/><text x="392" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Client</text><line x1="454" y1="422" x2="482" y2="422" stroke="#383e46" stroke-width="1.6" marker-end="url(#signalr-hub-filter-error-flow-arrow)"/><text x="490" y="425.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Luồng xử lý</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="460" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

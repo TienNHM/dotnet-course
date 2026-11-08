@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Một ngày làm việc với Git</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Workflow</p>
+    <h1>Một ngày làm việc với Git</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 376" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="daily-developer-workflow-dark-title daily-developer-workflow-dark-desc">
+  <title id="daily-developer-workflow-dark-title">Một ngày làm việc với Git</title>
+  <desc id="daily-developer-workflow-dark-desc">Tám bước: nhận việc, đồng bộ main, tạo nhánh, làm và commit nhỏ, đồng bộ lại main, push và mở PR, CI và review, merge và xoá nhánh.</desc>
+  <defs><marker id="daily-developer-workflow-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4d8de"/></marker><marker id="daily-developer-workflow-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3fd9b5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <path d="M208,84 L280,84" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M448,84 L520,84" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M688,84 L760,84" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M844.0,120 L844.0,184" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M760,220 L688,220" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M520,220 L448,220" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <path d="M280,220 L208,220" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/>
+    <rect x="40" y="48" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="40" y="48" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="124" y="77.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">01</text><text x="124" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Nhận việc</text>
+    <rect x="280" y="48" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="280" y="48" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="364" y="77.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">02</text><text x="364" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Đồng bộ main</text>
+    <rect x="520" y="48" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="520" y="48" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="604" y="77.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">03</text><text x="604" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tạo nhánh</text>
+    <rect x="760" y="48" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="760" y="48" width="168" height="72" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="844" y="77.5" fill="#3fd9b5" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">04</text><text x="844" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Làm + commit nhỏ</text>
+    <rect x="760" y="184" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="760" y="184" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="844" y="213.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">05</text><text x="844" y="231.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Đồng bộ lại main</text>
+    <rect x="520" y="184" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="520" y="184" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="604" y="213.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">06</text><text x="604" y="231.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Push + mở PR</text>
+    <rect x="280" y="184" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="280" y="184" width="168" height="72" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="364" y="213.5" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">07</text><text x="364" y="231.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">CI + review</text>
+    <rect x="40" y="184" width="168" height="72" rx="6" fill="#1b1b1d"/><rect x="40" y="184" width="168" height="72" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="124" y="213.5" fill="#3fd9b5" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">08</text><text x="124" y="231.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Merge + xoá nhánh</text>
+    <line x1="40" y1="292" x2="920" y2="292" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/><text font-weight="500" x="40" y="312" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="324" width="28" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="76" y="333.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Bước cốt lõi</text><rect x="184" y="324" width="28" height="12" rx="2" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="220" y="333.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Bước thường</text><line x1="328" y1="330" x2="356" y2="330" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#daily-developer-workflow-dark-arrow)"/><text x="364" y="333.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Bước tiếp theo</text>
+<text id="tiennhm-copyright" x="936" y="364" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

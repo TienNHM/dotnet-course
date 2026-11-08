@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profiler trước, BenchmarkDotNet sau</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Flowchart · Quy trình</p>
+    <h1>Profiler trước, BenchmarkDotNet sau</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="benchmark-after-profiler-flow-title benchmark-after-profiler-flow-desc">
+  <title id="benchmark-after-profiler-flow-title">Profiler trước, BenchmarkDotNet sau</title>
+  <desc id="benchmark-after-profiler-flow-desc">Endpoint chậm, profiler tìm chỗ tốn thời gian. Nếu chiếm tỷ trọng đáng kể thì viết các cách sửa, BenchmarkDotNet so sánh ở chế độ Release, áp dụng cách thắng và đo lại endpoint; nếu không thì bỏ qua vì tối ưu là vô nghĩa.</desc>
+  <defs><marker id="benchmark-after-profiler-flow-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="benchmark-after-profiler-flow-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M208,104 L272,104" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <path d="M464,104 L552,104" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <path d="M728,104 L792,104" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <rect x="735" y="83" width="50" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="760" y="93" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KHÔNG</text>
+    <path d="M640,160 L640,224" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <rect x="648" y="185" width="28" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="662" y="195" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ</text>
+    <path d="M552,260 L496,260" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <path d="M272,260 L224,260" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/>
+    <rect x="40" y="68" width="168" height="72" rx="6" fill="#ffffff"/><rect x="40" y="68" width="168" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="124" y="100" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text><text x="124" y="117" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">chậm</text>
+    <rect x="272" y="68" width="192" height="72" rx="6" fill="#ffffff"/><rect x="272" y="68" width="192" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="368" y="100" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Profiler tìm chỗ</text><text x="368" y="117" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">tốn thời gian</text>
+    <polygon points="552,104 640,48 728,104 640,160" fill="#ffffff"/><polygon points="552,104 640,48 728,104 640,160" fill="#ffffff" stroke="#101215" stroke-width="1.5"/>
+    <text x="640" y="102" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Chiếm tỷ trọng</text>
+    <text x="640" y="120" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">đáng kể?</text>
+    <rect x="792" y="68" width="128" height="72" rx="6" fill="#ffffff"/><rect x="792" y="68" width="128" height="72" rx="6" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="856" y="100" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Bỏ qua, tối ưu</text><text x="856" y="117" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">là vô nghĩa</text>
+    <rect x="552" y="224" width="176" height="72" rx="6" fill="#ffffff"/><rect x="552" y="224" width="176" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="640" y="256" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Viết các</text><text x="640" y="273" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">cách sửa</text>
+    <rect x="272" y="224" width="224" height="72" rx="6" fill="#ffffff"/><rect x="272" y="224" width="224" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="384" y="256" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">BenchmarkDotNet so sánh,</text><text x="384" y="273" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">chạy Release</text>
+    <rect x="40" y="224" width="184" height="72" rx="6" fill="#ffffff"/><rect x="40" y="224" width="184" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="132" y="256" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Áp dụng cách thắng,</text><text x="132" y="273" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">đo lại endpoint</text>
+    <line x1="40" y1="336" x2="920" y2="336" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="356" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="368" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="377.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Bước của bài này</text><rect x="204" y="368" width="28" height="12" rx="2" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="240" y="377.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Nhánh bỏ qua</text><rect x="352" y="368" width="28" height="12" rx="2" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="388" y="377.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Bước</text><line x1="452" y1="374" x2="480" y2="374" stroke="#383e46" stroke-width="1.6" marker-end="url(#benchmark-after-profiler-flow-arrow)"/><text x="488" y="377.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Đi tiếp</text>
+<text id="tiennhm-copyright" x="936" y="408" text-anchor="end" fill="#383e46" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

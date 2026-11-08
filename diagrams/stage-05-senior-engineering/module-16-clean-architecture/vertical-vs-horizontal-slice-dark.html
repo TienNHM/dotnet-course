@@ -9,8 +9,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --color-paper:  #1b1b1d;
-      --color-ink:    #e3e3e3;
-      --color-muted:  #b4b9c0;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
       --font-sans:    'Geist', system-ui, sans-serif;
       /* Instrument Serif has no Vietnamese subset; a per-glyph fallback mixes two faces
          inside one word, so Vietnamese titles swap the whole face instead. */
@@ -30,6 +30,7 @@
   </style>
 </head>
 <body>
+  <!-- contrast-pass-v1 -->
   <div class="frame">
     <p class="eyebrow">Matrix · Vertical Slice Architecture</p>
     <h1>Cắt ngang theo tầng, cắt dọc theo tính năng</h1>
@@ -38,60 +39,60 @@
   <title id="vsa-dark-title">Cắt ngang theo tầng và cắt dọc theo tính năng</title>
   <desc id="vsa-dark-desc">Ma trận bốn tầng kỹ thuật nhân bốn tính năng Lead: cắt ngang gom mỗi tầng vào một thư mục nên LeadService.cs chứa logic của mọi tính năng, còn cắt dọc gom cả bốn phần của CreateLead vào một file Features/Leads/CreateLead.cs.</desc>
   <rect width="100%" height="100%" fill="#1b1b1d"/>
-  <rect x="256" y="56" width="160" height="280" rx="8" fill="rgba(37,193,159,0.10)" stroke="#25c19f" stroke-width="1"/>
-  <text x="336" y="40" fill="#25c19f" font-size="10" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle">Features/Leads/CreateLead.cs</text>
-  <rect x="32" y="208" width="880" height="60" rx="8" fill="none" stroke="#b4b9c0" stroke-width="1" stroke-dasharray="5,4"/>
-  <text x="336" y="80" fill="#e3e3e3" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">CreateLead</text>
-  <text x="496" y="80" fill="#e3e3e3" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">GetLeadById</text>
-  <text x="656" y="80" fill="#e3e3e3" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">SearchLeads</text>
-  <text x="816" y="80" fill="#e3e3e3" font-size="10" font-family="'Geist Mono', monospace" text-anchor="middle">ConvertLead</text>
-  <text x="48" y="116" fill="#e3e3e3" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Định tuyến</text>
-  <text x="48" y="130" fill="#b4b9c0" font-size="9" font-family="'Geist Mono', monospace">Controllers/</text>
-  <rect x="264" y="96" width="144" height="44" rx="6" fill="#242526" stroke="#25c19f" stroke-width="1"/>
-  <text x="336" y="122" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
-  <rect x="424" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="496" y="122" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
-  <rect x="584" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="656" y="122" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
-  <rect x="744" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="816" y="122" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
-  <text x="48" y="176" fill="#e3e3e3" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Hợp đồng</text>
-  <text x="48" y="190" fill="#b4b9c0" font-size="9" font-family="'Geist Mono', monospace">DTOs/</text>
-  <rect x="264" y="156" width="144" height="44" rx="6" fill="#242526" stroke="#25c19f" stroke-width="1"/>
-  <text x="336" y="182" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
-  <rect x="424" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="496" y="182" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
-  <rect x="584" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="656" y="182" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
-  <rect x="744" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="816" y="182" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
-  <text x="48" y="236" fill="#e3e3e3" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Logic nghiệp vụ</text>
-  <text x="48" y="250" fill="#b4b9c0" font-size="9" font-family="'Geist Mono', monospace">Services/</text>
-  <rect x="264" y="216" width="144" height="44" rx="6" fill="#242526" stroke="#25c19f" stroke-width="1"/>
-  <text x="336" y="242" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
-  <rect x="424" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="496" y="242" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
-  <rect x="584" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="656" y="242" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
-  <rect x="744" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="816" y="242" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
-  <text x="48" y="296" fill="#e3e3e3" font-size="12" font-weight="600" font-family="'Geist', sans-serif">Truy cập dữ liệu</text>
-  <text x="48" y="310" fill="#b4b9c0" font-size="9" font-family="'Geist Mono', monospace">Repositories/</text>
-  <rect x="264" y="276" width="144" height="44" rx="6" fill="#242526" stroke="#25c19f" stroke-width="1"/>
-  <text x="336" y="302" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
-  <rect x="424" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="496" y="302" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
-  <rect x="584" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="656" y="302" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
-  <rect x="744" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.30)" stroke-width="1"/>
-  <text x="816" y="302" fill="#e3e3e3" font-size="11" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
-  <line x1="40" y1="360" x2="920" y2="360" stroke="rgba(227,227,227,0.10)" stroke-width="0.8"/>
-  <text x="40" y="380" fill="#b4b9c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text>
-  <rect x="40" y="394" width="24" height="12" rx="2" fill="rgba(37,193,159,0.10)" stroke="#25c19f" stroke-width="1"/>
-  <text x="72" y="403" fill="#b4b9c0" font-size="8.5" font-family="'Geist', sans-serif">Cắt dọc: một tính năng nằm trọn trong một file, sửa hay xoá đều ở một chỗ</text>
-  <rect x="40" y="416" width="24" height="12" rx="2" fill="none" stroke="#b4b9c0" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="72" y="425" fill="#b4b9c0" font-size="8.5" font-family="'Geist', sans-serif">Cắt ngang: Services/LeadService.cs chứa logic của mọi tính năng, hai người làm hai tính năng vẫn đụng chung một file</text>
-<text id="tiennhm-copyright" x="936" y="452" text-anchor="end" fill="#b4b9c0" opacity="0.75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+  <rect x="256" y="56" width="160" height="280" rx="8" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="336" y="40" fill="#3fd9b5" font-size="11" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle">Features/Leads/CreateLead.cs</text>
+  <rect x="32" y="208" width="880" height="60" rx="8" fill="none" stroke="#d4d8de" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text font-weight="500" x="336" y="80" fill="#f4f4f4" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">CreateLead</text>
+  <text font-weight="500" x="496" y="80" fill="#f4f4f4" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">GetLeadById</text>
+  <text font-weight="500" x="656" y="80" fill="#f4f4f4" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">SearchLeads</text>
+  <text font-weight="500" x="816" y="80" fill="#f4f4f4" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">ConvertLead</text>
+  <text x="48" y="116" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif">Định tuyến</text>
+  <text font-weight="500" x="48" y="130" fill="#d4d8de" font-size="10.5" font-family="'Geist Mono', monospace">Controllers/</text>
+  <rect x="264" y="96" width="144" height="44" rx="6" fill="#242526" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="336" y="122" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
+  <rect x="424" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="496" y="122" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
+  <rect x="584" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="656" y="122" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
+  <rect x="744" y="96" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="816" y="122" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Endpoint</text>
+  <text x="48" y="176" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif">Hợp đồng</text>
+  <text font-weight="500" x="48" y="190" fill="#d4d8de" font-size="10.5" font-family="'Geist Mono', monospace">DTOs/</text>
+  <rect x="264" y="156" width="144" height="44" rx="6" fill="#242526" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="336" y="182" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
+  <rect x="424" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="496" y="182" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
+  <rect x="584" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="656" y="182" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
+  <rect x="744" y="156" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="816" y="182" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Request · Response</text>
+  <text x="48" y="236" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif">Logic nghiệp vụ</text>
+  <text font-weight="500" x="48" y="250" fill="#d4d8de" font-size="10.5" font-family="'Geist Mono', monospace">Services/</text>
+  <rect x="264" y="216" width="144" height="44" rx="6" fill="#242526" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="336" y="242" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
+  <rect x="424" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="496" y="242" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
+  <rect x="584" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="656" y="242" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
+  <rect x="744" y="216" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="816" y="242" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Handler · Validator</text>
+  <text x="48" y="296" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif">Truy cập dữ liệu</text>
+  <text font-weight="500" x="48" y="310" fill="#d4d8de" font-size="10.5" font-family="'Geist Mono', monospace">Repositories/</text>
+  <rect x="264" y="276" width="144" height="44" rx="6" fill="#242526" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="336" y="302" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
+  <rect x="424" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="496" y="302" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
+  <rect x="584" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="656" y="302" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
+  <rect x="744" y="276" width="144" height="44" rx="6" fill="#242526" stroke="rgba(227,227,227,0.50)" stroke-width="1.5"/>
+  <text x="816" y="302" fill="#f4f4f4" font-size="12" font-family="'Geist', sans-serif" text-anchor="middle">Truy vấn DbContext</text>
+  <line x1="40" y1="360" x2="920" y2="360" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/>
+  <text font-weight="500" x="40" y="380" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text>
+  <rect x="40" y="394" width="24" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/>
+  <text x="72" y="403" fill="#d4d8de" font-size="8.5" font-family="'Geist', sans-serif">Cắt dọc: một tính năng nằm trọn trong một file, sửa hay xoá đều ở một chỗ</text>
+  <rect x="40" y="416" width="24" height="12" rx="2" fill="none" stroke="#d4d8de" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="72" y="425" fill="#d4d8de" font-size="8.5" font-family="'Geist', sans-serif">Cắt ngang: Services/LeadService.cs chứa logic của mọi tính năng, hai người làm hai tính năng vẫn đụng chung một file</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="452" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
 </svg>
     </div>
   </div>

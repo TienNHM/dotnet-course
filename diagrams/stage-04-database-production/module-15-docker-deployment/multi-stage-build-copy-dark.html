@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-stage build: chỉ output publish sang image cuối</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #1b1b1d;
+      --color-ink:    #f4f4f4;
+      --color-muted:  #d4d8de;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Dockerfile</p>
+    <h1>Multi-stage build: chỉ output publish sang image cuối</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 484" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="multi-stage-build-copy-dark-title multi-stage-build-copy-dark-desc">
+  <title id="multi-stage-build-copy-dark-title">Multi-stage build: chỉ output publish sang image cuối</title>
+  <desc id="multi-stage-build-copy-dark-desc">Stage build dùng SDK: COPY các csproj, dotnet restore với cache mount NuGet, COPY toàn bộ mã nguồn, dotnet publish ra /app/publish. Chỉ thư mục publish được COPY --from=build sang stage final, rồi ENTRYPOINT chạy dotnet CrmApi.dll.</desc>
+  <defs><marker id="multi-stage-build-copy-dark-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#d4d8de"/></marker><marker id="multi-stage-build-copy-dark-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#3fd9b5"/></marker></defs>
+  <rect width="100%" height="100%" fill="#1b1b1d"/>
+  <rect x="40" y="24" width="880" height="144" rx="8" fill="rgba(227,227,227,0.05)" stroke="rgba(227,227,227,0.18)" stroke-width="1.5"/><text x="56" y="46" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">STAGE BUILD · sdk:9.0</text>
+    <rect x="40" y="232" width="448" height="144" rx="8" fill="rgba(227,227,227,0.05)" stroke="rgba(227,227,227,0.18)" stroke-width="1.5"/><text x="472" y="254" text-anchor="end" fill="#d4d8de" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">STAGE FINAL · aspnet:9.0-noble-chiseled</text>
+    <path d="M244,100 L284,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/>
+    <path d="M460,100 L500,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/>
+    <path d="M676,100 L716,100" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/>
+    <path d="M244,308 L284,308" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/>
+    <path d="M804.0,140 V192 Q804.0,200 796.0,200 H164.0 Q156.0,200 156.0,208 V268" fill="none" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/>
+    <rect x="434" y="179" width="92" height="14" rx="2" fill="#1b1b1d"/><text font-weight="500" x="480" y="189" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">COPY OUTPUT</text>
+    <rect x="68" y="60" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="68" y="60" width="176" height="80" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="156" y="104.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">COPY các .csproj</text>
+    <rect x="284" y="60" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="284" y="60" width="176" height="80" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="372" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">dotnet restore</text><text font-weight="500" x="372" y="113.5" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">cache mount NuGet</text>
+    <rect x="500" y="60" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="500" y="60" width="176" height="80" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="588" y="104.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">COPY . .</text>
+    <rect x="716" y="60" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="716" y="60" width="176" height="80" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="804" y="95.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">dotnet publish</text><text font-weight="500" x="804" y="113.5" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">ra /app/publish</text>
+    <rect x="68" y="268" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="68" y="268" width="176" height="80" rx="6" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="156" y="295" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Thư mục /app</text><text x="156" y="312" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">chỉ có output publish</text><text font-weight="500" x="156" y="330" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">COPY --from=build</text>
+    <rect x="284" y="268" width="176" height="80" rx="6" fill="#1b1b1d"/><rect x="284" y="268" width="176" height="80" rx="6" fill="#242526" stroke="#f4f4f4" stroke-width="1.5"/><text x="372" y="303.5" fill="#f4f4f4" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ENTRYPOINT</text><text font-weight="500" x="372" y="321.5" fill="#d4d8de" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">dotnet CrmApi.dll</text>
+    <line x1="40" y1="404" x2="920" y2="404" stroke="rgba(227,227,227,0.18)" stroke-width="0.8"/><text font-weight="500" x="40" y="424" fill="#d4d8de" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="436" width="28" height="12" rx="2" fill="rgba(37,193,159,0.15)" stroke="#3fd9b5" stroke-width="1.5"/><text x="76" y="445.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Phần duy nhất sang image cuối</text><line x1="274" y1="442" x2="302" y2="442" stroke="#d4d8de" stroke-width="1.6" marker-end="url(#multi-stage-build-copy-dark-arrow)"/><text x="310" y="445.5" fill="#d4d8de" font-size="12" font-family="'Geist', sans-serif">Thứ tự các bước</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="472" text-anchor="end" fill="#d4d8de" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

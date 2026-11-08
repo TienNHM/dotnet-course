@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trước và sau khi dùng Dependency Injection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Dependency graph · Trước và sau</p>
+    <h1>Trước và sau khi dùng Dependency Injection</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 644" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="di-before-after-title di-before-after-desc">
+  <title id="di-before-after-title">Trước và sau khi dùng Dependency Injection</title>
+  <desc id="di-before-after-desc">Trước: CustomerService tự new SmtpEmailService và PostgresCustomerRepository. Sau: CustomerService chỉ phụ thuộc IEmailService và ICustomerRepository, còn Composition Root tạo và tiêm CustomerService, đồng thời chọn cài đặt cho hai interface.</desc>
+  <defs><marker id="di-before-after-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="di-before-after-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <rect x="40" y="24" width="880" height="244" rx="8" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.16)" stroke-width="1.5"/><text x="56" y="46" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">TRƯỚC: LỚP TỰ TẠO</text>
+    <rect x="40" y="292" width="880" height="244" rx="8" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.16)" stroke-width="1.5"/><text x="56" y="314" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.14em">SAU: CONTAINER CUNG CẤP</text>
+    <path d="M516,140 H596 Q604,140 604,132 V112 Q604,104 612,104 H692" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#di-before-after-arrow)"/>
+    <path d="M516,172 H596 Q604,172 604,180 V200 Q604,208 612,208 H692" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="630" y="83" width="36" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="648" y="93" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NEW</text>
+    <rect x="630" y="187" width="36" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="648" y="197" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NEW</text>
+    <path d="M228,424 L340,424" fill="none" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="238" y="403" width="92" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="284" y="413" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TẠO VÀ TIÊM</text>
+    <path d="M140,388 V360 Q140,352 148,352 H692" fill="none" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="406.5" y="331" width="43" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="428" y="341" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHỌN</text>
+    <path d="M140,460 V484 Q140,492 148,492 H692" fill="none" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="406.5" y="499" width="43" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="428" y="509" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHỌN</text>
+    <path d="M516,408 H548 Q556,408 556,400 V396 Q556,388 564,388 H692" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="585" y="367" width="78" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="624" y="377" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PHỤ THUỘC</text>
+    <path d="M516,440 H548 Q556,440 556,448 V452 Q556,460 564,460 H692" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#di-before-after-arrow)"/>
+    <rect x="585" y="467" width="78" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="624" y="477" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PHỤ THUỘC</text>
+    <rect x="340" y="120" width="176" height="72" rx="6" fill="#ffffff"/><rect x="340" y="120" width="176" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="428" y="160.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">CustomerService</text>
+    <rect x="692" y="68" width="216" height="72" rx="6" fill="#ffffff"/><rect x="692" y="68" width="216" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="800" y="108.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">SmtpEmailService</text>
+    <rect x="692" y="172" width="216" height="72" rx="6" fill="#ffffff"/><rect x="692" y="172" width="216" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="800" y="212.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">PostgresCustomerRepository</text>
+    <rect x="52" y="388" width="176" height="72" rx="6" fill="#ffffff"/><rect x="52" y="388" width="176" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="140" y="428.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Composition Root</text>
+    <rect x="340" y="388" width="176" height="72" rx="6" fill="#ffffff"/><rect x="340" y="388" width="176" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="428" y="428.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">CustomerService</text>
+    <rect x="692" y="336" width="216" height="72" rx="6" fill="#ffffff"/><rect x="692" y="336" width="216" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="800" y="376.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">IEmailService</text>
+    <rect x="692" y="440" width="216" height="72" rx="6" fill="#ffffff"/><rect x="692" y="440" width="216" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="800" y="480.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ICustomerRepository</text>
+    <line x1="40" y1="564" x2="920" y2="564" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="584" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="596" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="605.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Nơi chọn cài đặt</text><line x1="204" y1="602" x2="232" y2="602" stroke="#383e46" stroke-width="1.6" marker-end="url(#di-before-after-arrow)"/><text x="240" y="605.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Phụ thuộc trực tiếp (new / interface)</text><line x1="478" y1="602" x2="506" y2="602" stroke="#383e46" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#di-before-after-arrow)"/><text x="514" y="605.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Container tạo, tiêm và chọn</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="632" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

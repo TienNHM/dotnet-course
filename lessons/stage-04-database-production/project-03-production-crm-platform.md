@@ -1162,25 +1162,75 @@ SQL, EF Core, cache, job nền, Docker + **Project 3** — CRM **chạy được
 
 Mỗi câu **4 điểm**.
 
-1. Global Query Filter `TenantId` + index phù hợp nhằm?  
-   A. Tăng độ dài JWT B. Giảm rủi ro lộ dữ liệu tenant khác + tối ưu truy vấn C. Thay connection pool D. Tắt migration  
-   > **Đáp án:** B.
+**Câu 1.** Global Query Filter `TenantId` + index phù hợp nhằm?
 
-2. Hangfire recurring job trên production cần?  
-   A. Chỉ RAM B. Storage persistence (SQL/Redis…) để schedule không mất khi restart C. Blazor D. IIS express  
-   > **Đáp án:** B.
+- A. Tăng độ dài JWT
+- B. Giảm rủi ro lộ dữ liệu tenant khác + tối ưu truy vấn
+- C. Thay connection pool
+- D. Tắt migration
 
-3. `IDistributedCache` (Redis) trong platform này phục vụ?  
-   A. Thay EF hoàn toàn B. Cache/rate/token blacklist chia sẻ giữa instance C. Chỉ compile-time D. Chỉ Windows  
-   > **Đáp án:** B.
+<details>
+<summary>Xem đáp án</summary>
 
-4. Readiness probe khác liveness?  
-   A. Giống nhau B. Ready kiểm tra DB/Redis/broker; Live chỉ process sống C. Chỉ cho gRPC D. Chỉ trên Mac  
-   > **Đáp án:** B.
+**Đáp án:** B.
 
-5. `docker-compose` cho CRM platform giúp điều gì quan trọng nhất trong học tập?  
-   A. Xóa Git history B. Tái lập môi trường (API+DB+Redis) một lệnh, giảm “chạy được trên máy tôi” C. Thay unit test D. Ký APK Android  
-   > **Đáp án:** B.
+</details>
+
+**Câu 2.** Hangfire recurring job trên production cần?
+
+- A. Chỉ RAM
+- B. Storage persistence (SQL/Redis…) để schedule không mất khi restart
+- C. Blazor
+- D. IIS express
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 3.** `IDistributedCache` (Redis) trong platform này phục vụ?
+
+- A. Thay EF hoàn toàn
+- B. Cache/rate/token blacklist chia sẻ giữa instance
+- C. Chỉ compile-time
+- D. Chỉ Windows
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 4.** Readiness probe khác liveness?
+
+- A. Giống nhau
+- B. Ready kiểm tra DB/Redis/broker; Live chỉ process sống
+- C. Chỉ cho gRPC
+- D. Chỉ trên Mac
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 5.** `docker-compose` cho CRM platform giúp điều gì quan trọng nhất trong học tập?
+
+- A. Xóa Git history
+- B. Tái lập môi trường (API+DB+Redis) một lệnh, giảm “chạy được trên máy tôi”
+- C. Thay unit test
+- D. Ký APK Android
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
 
 ### Phần B — Lab thực tế (80 điểm)
 

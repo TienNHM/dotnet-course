@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiến trúc đích của hệ CRM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Architecture · Kiến trúc đích</p>
+    <h1>Kiến trúc đích của hệ CRM</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 828" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="roadmap-target-architecture-title roadmap-target-architecture-desc">
+  <title id="roadmap-target-architecture-title">Kiến trúc đích của hệ CRM</title>
+  <desc id="roadmap-target-architecture-desc">Client gọi API Gateway YARP rồi vào ASP.NET Core Web API. API kiểm tra xác thực và phân quyền, ghi log và metric, và chuyển use case xuống tầng application. Tầng application dùng tầng domain, EF Core xuống SQL Server hoặc PostgreSQL, Redis cache, tác vụ nền và message bus. Kênh SignalR realtime đi từ API bằng đường riêng, không nằm trên request HTTP thông thường.</desc>
+  <defs><marker id="roadmap-target-architecture-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="roadmap-target-architecture-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M160,220.0 L208,220.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <rect x="159" y="199" width="50" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="184" y="209" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">HTTPS</text>
+    <path d="M344,220.0 L392,220.0" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M480,184 L480,104" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M480,256 L480,336" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M540,256 V288.0 Q540,296.0 548,296.0 H700 Q708,296.0 708,304.0 V336" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M568,220.0 L616,220.0" fill="none" stroke="#0d6f58" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#roadmap-target-architecture-arrow-accent)"/>
+    <path d="M436,408 V424 Q436,432 428,432 H122 Q114,432 114,440 V488" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M458,408 V444 Q458,452 450,452 H305 Q297,452 297,460 V488" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M480,408 L480,488" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M502,408 V444 Q502,452 510,452 H655 Q663,452 663,460 V488" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M524,408 V424 Q524,432 532,432 H838 Q846,432 846,440 V488" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <path d="M297,560 L297,640" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#roadmap-target-architecture-arrow)"/>
+    <rect x="32" y="184" width="128" height="72" rx="6" fill="#ffffff"/><rect x="32" y="184" width="128" height="72" rx="6" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="96" y="208.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Client</text><text font-weight="500" x="96" y="226.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">web, mobile,</text><text font-weight="500" x="96" y="240.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">hệ thống tích hợp</text>
+    <rect x="208" y="184" width="136" height="72" rx="6" fill="#ffffff"/><rect x="208" y="184" width="136" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="276" y="215.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">API Gateway</text><text font-weight="500" x="276" y="233.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">YARP</text>
+    <rect x="392" y="184" width="176" height="72" rx="6" fill="#ffffff"/><rect x="392" y="184" width="176" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="480" y="208.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ASP.NET Core Web API</text><text font-weight="500" x="480" y="226.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">controller, middleware,</text><text font-weight="500" x="480" y="240.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">filter</text>
+    <rect x="616" y="184" width="136" height="72" rx="6" fill="#ffffff"/><rect x="616" y="184" width="136" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="684" y="215.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">SignalR hub</text><text font-weight="500" x="684" y="233.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">realtime</text>
+    <rect x="384" y="32" width="192" height="72" rx="6" fill="#ffffff"/><rect x="384" y="32" width="192" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="480" y="56.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Xác thực và phân quyền</text><text font-weight="500" x="480" y="74.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">JWT, permission</text><text font-weight="500" x="480" y="88.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">theo resource</text>
+    <rect x="392" y="336" width="176" height="72" rx="6" fill="#ffffff"/><rect x="392" y="336" width="176" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="480" y="367.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tầng application</text><text font-weight="500" x="480" y="385.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">use case, validation</text>
+    <rect x="632" y="336" width="152" height="72" rx="6" fill="#ffffff"/><rect x="632" y="336" width="152" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="708" y="367.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Logging và metric</text><text font-weight="500" x="708" y="385.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Serilog, health check</text>
+    <rect x="40" y="488" width="148" height="72" rx="6" fill="#ffffff"/><rect x="40" y="488" width="148" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="114" y="512.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tầng domain</text><text font-weight="500" x="114" y="530.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">entity, rule,</text><text font-weight="500" x="114" y="544.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">domain event</text>
+    <rect x="223" y="488" width="148" height="72" rx="6" fill="#ffffff"/><rect x="223" y="488" width="148" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="297" y="528.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">EF Core</text>
+    <rect x="406" y="488" width="148" height="72" rx="6" fill="#ffffff"/><rect x="406" y="488" width="148" height="72" rx="6" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="480" y="519.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Redis</text><text font-weight="500" x="480" y="537.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">cache đọc nhiều</text>
+    <rect x="589" y="488" width="148" height="72" rx="6" fill="#ffffff"/><rect x="589" y="488" width="148" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="663" y="519.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tác vụ nền</text><text font-weight="500" x="663" y="537.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">Hangfire, Quartz.NET</text>
+    <rect x="772" y="488" width="148" height="72" rx="6" fill="#ffffff"/><rect x="772" y="488" width="148" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="846" y="519.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Message bus</text><text font-weight="500" x="846" y="537.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">RabbitMQ, Kafka</text>
+    <rect x="223" y="640" width="148" height="72" rx="6" fill="#ffffff"/><rect x="223" y="640" width="148" height="72" rx="6" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="297" y="671.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">SQL Server</text><text font-weight="500" x="297" y="689.5" fill="#383e46" font-size="11" font-family="'Geist Mono', monospace" text-anchor="middle">PostgreSQL</text>
+    <line x1="40" y1="748" x2="920" y2="748" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="768" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="780" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="789.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Trọng tâm</text><rect x="160" y="780" width="28" height="12" rx="2" fill="rgba(28,30,33,0.08)" stroke="#383e46" stroke-width="1.5"/><text x="196" y="789.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Lưu trữ</text><rect x="276" y="780" width="28" height="12" rx="2" fill="rgba(28,30,33,0.04)" stroke="rgba(28,30,33,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/><text x="312" y="789.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Bên ngoài hệ thống</text><line x1="452" y1="786" x2="480" y2="786" stroke="#0d6f58" stroke-width="1.6" stroke-dasharray="5,4" marker-end="url(#roadmap-target-architecture-arrow-accent)"/><text x="488" y="789.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Realtime, tách khỏi đường đi của request HTTP</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="816" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>

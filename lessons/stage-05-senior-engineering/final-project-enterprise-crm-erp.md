@@ -211,25 +211,75 @@ Senior engineering + **Final**: kiến trúc, event/outbox, microservice, đo hi
 
 Mỗi câu **4 điểm**.
 
-1. Vì sao portfolio enterprise nên ưu tiên **vài luồng end-to-end sâu** thay vì nhiều màn hình nông?  
-   A. Ít code hơn B. Chứng minh được ownership, trade-off, vận hành — sát phỏng vấn senior C. GitHub thích commit ít D. Docker cấm nhiều feature  
-   > **Đáp án:** B.
+**Câu 1.** Vì sao portfolio enterprise nên ưu tiên **vài luồng end-to-end sâu** thay vì nhiều màn hình nông?
 
-2. Webhook thanh toán bắt buộc cần gì?  
-   A. HTTP GET không auth B. Xác thực chữ ký provider + xử lý idempotent theo id sự kiện C. Lưu PAN đầy đủ D. Gửi secret qua query string  
-   > **Đáp án:** B.
+- A. Ít code hơn
+- B. Chứng minh được ownership, trade-off, vận hành — sát phỏng vấn senior
+- C. GitHub thích commit ít
+- D. Docker cấm nhiều feature
 
-3. Multi-tenant row-level: test isolation quan trọng nhất vì?  
-   A. Performance UI B. Rò dữ liệu tenant là lỗi bảo mật nghiêm trọng C. Swagger D. GC  
-   > **Đáp án:** B.
+<details>
+<summary>Xem đáp án</summary>
 
-4. “Strangler fig” trong tách monolith nghĩa là?  
-   A. Xóa code cũ một đêm B. Thay thế dần bằng façade/gateway và bounded context C. Chỉ đổi font UI D. Dùng một DB chung mãi  
-   > **Đáp án:** B.
+**Đáp án:** B.
 
-5. ADR (Architecture Decision Record) ghi những gì tối thiểu?  
-   A. Meme team B. Bối cảnh, quyết định, hậu quả, trạng thái (chấp nhận / thay thế) C. Chỉ link TikTok D. Chỉ screenshot  
-   > **Đáp án:** B.
+</details>
+
+**Câu 2.** Webhook thanh toán bắt buộc cần gì?
+
+- A. HTTP GET không auth
+- B. Xác thực chữ ký provider + xử lý idempotent theo id sự kiện
+- C. Lưu PAN đầy đủ
+- D. Gửi secret qua query string
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 3.** Multi-tenant row-level: test isolation quan trọng nhất vì?
+
+- A. Performance UI
+- B. Rò dữ liệu tenant là lỗi bảo mật nghiêm trọng
+- C. Swagger
+- D. GC
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 4.** “Strangler fig” trong tách monolith nghĩa là?
+
+- A. Xóa code cũ một đêm
+- B. Thay thế dần bằng façade/gateway và bounded context
+- C. Chỉ đổi font UI
+- D. Dùng một DB chung mãi
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
+
+**Câu 5.** ADR (Architecture Decision Record) ghi những gì tối thiểu?
+
+- A. Meme team
+- B. Bối cảnh, quyết định, hậu quả, trạng thái (chấp nhận / thay thế)
+- C. Chỉ link TikTok
+- D. Chỉ screenshot
+
+<details>
+<summary>Xem đáp án</summary>
+
+**Đáp án:** B.
+
+</details>
 
 ### Phần B — Lab & rubric Final Project (80 điểm)
 

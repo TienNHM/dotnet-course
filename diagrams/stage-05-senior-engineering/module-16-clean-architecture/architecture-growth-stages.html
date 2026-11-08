@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiến trúc lớn lên theo bốn giai đoạn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wdth,wght@62.5..100,400&family=Geist:ital,wght@0,400;0,500;0,600;1,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:  #ffffff;
+      --color-ink:    #101215;
+      --color-muted:  #383e46;
+      --font-sans:    'Geist', system-ui, sans-serif;
+      /* Instrument Serif has no Vietnamese subset; Vietnamese titles swap the whole face instead. */
+      --font-serif:   'Noto Serif Display', serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); color: var(--color-ink);
+           min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 3rem 2rem; }
+    .frame { max-width: 1200px; width: 100%; }
+    .diagram-container { width: 100%; overflow-x: auto; }
+    .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em;
+               text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.5rem; }
+    h1 { font-family: var(--font-serif); font-stretch: 75%; font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem); font-weight: 400;
+         letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 1.5rem; }
+    svg { width: 100%; min-width: 960px; display: block; }
+    @media print { .diagram-container { overflow-x: visible; } svg { min-width: 0; } }
+  </style>
+</head>
+<body>
+  <!-- contrast-pass-v1 -->
+  <div class="frame">
+    <p class="eyebrow">Process · Giai đoạn</p>
+    <h1>Kiến trúc lớn lên theo bốn giai đoạn</h1>
+    <div class="diagram-container">
+<svg viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="architecture-growth-stages-title architecture-growth-stages-desc">
+  <title id="architecture-growth-stages-title">Kiến trúc lớn lên theo bốn giai đoạn</title>
+  <desc id="architecture-growth-stages-desc">Từ một project có controller gọi service, tách Domain khỏi hạ tầng khi bắt đầu có quy tắc nghiệp vụ, thêm tầng Application khi nhiều use case và tác dụng phụ, rồi tạo ranh giới module rõ ràng khi nhiều đội làm song song.</desc>
+  <defs><marker id="architecture-growth-stages-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#383e46"/></marker><marker id="architecture-growth-stages-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#0d6f58"/></marker></defs>
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <path d="M336,84 L624,84" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#architecture-growth-stages-arrow)"/>
+    <rect x="374" y="63" width="212" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="480" y="73" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">BẮT ĐẦU CÓ QUY TẮC NGHIỆP VỤ</text>
+    <path d="M768,120 L768,200" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#architecture-growth-stages-arrow)"/>
+    <rect x="642" y="155" width="116" height="26" rx="2" fill="#ffffff"/>
+    <text font-weight="500" x="700" y="164" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NHIỀU USE CASE,</text>
+    <text font-weight="500" x="700" y="176" fill="#383e46" font-size="9.0" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NHIỀU TÁC DỤNG PHỤ</text>
+    <path d="M624,236 L336,236" fill="none" stroke="#383e46" stroke-width="1.6" marker-end="url(#architecture-growth-stages-arrow)"/>
+    <rect x="391.5" y="215" width="177" height="14" rx="2" fill="#ffffff"/><text font-weight="500" x="480" y="225" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NHIỀU ĐỘI LÀM SONG SONG</text>
+    <rect x="48" y="48" width="288" height="72" rx="6" fill="#ffffff"/><rect x="48" y="48" width="288" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="192" y="77.5" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">GIAI ĐOẠN 1</text><text x="192" y="95.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Một project: controller gọi service</text>
+    <rect x="624" y="48" width="288" height="72" rx="6" fill="#ffffff"/><rect x="624" y="48" width="288" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="768" y="77.5" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">GIAI ĐOẠN 2</text><text x="768" y="95.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Tách Domain khỏi hạ tầng</text>
+    <rect x="624" y="200" width="288" height="72" rx="6" fill="#ffffff"/><rect x="624" y="200" width="288" height="72" rx="6" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="768" y="229.5" fill="#383e46" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">GIAI ĐOẠN 3</text><text x="768" y="247.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Thêm tầng Application</text>
+    <rect x="48" y="200" width="288" height="72" rx="6" fill="#ffffff"/><rect x="48" y="200" width="288" height="72" rx="6" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="192" y="229.5" fill="#0d6f58" font-size="10.5" font-weight="500" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">GIAI ĐOẠN 4</text><text x="192" y="247.5" fill="#101215" font-size="13" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Ranh giới module rõ ràng</text>
+    <line x1="40" y1="316" x2="920" y2="316" stroke="rgba(28,30,33,0.16)" stroke-width="0.8"/><text font-weight="500" x="40" y="336" fill="#383e46" font-size="9.5" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text><rect x="40" y="348" width="28" height="12" rx="2" fill="rgba(24,129,106,0.11)" stroke="#0d6f58" stroke-width="1.5"/><text x="76" y="357.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Đích đến</text><rect x="164" y="348" width="28" height="12" rx="2" fill="#ffffff" stroke="#101215" stroke-width="1.5"/><text x="200" y="357.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Giai đoạn kiến trúc</text><line x1="348" y1="354" x2="376" y2="354" stroke="#383e46" stroke-width="1.6" marker-end="url(#architecture-growth-stages-arrow)"/><text x="384" y="357.5" fill="#383e46" font-size="12" font-family="'Geist', sans-serif">Chuyển bước khi có dấu hiệu</text>
+<text font-weight="500" id="tiennhm-copyright" x="936" y="388" text-anchor="end" fill="#383e46" opacity="0.75" font-size="10.5" font-family="'Geist Mono', monospace" letter-spacing="0.08em">© tiennhm</text>
+</svg>
+    </div>
+  </div>
+</body>
+</html>
